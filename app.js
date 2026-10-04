@@ -1,11 +1,11 @@
 const FILES="abcdefgh";
 const PIECE_SVG={
-p:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 13c-8 0-13 6-13 14 0 7 3 12 9 16-5 4-8 10-9 18H31c-6 0-10 4-10 9v7h58v-7c0-5-4-9-10-9h-6c-1-8-4-14-9-18 6-4 9-9 9-16 0-8-5-14-13-14z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5"/><path d="M29 78h42M25 86h50" stroke="var(--piece-hi)" stroke-width="2" opacity=".7"/></svg>`,
-n:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 86h42v-8H59c4-8 8-18 8-29 0-12-6-20-17-27L39 34l9 6-14 4 8 10-9 7 9 10c-5 4-9 9-12 15z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5" stroke-linejoin="round"/><path d="M39 34l16 8-10 3M57 25c5 4 8 9 9 15" fill="none" stroke="var(--piece-hi)" stroke-width="2.2" opacity=".75"/></svg>`,
-b:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 11c-8 8-14 16-14 25 0 8 4 14 9 18-5 5-9 11-10 18H31c-6 0-10 4-10 9v7h58v-7c0-5-4-9-10-9h-4c-1-7-5-13-10-18 5-4 9-10 9-18 0-9-6-17-14-25z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5"/><path d="M44 19l13 22-13 14" fill="none" stroke="var(--piece-hi)" stroke-width="3" opacity=".8"/><path d="M29 78h42M25 86h50" stroke="var(--piece-hi)" stroke-width="2" opacity=".7"/></svg>`,
-r:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M27 12h13v11h8V12h13v11h8v10H62v37h8v10H30V70h8V33H29V23h8V12z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5" stroke-linejoin="round"/><path d="M36 70h28M34 33h32M29 88h42" stroke="var(--piece-hi)" stroke-width="2" opacity=".7"/></svg>`,
-q:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M22 20l10 13 18-19 18 19 10-13-5 34c-1 8-5 14-10 19H37c-5-5-9-11-10-19l-5-34z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5" stroke-linejoin="round"/><path d="M34 74h32c6 0 10 4 10 9v5H24v-5c0-5 4-9 10-9z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5"/><path d="M31 34l19 13 19-13M34 74h32M28 88h44" fill="none" stroke="var(--piece-hi)" stroke-width="2" opacity=".75"/></svg>`,
-k:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M44 9h12v14h13v10H56v13c8 3 13 10 14 18H30c1-8 6-15 14-18V33H31V23h13V9z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5" stroke-linejoin="round"/><path d="M29 64h42c-1 8-5 14-10 18h5c6 0 10 4 10 9v6H24v-6c0-5 4-9 10-9h5c-5-4-9-10-10-18z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.5"/><path d="M50 10v22M35 66h30M29 88h42" stroke="var(--piece-hi)" stroke-width="2" opacity=".75"/></svg>`
+p:`<span class="piece-glyph">♟</span>`,
+n:`<span class="piece-glyph">♞</span>`,
+b:`<span class="piece-glyph">♝</span>`,
+r:`<span class="piece-glyph">♜</span>`,
+q:`<span class="piece-glyph">♛</span>`,
+k:`<span class="piece-glyph">♚</span>`
 };const RULES_URL="https://handbook.fide.com/chapter/E012023";
 let S={board:[],turn:"w",castle:"KQkq",ep:-1,half:0,full:1};
 let history=[],positionHistory=[],selected=-1,flipped=false,lastMove=null,moves=[],trainer=false,trainerExpected=null,trainerActive=false,pendingPromotion=null,gameOver=false,botSide="b",botThinking=false;
