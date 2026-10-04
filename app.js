@@ -329,9 +329,12 @@ function initUI(){
   q("#resetBtn")?.addEventListener("click",start);
   q("#undoBtn")?.addEventListener("click",()=>{
     if(botThinking||!history.length)return;
-    S=history.pop();
-    positionHistory.pop();
-    moves.pop();
+    if(botSide&&S.turn===botSide&&history.length>=2){
+      history.pop(); positionHistory.pop(); moves.pop();
+      S=history.pop(); positionHistory.pop(); moves.pop();
+    }else{
+      S=history.pop(); positionHistory.pop(); moves.pop();
+    }
     lastMove=null;
     gameOver=false;
     selected=-1;
