@@ -16,6 +16,7 @@
       <button class="nav active" data-mode="play"><span>♟</span> Play</button>
       <button class="nav" data-mode="analysis"><span>⌁</span> Analysis</button>
       <button class="nav" data-mode="trainer"><span>★</span> Trainer</button>
+      <button class="nav" data-mode="training"><span>▶</span> Training</button>
       <button class="nav" data-mode="courses"><span>▣</span> Courses</button>
     </div>
     <div class="side-section course-list">
@@ -74,6 +75,33 @@
     </div>
   </main>
 </div>
+
+<section id="trainingView" class="course-view" hidden>
+  <div class="course-header">
+    <div><div class="eyebrow">TRAINING</div><h1>Training room</h1><p>Play lessons inside the app, then use the board to practice what you watched.</p></div>
+    <button id="trainingBoardBtn" class="primary">Open training board</button>
+  </div>
+  <div class="training-layout">
+    <section class="training-main">
+      <div class="section-heading"><div><div class="eyebrow">VIDEO LESSONS</div><h2>Watch inside the app</h2></div><span>YouTube playback</span></div>
+      <div class="training-video" id="trainingVideo">
+        <div class="video-wrap"><iframe id="trainingFrame" src="https://www.youtube.com/embed/GTJmUt8oyH8" title="1.e4 Rating Climb" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        <div class="training-video-info"><b id="trainingVideoTitle">1.e4 Rating Climb</b><small id="trainingVideoDesc">Watch the lesson, then open the board and practice the ideas.</small></div>
+      </div>
+      <div class="training-video-list">
+        <button class="training-video-item active" data-video="GTJmUt8oyH8" data-title="1.e4 Rating Climb" data-desc="Broad 1.e4 ideas and practical opening plans."><b>1.e4 Rating Climb</b><small>Opening fundamentals</small></button>
+        <button class="training-video-item" data-video="qM4e7g2RukI" data-title="Sicilian Defense" data-desc="Learn the basic plans and structures of the Sicilian."><b>Sicilian Defense</b><small>Opening lesson</small></button>
+        <button class="training-video-item" data-video="5pec-u6PSvA" data-title="French Defense" data-desc="Study the French structure and common plans."><b>French Defense</b><small>Opening lesson</small></button>
+        <button class="training-video-item" data-video="ebfzL_GwiIE" data-title="Caro-Kann Defense" data-desc="Practice the Caro-Kann ideas with the board."><b>Caro-Kann Defense</b><small>Opening lesson</small></button>
+        <button class="training-video-item" data-video="49H728S_VjM" data-title="London System" data-desc="Review the core London setup and plans."><b>London System</b><small>Opening lesson</small></button>
+      </div>
+    </section>
+    <aside class="training-side">
+      <div class="lesson-card"><div class="eyebrow">PRACTICE LOOP</div><b>1. Watch</b><span>Play the lesson here.</span><b>2. Practice</b><span>Open the chess board.</span><b>3. Analyze</b><span>Use Stockfish 19 Lite to review your moves.</span></div>
+      <div class="lesson-card"><div class="eyebrow">OFFLINE</div><b>App shell is cached</b><span>The trainer, board, styles and engine loader are stored for offline app use when available.</span><span class="offline-note">Video files from YouTube are streamed by YouTube and are not copied into this app.</span></div>
+    </aside>
+  </div>
+</section>
 
 <section id="courseView" class="course-view" hidden>
   <div class="course-header">
