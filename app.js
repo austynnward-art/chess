@@ -372,7 +372,7 @@ function initUI(){
     item.classList.add("active");
     const id=item.dataset.video;
     const frame=q("#trainingFrame");
-    frame.src="https://www.youtube.com/embed/"+encodeURIComponent(id);
+    frame.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id);
     frame.title=item.dataset.title;
     q("#trainingVideoTitle").textContent=item.dataset.title;
     q("#trainingVideoDesc").textContent=item.dataset.desc;
