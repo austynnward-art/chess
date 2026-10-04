@@ -218,21 +218,24 @@ function claimDraw(kind){
 }
 
 const engine={
-  worker:null,ready:false,starting:false,
+  worker:null,ready:false,starting:false,timer:null,searchFen:"",searchNo:0,
   init(){
     if(this.worker)return;
     this.starting=true;
     try{this.worker=new Worker("stockfish-worker.js")}catch(e){document.querySelector("#engineStatus").textContent="Worker unavailable";return}
     this.worker.onmessage=e=>this.onmsg(e.data);
-    this.worker.onerror=()=>{this.starting=false;document.querySelector("#engineStatus").textContent="Engine error — retrying…";setTimeout(()=>this.restart(),1000)};
+    this.worker.onerror=e=>{clearTimeout(this.timer);this.starting=false;document.querySelector("#engineStatus").textContent="Engine error — restarting…";setTimeout(()=>this.restart(),800)};
+    this.worker.onmessageerror=()=>{document.querySelector("#engineStatus").textContent="Engine message error — restarting…";setTimeout(()=>this.restart(),800)};
+    clearTimeout(this.timer);
+    this.timer=setTimeout(()=>{if(!this.ready){document.querySelector("#engineStatus").textContent="Stockfish timed out — restarting…";this.restart()}},20000);
     document.querySelector("#engineStatus").textContent="Loading Stockfish 19…";
     this.worker.postMessage("uci");
   },
-  restart(){try{this.worker?.terminate()}catch{}this.worker=null;this.ready=false;this.starting=false;this.init()},
+  restart(){clearTimeout(this.timer);try{this.worker?.terminate()}catch{}this.worker=null;this.ready=false;this.starting=false;this.init()},
   onmsg(d){
     if(typeof d!=="string")return;
     if(d==="uciok"){this.worker.postMessage("isready")}
-    else if(d==="readyok"){this.ready=true;this.starting=false;document.querySelector("#engineStatus").textContent="Ready — Stockfish 19 lite";this.analyze(fen(),Number(depth.value))}
+    else if(d==="readyok"){clearTimeout(this.timer);this.ready=true;this.starting=false;document.querySelector("#engineStatus").textContent="Ready — Stockfish 19 lite";this.analyze(fen(),Number(depth.value))}
     else if(d.startsWith("info")&&d.includes(" score ")){
       const m=d.match(/score (cp|mate) (-?\d+)/),pv=d.match(/ pv (.+)$/);
       if(m){
@@ -248,7 +251,7 @@ const engine={
   },
   analyze(f,d){
     if(!this.ready||gameOver)return;
-    this.worker.postMessage("stop");this.worker.postMessage("position fen "+f);this.worker.postMessage("go depth "+Math.max(8,Math.min(24,d||16)));
+    this.searchNo++;this.searchFen=f;this.worker.postMessage("stop");this.worker.postMessage("position fen "+f);this.worker.postMessage("go depth "+Math.max(8,Math.min(24,d||16)));
   }
 };
 
