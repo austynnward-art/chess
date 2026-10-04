@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chess Trainer — Stockfish</title>
+<link rel="stylesheet" href="styles.css"><link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="logo">♞</span><b>Chess Trainer</b></div>
+<nav><button class="nav active" data-mode="play">Play</button><button class="nav" data-mode="analysis">Analysis</button><button class="nav" data-mode="trainer">Trainer</button></nav>
+<button id="installBtn" class="ghost" hidden>Install app</button><button id="resetBtn" class="ghost">New game</button></header>
+<main class="app"><section class="board-area"><div class="board-head"><span id="turnLabel">White to move</span><span id="statusLabel">Ready</span></div>
+<div id="board" class="board" aria-label="Chess board"></div><div class="controls"><button id="undoBtn">Undo</button><button id="flipBtn">Flip board</button><button id="fenBtn">Copy FEN</button></div></section>
+<aside class="panel"><div class="tabs"><button class="tab active" data-panel="engine">Stockfish</button><button class="tab" data-panel="trainer">Trainer</button></div>
+<section id="enginePanel"><div class="eval-row"><div class="eval-bar"><div id="evalFill"></div></div><div id="evalText">0.00</div></div>
+<div class="engine-grid"><label>Depth <input id="depth" type="number" min="8" max="30" value="16"></label><button id="analyzeBtn" class="primary">Analyze</button></div>
+<div class="card"><div class="muted">Best move</div><strong id="bestMove">—</strong></div>
+<div class="card"><div class="muted">Engine</div><strong>Stockfish Web Worker</strong><div id="engineStatus" class="small">Starting…</div></div>
+<div id="moves" class="moves"></div></section>
+<section id="trainerPanel" hidden><div class="trainer-title">Find the best move</div><p class="muted">Trainer mode checks your move against the engine's current recommendation.</p><button id="trainerStart" class="primary">Start trainer</button><div id="trainerResult" class="card">Make a move to begin.</div></section>
+</aside></main>
+<script src="app.js"></script><script>if("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");</script>
+</body></html>
