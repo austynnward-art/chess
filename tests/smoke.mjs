@@ -32,8 +32,14 @@ await e4.click();
 await page.waitForTimeout(100);
 const after = await page.locator("#moves .move").count();
 if (after <= before) throw new Error("Basic e2-e4 move did not register");
+await page.waitForFunction(() => document.querySelectorAll("#moves .move").length >= 2, null, { timeout: 12000 });
+if (!(await page.locator("#turnLabel").textContent()).includes("White")) throw new Error("Black bot did not make a move and return the turn to White");
+
+await page.locator('[data-mode="videos"]').click();
+await page.waitForSelector("#videoView:not([hidden])");
+if (await page.locator("#videoView iframe").count() !== 5) throw new Error("Video page does not contain all five playable videos");
 
 if (errors.length) throw new Error(errors.join("\n"));
 
 await browser.close();
-console.log("SMOKE TEST PASSED: board, Training page, video switching, and e2-e4 interaction.");
+console.log("SMOKE TEST PASSED: board, orientation, Training page, video switching, e2-e4, Black bot move, and video library.");
