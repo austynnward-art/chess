@@ -246,7 +246,7 @@ function claimDraw(kind){
 }
 
 const engine={
-  worker:null,ready:false,starting:false,timer:null,searchFen:"",searchNo:0,requestKind:"analysis",
+  worker:null,ready:false,starting:false,timer:null,searchFen:"",searchNo:0,requestKind:"idle",pendingBot:false,
   init(){
     if(this.worker)return;
     this.starting=true;
@@ -255,7 +255,7 @@ const engine={
     }
     this.worker.onmessage=e=>this.onmsg(e.data);
     this.worker.onerror=()=>{
-      clearTimeout(this.timer);this.starting=false;botThinking=false;
+      clearTimeout(this.timer);this.starting=false;botThinking=false;this.pendingBot=false;
       document.querySelector("#engineStatus").textContent="Engine error — restarting…";
       setTimeout(()=>this.restart(),800)
     };
@@ -276,7 +276,7 @@ const engine={
   restart(){
     clearTimeout(this.timer);
     try{this.worker?.terminate()}catch{}
-    this.worker=null;this.ready=false;this.starting=false;botThinking=false;
+    this.worker=null;this.ready=false;this.starting=false;botThinking=false;this.pendingBot=false;this.requestKind="idle";
     this.init()
   },
   onmsg(d){
@@ -286,7 +286,7 @@ const engine={
     }else if(d==="readyok"){
       clearTimeout(this.timer);this.ready=true;this.starting=false;
       document.querySelector("#engineStatus").textContent="Ready — Stockfish 19 Lite";
-      if(S.turn===botSide) this.playBot(); else this.analyze(fen(),Number(depth.value));
+      if(S.turn===botSide)this.playBot();else this.analyze(fen(),Number(depth.value));
     }else if(d.startsWith("info")&&d.includes(" score ")){
       const m=d.match(/score (cp|mate) (-?\d+)/),pv=d.match(/ pv (.+)$/);
       if(m){
@@ -303,35 +303,60 @@ const engine={
       if(pv)document.querySelector("#bestMove").textContent=pv[1].split(" ")[0];
     }else if(d.startsWith("bestmove ")){
       const bm=d.split(/\s+/)[1]||"";
-      if(this.requestKind==="bot"&&this.searchFen===fen()&&S.turn===botSide&&!gameOver){
+      const finishedFen=this.searchFen;
+      const wasBot=this.requestKind==="bot";
+      this.requestKind="idle";
+      if(this.pendingBot&&S.turn===botSide&&!gameOver){
+        this.pendingBot=false;
+        botThinking=true;
+        this.requestKind="bot";
+        this.searchFen=fen();
+        document.querySelector("#engineStatus").textContent="Stockfish is thinking…";
+        this.worker.postMessage("position fen "+this.searchFen);
+        this.worker.postMessage("go movetime 700");
+        return;
+      }
+      if(wasBot&&finishedFen===fen()&&S.turn===botSide&&!gameOver){
         document.querySelector("#engineStatus").textContent="Stockfish chose "+bm;
         applyBotUci(bm);
         return;
       }
-      if(trainerActive&&this.searchFen===fen())trainerExpected=bm;
+      if(trainerActive&&finishedFen===fen())trainerExpected=bm;
       document.querySelector("#engineStatus").textContent="Ready — search complete";
     }else if(d.startsWith("error ")){
-      botThinking=false;
+      botThinking=false;this.pendingBot=false;this.requestKind="idle";
       document.querySelector("#engineStatus").textContent=d.slice(6);
     }
   },
   analyze(f,d){
     if(!this.ready||gameOver||botThinking)return;
-    this.requestKind="analysis";this.searchNo++;this.searchFen=f;
-    this.worker.postMessage("stop");
+    this.searchNo++;
+    this.searchFen=f;
+    if(this.requestKind==="analysis"){
+      this.worker.postMessage("stop");
+    }
+    this.requestKind="analysis";
     this.worker.postMessage("position fen "+f);
-    this.worker.postMessage("go depth "+Math.max(8,Math.min(24,d||16)));
+    this.worker.postMessage("go depth "+Math.max(8,Math.min(20,d||16)));
   },
   playBot(){
     if(!this.ready||gameOver||S.turn!==botSide||botThinking)return;
-    botThinking=true;this.requestKind="bot";this.searchNo++;this.searchFen=fen();
+    botThinking=true;
+    if(this.requestKind==="analysis"){
+      this.pendingBot=true;
+      document.querySelector("#engineStatus").textContent="Finishing analysis…";
+      this.worker.postMessage("stop");
+      return;
+    }
+    this.pendingBot=false;
+    this.requestKind="bot";
+    this.searchNo++;
+    this.searchFen=fen();
     document.querySelector("#engineStatus").textContent="Stockfish is thinking…";
-    this.worker.postMessage("stop");
     this.worker.postMessage("position fen "+this.searchFen);
-    this.worker.postMessage("go depth "+Math.max(8,Math.min(24,Number(depth.value)||16)));
+    this.worker.postMessage("go movetime 700");
   }
-};;
-function initUI(){
+};function initUI(){
   const q=s=>document.querySelector(s);
   q("#resetBtn")?.addEventListener("click",start);
   q("#undoBtn")?.addEventListener("click",()=>{
