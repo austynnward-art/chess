@@ -365,13 +365,15 @@ function initUI(){
   document.querySelectorAll(".nav").forEach(n=>n.addEventListener("click",()=>{
     document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));n.classList.add("active");
     const mode=n.dataset.mode,course=q("#courseView"),content=q(".content");
-    const training=q("#trainingView");
+    const training=q("#trainingView"),videoView=q("#videoView");
     if(mode==="courses"){
-      content.hidden=true;course.hidden=false;training.hidden=true;q("#pageTitle").textContent="Courses";
+      content.hidden=true;course.hidden=false;training.hidden=true;videoView.hidden=true;q("#pageTitle").textContent="Courses";
     }else if(mode==="training"){
-      content.hidden=true;course.hidden=true;training.hidden=false;q("#pageTitle").textContent="Training";
+      content.hidden=true;course.hidden=true;training.hidden=false;videoView.hidden=true;q("#pageTitle").textContent="Training";
+    }else if(mode==="videos"){
+      content.hidden=true;course.hidden=true;training.hidden=true;videoView.hidden=false;q("#pageTitle").textContent="Videos";
     }else{
-      content.hidden=false;course.hidden=true;training.hidden=true;q("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1);
+      content.hidden=false;course.hidden=true;training.hidden=true;videoView.hidden=true;q("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1);
     }
   }));
   document.querySelectorAll(".training-video-item").forEach(item=>item.addEventListener("click",()=>{
@@ -385,6 +387,7 @@ function initUI(){
     q("#trainingVideoDesc").textContent=item.dataset.desc;
   }));
   q("#trainingBoardBtn")?.addEventListener("click",()=>document.querySelector('[data-mode="play"]').click());
+  q("#videoPlayBoardBtn")?.addEventListener("click",()=>document.querySelector('[data-mode="play"]').click());
   document.querySelectorAll(".opening-tab").forEach(tab=>tab.addEventListener("click",()=>{
     document.querySelectorAll(".opening-tab").forEach(x=>x.classList.remove("active"));
     tab.classList.add("active");
