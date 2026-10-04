@@ -1,0 +1,1 @@
+{"name":"Chess Trainer","short_name":"Chess Trainer","description":"Chess training, analysis, and Stockfish-powered practice.","start_url":"./","display":"standalone","background_color":"#101216","theme_color":"#17191e","orientation":"any","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
