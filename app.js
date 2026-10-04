@@ -327,6 +327,25 @@ const engine={
 function initUI(){
   const q=s=>document.querySelector(s);
   q("#resetBtn")?.addEventListener("click",start);
+  q("#undoBtn")?.addEventListener("click",()=>{
+    if(botThinking||!history.length)return;
+    S=history.pop();
+    positionHistory.pop();
+    moves.pop();
+    lastMove=null;
+    gameOver=false;
+    selected=-1;
+    draw();
+    if(S.turn!==botSide)engine.analyze(fen(),Number(depth.value));
+  });
+  q("#rulesLink")?.setAttribute("href",RULES_URL);
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    const enginePanel=q("#enginePanel"),trainerPanel=q("#trainerPanel");
+    const trainer=t.dataset.panel==="trainer";
+    enginePanel.hidden=trainer;trainerPanel.hidden=!trainer;
+  }));
   q("#flipBtn")?.addEventListener("click",()=>{flipped=!flipped;draw()});
   q("#fenBtn")?.addEventListener("click",()=>navigator.clipboard?.writeText(fen()).then(()=>q("#engineStatus").textContent="FEN copied"));
   q("#claim3Btn")?.addEventListener("click",()=>claimDraw("threefold"));
@@ -338,6 +357,14 @@ function initUI(){
     const mode=n.dataset.mode,course=q("#courseView"),content=q(".content");
     if(mode==="courses"){content.hidden=true;course.hidden=false;q("#pageTitle").textContent="Courses"}
     else{content.hidden=false;course.hidden=true;q("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1)}
+  }));
+  document.querySelectorAll(".opening-tab").forEach(tab=>tab.addEventListener("click",()=>{
+    document.querySelectorAll(".opening-tab").forEach(x=>x.classList.remove("active"));
+    tab.classList.add("active");
+    const key=tab.dataset.opening;
+    document.querySelectorAll(".opening-video").forEach(card=>{
+      card.classList.toggle("hidden",key!=="all"&&card.dataset.opening!==key);
+    });
   }));
   document.querySelectorAll(".level-card").forEach(c=>c.addEventListener("click",()=>{
     document.querySelectorAll(".level-card").forEach(x=>x.classList.remove("active"));c.classList.add("active");
