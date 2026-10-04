@@ -1,5 +1,12 @@
 const FILES="abcdefgh";
-const glyph={wp:"♙",wn:"♘",wb:"♗",wr:"♖",wq:"♕",wk:"♔",bp:"♟",bn:"♞",bb:"♝",br:"♜",bq:"♛",bk:"♚"};
+const PIECE_SVG={
+p:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 15c-9 0-15 7-15 16 0 8 5 14 11 17-3 4-7 8-8 15H32c-5 0-9 4-9 9v6h54v-6c0-5-4-9-9-9h-6c-1-7-5-11-8-15 6-3 11-9 11-17 0-9-6-16-15-16z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2"/><path d="M31 78h38" stroke="var(--piece-hi)" stroke-width="2" opacity=".65"/></svg>`,
+n:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M31 84h43v-8H62c5-12 8-23 5-37-2-10-8-17-18-23l-8 12 9 7-13 4 7 12-9 7 8 10c-4 4-8 8-12 16z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2" stroke-linejoin="round"/><path d="M42 31l13 8-10 3M56 23c4 3 7 7 9 12" fill="none" stroke="var(--piece-hi)" stroke-width="2" opacity=".7"/></svg>`,
+b:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 13c-7 7-13 14-13 23 0 9 5 14 9 18-5 6-9 11-10 18H32c-5 0-9 4-9 9v7h54v-7c0-5-4-9-9-9h-4c-1-7-5-12-10-18 4-4 9-9 9-18 0-9-6-16-13-23z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2"/><path d="M42 21l16 22-15 12" fill="none" stroke="var(--piece-hi)" stroke-width="3" opacity=".75"/></svg>`,
+r:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M29 13h12v10h9V13h12v10h8v10H61v38h8v10H31V71h8V33H30V23h8V13z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2" stroke-linejoin="round"/><path d="M38 71h24M36 33h28" stroke="var(--piece-hi)" stroke-width="2" opacity=".65"/></svg>`,
+q:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M24 22l11 12 15-18 15 18 11-12-5 34c-1 8-5 13-10 17H39c-5-4-9-9-10-17l-5-34zm7 55h38c5 0 9 4 9 9v5H22v-5c0-5 4-9 9-9z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2" stroke-linejoin="round"/><path d="M32 34l18 12 18-12M37 68h26" fill="none" stroke="var(--piece-hi)" stroke-width="2" opacity=".7"/></svg>`,
+k:`<svg class="piece-svg" viewBox="0 0 100 100" aria-hidden="true"><path d="M44 10h12v13h13v10H56v13c8 3 14 10 15 19H29c1-9 7-16 15-19V33H31V23h13V10z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2" stroke-linejoin="round"/><path d="M31 65h38c-1 8-5 13-10 17h4c5 0 9 4 9 9v5H28v-5c0-5 4-9 9-9h4c-5-4-9-9-10-17z" fill="currentColor" stroke="var(--piece-edge)" stroke-width="2.2"/><path d="M50 11v19M36 68h28" stroke="var(--piece-hi)" stroke-width="2" opacity=".7"/></svg>`
+};
 const RULES_URL="https://handbook.fide.com/chapter/E012023";
 let S={board:[],turn:"w",castle:"KQkq",ep:-1,half:0,full:1};
 let history=[],positionHistory=[],selected=-1,flipped=false,lastMove=null,moves=[],trainer=false,trainerExpected=null,trainerActive=false,pendingPromotion=null,gameOver=false,botSide="b",botThinking=false;
@@ -166,7 +173,7 @@ function draw(){
     if(selected>=0&&legal(S,selected).some(m=>m.to===i))el.classList.add(S.board[i]?"capture":"legal");
     const rank=document.createElement("span");rank.className="coord rank";rank.textContent=8-r;
     const file=document.createElement("span");file.className="coord file";file.textContent=FILES[c];
-    if(S.board[i]){const sp=document.createElement("span");sp.className="piece "+(color(S.board[i])==="w"?"white-piece":"black-piece");sp.textContent=glyph[S.board[i]];el.appendChild(sp)}
+    if(S.board[i]){const sp=document.createElement("span");sp.className="piece "+(color(S.board[i])==="w"?"white-piece":"black-piece");sp.innerHTML=PIECE_SVG[type(S.board[i])];el.appendChild(sp)}
     el.append(rank,file);el.onclick=()=>clickSq(i);boardEl.appendChild(el);
   }
   document.querySelector("#turnLabel").textContent=(S.turn==="w"?"White":"Black")+" to move";
