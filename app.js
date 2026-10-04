@@ -2,7 +2,7 @@ const FILES="abcdefgh";
 const glyph={wp:"♙",wn:"♘",wb:"♗",wr:"♖",wq:"♕",wk:"♔",bp:"♟",bn:"♞",bb:"♝",br:"♜",bq:"♛",bk:"♚"};
 const RULES_URL="https://handbook.fide.com/chapter/E012023";
 let S={board:[],turn:"w",castle:"KQkq",ep:-1,half:0,full:1};
-let history=[],positionHistory=[],selected=-1,flipped=false,lastMove=null,moves=[],trainer=false,trainerExpected=null,trainerActive=false,pendingPromotion=null,gameOver=false;
+let history=[],positionHistory=[],selected=-1,flipped=false,lastMove=null,moves=[],trainer=false,trainerExpected=null,trainerActive=false,pendingPromotion=null,gameOver=false,botSide="b",botThinking=false;
 
 const boardEl=document.querySelector("#board"),depth=document.querySelector("#depth");
 const resultEl=document.querySelector("#gameResult");
@@ -13,6 +13,7 @@ function start(){
   for(let x=0;x<8;x++){S.board[x]=`w${back[x]}`;S.board[8+x]="wp";S.board[48+x]="bp";S.board[56+x]=`b${back[x]}`;}
   history=[];positionHistory=[positionKey(S)];moves=[];selected=-1;lastMove=null;pendingPromotion=null;gameOver=false;
   if(resultEl)resultEl.textContent="";
+  botThinking=false;
   draw();engine.init();
 }
 function rc(i){return[Math.floor(i/8),i%8]}
@@ -182,7 +183,7 @@ function openPromotion(m){
   document.querySelectorAll("#promotion button").forEach(b=>b.onclick=()=>{const p=b.dataset.piece;box.hidden=true;pendingPromotion=null;move({...m,promotion:p})});
 }
 function clickSq(i){
-  if(gameOver)return;
+  if(gameOver||botThinking||S.turn===botSide)return;
   if(selected<0){if(color(S.board[i])===S.turn){selected=i;draw()}return}
   const candidates=legal(S,selected).filter(m=>m.to===i);
   if(candidates.length){
@@ -201,7 +202,27 @@ function move(m){
     trainerActive=false;trainerExpected=null;
   }
   S=make(S,m);history.push(before);positionHistory.push(positionKey(S));lastMove=m;selected=-1;
-  moves.push(san(m,before,S));draw();engine.analyze(fen(),Number(depth.value));
+  moves.push(san(m,before,S));draw();
+  if(!gameOver&&S.turn===botSide){setTimeout(()=>engine.playBot(),80)}
+  else engine.analyze(fen(),Number(depth.value));
+}
+function findLegalUci(u){
+  const list=allLegal(S);
+  return list.find(m=>uci(m)===u)||null;
+}
+function applyBotUci(u){
+  const m=findLegalUci(u);
+  if(!m){
+    botThinking=false;
+    document.querySelector("#engineStatus").textContent="Engine returned an illegal move — restarting…";
+    engine.restart();
+    return false;
+  }
+  const before=clone(S);
+  S=make(S,m);history.push(before);positionHistory.push(positionKey(S));lastMove=m;selected=-1;
+  moves.push(san(m,before,S));botThinking=false;draw();
+  if(!gameOver)engine.analyze(fen(),Number(depth.value));
+  return true;
 }
 function fen(){
   let rows=[];
@@ -218,76 +239,88 @@ function claimDraw(kind){
 }
 
 const engine={
-  worker:null,ready:false,starting:false,timer:null,searchFen:"",searchNo:0,
+  worker:null,ready:false,starting:false,timer:null,searchFen:"",searchNo:0,requestKind:"analysis",
   init(){
     if(this.worker)return;
     this.starting=true;
-    try{this.worker=new Worker("stockfish-worker.js")}catch(e){document.querySelector("#engineStatus").textContent="Worker unavailable";return}
+    try{this.worker=new Worker("stockfish-worker.js")}catch(e){
+      document.querySelector("#engineStatus").textContent="Worker unavailable";return
+    }
     this.worker.onmessage=e=>this.onmsg(e.data);
-    this.worker.onerror=e=>{clearTimeout(this.timer);this.starting=false;document.querySelector("#engineStatus").textContent="Engine error — restarting…";setTimeout(()=>this.restart(),800)};
-    this.worker.onmessageerror=()=>{document.querySelector("#engineStatus").textContent="Engine message error — restarting…";setTimeout(()=>this.restart(),800)};
+    this.worker.onerror=()=>{
+      clearTimeout(this.timer);this.starting=false;botThinking=false;
+      document.querySelector("#engineStatus").textContent="Engine error — restarting…";
+      setTimeout(()=>this.restart(),800)
+    };
+    this.worker.onmessageerror=()=>{
+      document.querySelector("#engineStatus").textContent="Engine message error — restarting…";
+      setTimeout(()=>this.restart(),800)
+    };
     clearTimeout(this.timer);
-    this.timer=setTimeout(()=>{if(!this.ready){document.querySelector("#engineStatus").textContent="Stockfish timed out — restarting…";this.restart()}},20000);
-    document.querySelector("#engineStatus").textContent="Loading Stockfish 19…";
+    this.timer=setTimeout(()=>{
+      if(!this.ready){
+        document.querySelector("#engineStatus").textContent="Stockfish timed out — restarting…";
+        this.restart()
+      }
+    },20000);
+    document.querySelector("#engineStatus").textContent="Loading Stockfish 19 Lite…";
     this.worker.postMessage("uci");
   },
-  restart(){clearTimeout(this.timer);try{this.worker?.terminate()}catch{}this.worker=null;this.ready=false;this.starting=false;this.init()},
+  restart(){
+    clearTimeout(this.timer);
+    try{this.worker?.terminate()}catch{}
+    this.worker=null;this.ready=false;this.starting=false;botThinking=false;
+    this.init()
+  },
   onmsg(d){
     if(typeof d!=="string")return;
-    if(d==="uciok"){this.worker.postMessage("isready")}
-    else if(d==="readyok"){clearTimeout(this.timer);this.ready=true;this.starting=false;document.querySelector("#engineStatus").textContent="Ready — Stockfish 19 lite";this.analyze(fen(),Number(depth.value))}
-    else if(d.startsWith("info")&&d.includes(" score ")){
+    if(d==="uciok"){
+      this.worker.postMessage("isready")
+    }else if(d==="readyok"){
+      clearTimeout(this.timer);this.ready=true;this.starting=false;
+      document.querySelector("#engineStatus").textContent="Ready — Stockfish 19 Lite";
+      if(S.turn===botSide) this.playBot(); else this.analyze(fen(),Number(depth.value));
+    }else if(d.startsWith("info")&&d.includes(" score ")){
       const m=d.match(/score (cp|mate) (-?\d+)/),pv=d.match(/ pv (.+)$/);
       if(m){
         const raw=Number(m[2]),sign=S.turn==="w"?1:-1;
-        if(m[1]==="mate"){const mate=raw*sign;document.querySelector("#evalText").textContent=(mate>0?"+M":"-M")+Math.abs(mate)}
-        else{const v=Math.max(-99,Math.min(99,raw*sign/100));document.querySelector("#evalText").textContent=(v>0?"+":"")+v.toFixed(2);document.querySelector("#evalFill").style.height=(50+Math.max(-50,Math.min(50,v*8)))+"%"}
+        if(m[1]==="mate"){
+          const mate=raw*sign;
+          document.querySelector("#evalText").textContent=(mate>0?"+M":"-M")+Math.abs(mate)
+        }else{
+          const v=Math.max(-99,Math.min(99,raw*sign/100));
+          document.querySelector("#evalText").textContent=(v>0?"+":"")+v.toFixed(2);
+          document.querySelector("#evalFill").style.height=(50+Math.max(-50,Math.min(50,v*8)))+"%"
+        }
       }
       if(pv)document.querySelector("#bestMove").textContent=pv[1].split(" ")[0];
     }else if(d.startsWith("bestmove ")){
-      const bm=d.split(/\s+/)[1]||"";if(trainerActive&&this.searchFen===fen())trainerExpected=bm;
+      const bm=d.split(/\s+/)[1]||"";
+      if(this.requestKind==="bot"&&this.searchFen===fen()&&S.turn===botSide&&!gameOver){
+        document.querySelector("#engineStatus").textContent="Stockfish chose "+bm;
+        applyBotUci(bm);
+        return;
+      }
+      if(trainerActive&&this.searchFen===fen())trainerExpected=bm;
       document.querySelector("#engineStatus").textContent="Ready — search complete";
-    }else if(d.startsWith("error "))document.querySelector("#engineStatus").textContent=d.slice(6);
+    }else if(d.startsWith("error ")){
+      botThinking=false;
+      document.querySelector("#engineStatus").textContent=d.slice(6);
+    }
   },
   analyze(f,d){
-    if(!this.ready||gameOver)return;
-    this.searchNo++;this.searchFen=f;this.worker.postMessage("stop");this.worker.postMessage("position fen "+f);this.worker.postMessage("go depth "+Math.max(8,Math.min(24,d||16)));
+    if(!this.ready||gameOver||botThinking)return;
+    this.requestKind="analysis";this.searchNo++;this.searchFen=f;
+    this.worker.postMessage("stop");
+    this.worker.postMessage("position fen "+f);
+    this.worker.postMessage("go depth "+Math.max(8,Math.min(24,d||16)));
+  },
+  playBot(){
+    if(!this.ready||gameOver||S.turn!==botSide||botThinking)return;
+    botThinking=true;this.requestKind="bot";this.searchNo++;this.searchFen=fen();
+    document.querySelector("#engineStatus").textContent="Stockfish is thinking…";
+    this.worker.postMessage("stop");
+    this.worker.postMessage("position fen "+this.searchFen);
+    this.worker.postMessage("go depth "+Math.max(8,Math.min(24,Number(depth.value)||16)));
   }
-};
-
-document.querySelector("#resetBtn").onclick=()=>{try{engine.worker?.postMessage("ucinewgame")}catch{}start()};
-document.querySelector("#undoBtn").onclick=()=>{
-  if(history.length&&!gameOver){
-    S=history.pop();moves.pop();positionHistory.pop();lastMove=null;
-    if(trainer){trainerActive=true;trainerExpected=null;document.querySelector("#trainerResult").textContent="Re-analyzing this position…"}
-    draw();engine.analyze(fen(),Number(depth.value));
-  }
-};
-document.querySelector("#flipBtn").onclick=()=>{flipped=!flipped;draw()};
-document.querySelector("#fenBtn").onclick=async()=>{try{await navigator.clipboard.writeText(fen());document.querySelector("#statusLabel").textContent="FEN copied"}catch{document.querySelector("#statusLabel").textContent="FEN: "+fen()}};
-document.querySelector("#analyzeBtn").onclick=()=>engine.analyze(fen(),Number(depth.value));
-document.querySelector("#claim3Btn").onclick=()=>claimDraw("threefold");
-document.querySelector("#claim50Btn").onclick=()=>claimDraw("fifty");
-
-document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-  const mode=b.dataset.mode;trainer=mode==="trainer";trainerActive=false;trainerExpected=null;
-  document.querySelector("#trainerPanel").hidden=!trainer;document.querySelector("#enginePanel").hidden=trainer;
-  document.querySelector("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1);
-});
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-  const p=b.dataset.panel;document.querySelector("#enginePanel").hidden=p!=="engine";document.querySelector("#trainerPanel").hidden=p!=="trainer";
-});
-document.querySelector("#trainerStart").onclick=()=>{
-  trainer=true;trainerActive=true;trainerExpected=null;
-  document.querySelector("#trainerResult").className="trainer-result";document.querySelector("#trainerResult").textContent="Thinking… Stockfish is choosing the target move.";
-  engine.analyze(fen(),Number(depth.value));
-};
-document.querySelector("#rulesLink").href=RULES_URL;
-
-let deferredInstall=null;
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;document.querySelector("#installBtn").hidden=false});
-document.querySelector("#installBtn").onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;document.querySelector("#installBtn").hidden=true};
-window.addEventListener("appinstalled",()=>document.querySelector("#installBtn").hidden=true);
-start();
+};;
