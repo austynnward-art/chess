@@ -42,8 +42,8 @@
           <div class="board-head"><div><span id="turnLabel">White to move</span><span class="live-dot"></span></div><span id="statusLabel">Ready</span></div>
           <div class="board-frame"><div id="board" class="board" aria-label="Chess board"></div></div>
           <div class="board-footer">
-            <div class="controls"><button id="undoBtn">↶ <span>Undo</span></button><button id="flipBtn">⇄ <span>Flip board</span></button><button id="fenBtn">FEN</button></div>
-            <div class="hint">Click a piece, then a highlighted square</div>
+            <div class="controls"><button id="undoBtn">↶ <span>Undo</span></button><button id="flipBtn">⇄ <span>Flip board</span></button><button id="fenBtn">FEN</button><button id="claim3Btn" disabled>3× Draw</button><button id="claim50Btn" disabled>50 Draw</button></div>
+            <div class="hint">Click a piece, then a highlighted square • <a id="rulesLink" target="_blank" rel="noopener">FIDE rules</a></div>
           </div>
         </div>
       </section>
@@ -66,7 +66,7 @@
           <div class="trainer-hero"><span class="trainer-icon">★</span><div><div class="eyebrow">TRAINER MODE</div><h2>Find the best move</h2></div></div>
           <p class="muted trainer-copy">Think first, then make your move. Stockfish checks the position and gives you feedback.</p>
           <button id="trainerStart" class="primary full">Start trainer</button>
-          <div id="trainerResult" class="trainer-result">Make a move to begin.</div>
+          <div id="trainerResult" class="trainer-result">Make a move to begin.</div><div class="resource-links"><a href="https://chessly.com/" target="_blank" rel="noopener">Chessly courses</a><a href="https://www.chess.com/learn-how-to-play-chess" target="_blank" rel="noopener">Rules & basics</a><a href="https://www.youtube.com/watch?v=V6Ya1B2aOYk" target="_blank" rel="noopener">Opening video</a></div>
           <div class="lesson-card"><b>E4 Part One</b><span>Opening fundamentals</span><div class="mini-progress"><i></i></div></div>
         </section>
       </aside>
@@ -75,5 +75,5 @@
 </div>
 <script src="app.js"></script>
 <script>if("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");</script>
-</body>
+<div id="promotion" class="promotion" hidden><div class="promotion-box"><b>Choose promotion</b><div><button data-piece="q">♕</button><button data-piece="r">♖</button><button data-piece="b">♗</button><button data-piece="n">♘</button></div></div></div></body>
 </html>
