@@ -245,7 +245,7 @@ const engine={
       }
       if(pv)document.querySelector("#bestMove").textContent=pv[1].split(" ")[0];
     }else if(d.startsWith("bestmove ")){
-      const bm=d.split(/\s+/)[1]||"";if(trainerActive)trainerExpected=bm;
+      const bm=d.split(/\s+/)[1]||"";if(trainerActive&&this.searchFen===fen())trainerExpected=bm;
       document.querySelector("#engineStatus").textContent="Ready — search complete";
     }else if(d.startsWith("error "))document.querySelector("#engineStatus").textContent=d.slice(6);
   },
