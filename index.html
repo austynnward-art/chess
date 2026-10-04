@@ -1,23 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chess Trainer — Stockfish</title>
-<link rel="stylesheet" href="styles.css"><link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chess Trainer — Learn, Practice & Analyze</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
-<header class="topbar"><div class="brand"><span class="logo">♞</span><b>Chess Trainer</b></div>
-<nav><button class="nav active" data-mode="play">Play</button><button class="nav" data-mode="analysis">Analysis</button><button class="nav" data-mode="trainer">Trainer</button></nav>
-<button id="installBtn" class="ghost" hidden>Install app</button><button id="resetBtn" class="ghost">New game</button></header>
-<main class="app"><section class="board-area"><div class="board-head"><span id="turnLabel">White to move</span><span id="statusLabel">Ready</span></div>
-<div id="board" class="board" aria-label="Chess board"></div><div class="controls"><button id="undoBtn">Undo</button><button id="flipBtn">Flip board</button><button id="fenBtn">Copy FEN</button></div></section>
-<aside class="panel"><div class="tabs"><button class="tab active" data-panel="engine">Stockfish</button><button class="tab" data-panel="trainer">Trainer</button></div>
-<section id="enginePanel"><div class="eval-row"><div class="eval-bar"><div id="evalFill"></div></div><div id="evalText">0.00</div></div>
-<div class="engine-grid"><label>Depth <input id="depth" type="number" min="8" max="30" value="16"></label><button id="analyzeBtn" class="primary">Analyze</button></div>
-<div class="card"><div class="muted">Best move</div><strong id="bestMove">—</strong></div>
-<div class="card"><div class="muted">Engine</div><strong>Stockfish Web Worker</strong><div id="engineStatus" class="small">Starting…</div></div>
-<div id="moves" class="moves"></div></section>
-<section id="trainerPanel" hidden><div class="trainer-title">Find the best move</div><p class="muted">Trainer mode checks your move against the engine's current recommendation.</p><button id="trainerStart" class="primary">Start trainer</button><div id="trainerResult" class="card">Make a move to begin.</div></section>
-</aside></main>
-<script src="app.js"></script><script>if("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");</script>
-</body></html>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="logo">♞</span><div><b>Chess Trainer</b><small>Learn • Practice • Improve</small></div></div>
+    <div class="side-section">
+      <div class="side-label">Workspace</div>
+      <button class="nav active" data-mode="play"><span>♟</span> Play</button>
+      <button class="nav" data-mode="analysis"><span>⌁</span> Analysis</button>
+      <button class="nav" data-mode="trainer"><span>★</span> Trainer</button>
+    </div>
+    <div class="side-section course-list">
+      <div class="side-label">Learning</div>
+      <button class="course"><span class="course-dot">E4</span><span><b>E4 Part One</b><small>Opening fundamentals</small></span></button>
+      <button class="course"><span class="course-dot">T</span><span><b>Tactics</b><small>Find the winning move</small></span></button>
+      <button class="course"><span class="course-dot">E</span><span><b>Endgames</b><small>Build technique</small></span></button>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="progress-card"><div class="progress-top"><b>Daily progress</b><span>0%</span></div><div class="progress-track"><i></i></div><small>Start a lesson to earn XP</small></div>
+      <button id="installBtn" class="install" hidden>Install app</button>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <div class="mobile-brand"><span class="logo">♞</span><b>Chess Trainer</b></div>
+      <div class="page-title"><b id="pageTitle">Play</b><span>Improve your chess one move at a time</span></div>
+      <div class="top-actions"><button id="resetBtn" class="top-btn primary-outline">New game</button><button class="avatar">A</button></div>
+    </header>
+
+    <div class="content">
+      <section class="board-area">
+        <div class="board-shell">
+          <div class="board-head"><div><span id="turnLabel">White to move</span><span class="live-dot"></span></div><span id="statusLabel">Ready</span></div>
+          <div class="board-frame"><div id="board" class="board" aria-label="Chess board"></div></div>
+          <div class="board-footer">
+            <div class="controls"><button id="undoBtn">↶ <span>Undo</span></button><button id="flipBtn">⇄ <span>Flip board</span></button><button id="fenBtn">FEN</button></div>
+            <div class="hint">Click a piece, then a highlighted square</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-tabs"><button class="tab active" data-panel="engine">Analysis</button><button class="tab" data-panel="trainer">Trainer</button></div>
+        <section id="enginePanel">
+          <div class="engine-head"><div><div class="eyebrow">STOCKFISH</div><h2>Game analysis</h2></div><span class="engine-pill">● Live</span></div>
+          <div class="evaluation">
+            <div class="eval-bar"><div id="evalFill"></div></div>
+            <div class="eval-copy"><strong id="evalText">0.00</strong><span>Evaluation</span></div>
+          </div>
+          <div class="engine-controls"><label>Depth<input id="depth" type="number" min="8" max="30" value="16"></label><button id="analyzeBtn" class="primary">Analyze position</button></div>
+          <div class="best-card"><div class="muted">BEST MOVE</div><strong id="bestMove">—</strong><span>Recommended by Stockfish</span></div>
+          <div class="status-card"><div class="status-icon">♞</div><div><b>Stockfish 19</b><span id="engineStatus">Starting…</span></div></div>
+          <div class="moves-head"><b>Move history</b><span>Game</span></div>
+          <div id="moves" class="moves"></div>
+        </section>
+        <section id="trainerPanel" hidden>
+          <div class="trainer-hero"><span class="trainer-icon">★</span><div><div class="eyebrow">TRAINER MODE</div><h2>Find the best move</h2></div></div>
+          <p class="muted trainer-copy">Think first, then make your move. Stockfish checks the position and gives you feedback.</p>
+          <button id="trainerStart" class="primary full">Start trainer</button>
+          <div id="trainerResult" class="trainer-result">Make a move to begin.</div>
+          <div class="lesson-card"><b>E4 Part One</b><span>Opening fundamentals</span><div class="mini-progress"><i></i></div></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+</div>
+<script src="app.js"></script>
+<script>if("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");</script>
+</body>
+</html>
