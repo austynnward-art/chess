@@ -324,3 +324,38 @@ const engine={
     this.worker.postMessage("go depth "+Math.max(8,Math.min(24,Number(depth.value)||16)));
   }
 };;
+function initUI(){
+  const q=s=>document.querySelector(s);
+  q("#resetBtn")?.addEventListener("click",start);
+  q("#flipBtn")?.addEventListener("click",()=>{flipped=!flipped;draw()});
+  q("#fenBtn")?.addEventListener("click",()=>navigator.clipboard?.writeText(fen()).then(()=>q("#engineStatus").textContent="FEN copied"));
+  q("#claim3Btn")?.addEventListener("click",()=>claimDraw("threefold"));
+  q("#claim50Btn")?.addEventListener("click",()=>claimDraw("fifty"));
+  q("#analyzeBtn")?.addEventListener("click",()=>engine.analyze(fen(),Number(depth.value)));
+  q("#botSide")?.addEventListener("change",e=>{botSide=e.target.value;start()});
+  document.querySelectorAll(".nav").forEach(n=>n.addEventListener("click",()=>{
+    document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));n.classList.add("active");
+    const mode=n.dataset.mode,course=q("#courseView"),content=q(".content");
+    if(mode==="courses"){content.hidden=true;course.hidden=false;q("#pageTitle").textContent="Courses"}
+    else{content.hidden=false;course.hidden=true;q("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1)}
+  }));
+  document.querySelectorAll(".level-card").forEach(c=>c.addEventListener("click",()=>{
+    document.querySelectorAll(".level-card").forEach(x=>x.classList.remove("active"));c.classList.add("active");
+  }));
+  const lessonData={
+    e4:["E4 fundamentals","Start with 1.e4, control the center, develop quickly, and use Stockfish on the board to test candidate moves."],
+    vienna:["Vienna ideas","After 1.e4 e5 2.Nc3, learn the attacking plans and practice the positions with the trainer."],
+    caro:["Against the Caro-Kann","After 1.e4 c6, learn the key plans against Black's solid setup and then test them on the board."],
+    ck1:["Caro-Kann: 1...c6","Build the position with ...c6 and ...d5, then develop the light-squared bishop before locking the center."],
+    ck2:["Caro-Kann: Advance","Practice the Advance structure and learn when Black challenges White's center with ...c5 or ...e6."],
+    ck3:["Caro-Kann: Classical","Practice the Classical setup and the main developing ideas around ...Nf6 and ...Bf5."]
+  };
+  document.querySelectorAll("[data-lesson]").forEach(b=>b.addEventListener("click",()=>{
+    const d=lessonData[b.dataset.lesson];if(!d)return;
+    q("#lessonPlayer").hidden=false;q("#lessonTitle").textContent=d[0];q("#lessonText").textContent=d[1];
+    q("#lessonBoardBtn").onclick=()=>{document.querySelector('[data-mode="play"]').click();};
+    q("#lessonPlayer").scrollIntoView({behavior:"smooth",block:"center"});
+  }));
+}
+initUI();
+start();
