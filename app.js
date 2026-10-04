@@ -358,9 +358,26 @@ function initUI(){
   document.querySelectorAll(".nav").forEach(n=>n.addEventListener("click",()=>{
     document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));n.classList.add("active");
     const mode=n.dataset.mode,course=q("#courseView"),content=q(".content");
-    if(mode==="courses"){content.hidden=true;course.hidden=false;q("#pageTitle").textContent="Courses"}
-    else{content.hidden=false;course.hidden=true;q("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1)}
+    const training=q("#trainingView");
+    if(mode==="courses"){
+      content.hidden=true;course.hidden=false;training.hidden=true;q("#pageTitle").textContent="Courses";
+    }else if(mode==="training"){
+      content.hidden=true;course.hidden=true;training.hidden=false;q("#pageTitle").textContent="Training";
+    }else{
+      content.hidden=false;course.hidden=true;training.hidden=true;q("#pageTitle").textContent=mode[0].toUpperCase()+mode.slice(1);
+    }
   }));
+  document.querySelectorAll(".training-video-item").forEach(item=>item.addEventListener("click",()=>{
+    document.querySelectorAll(".training-video-item").forEach(x=>x.classList.remove("active"));
+    item.classList.add("active");
+    const id=item.dataset.video;
+    const frame=q("#trainingFrame");
+    frame.src="https://www.youtube.com/embed/"+encodeURIComponent(id);
+    frame.title=item.dataset.title;
+    q("#trainingVideoTitle").textContent=item.dataset.title;
+    q("#trainingVideoDesc").textContent=item.dataset.desc;
+  }));
+  q("#trainingBoardBtn")?.addEventListener("click",()=>document.querySelector('[data-mode="play"]').click());
   document.querySelectorAll(".opening-tab").forEach(tab=>tab.addEventListener("click",()=>{
     document.querySelectorAll(".opening-tab").forEach(x=>x.classList.remove("active"));
     tab.classList.add("active");
