@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chaos Chess Lab</title>
+<style>
+:root{--bg:#0b1020;--p:#151d32;--p2:#202d4a;--t:#f4f7ff;--m:#aab6cf;--a:#7dd3fc;--g:#86efac;--b:#fda4af;--l:#2f3d5d}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:radial-gradient(circle at 20% 0,#26385f,#0b1020 55%);color:var(--t)}
+header,main,footer{max-width:1100px;margin:auto}header{padding:30px 22px 15px}h1{margin:0 0 8px;font-size:34px}p{line-height:1.5}.muted{color:var(--m)}
+nav{max-width:1100px;margin:auto;padding:0 22px 18px;display:flex;gap:8px;flex-wrap:wrap}button{font:inherit}nav button,.btn{border:1px solid var(--l);background:var(--p);color:var(--t);border-radius:12px;padding:10px 14px;cursor:pointer}nav button.active{border-color:var(--a);background:var(--p2)}
+main{padding:0 22px 40px}.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{background:#151d32ed;border:1px solid var(--l);border-radius:18px;padding:18px}.tag{display:inline-block;font-size:12px;color:var(--a);background:#20304f;padding:5px 9px;border-radius:999px}.big{font-size:18px;font-weight:700}
+.row{display:flex;gap:18px;flex-wrap:wrap}.boardbox{flex:1;min-width:300px}.board{width:min(76vw,560px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #3a4a6c;border-radius:12px;overflow:hidden}.sq{display:grid;place-items:center;font-size:clamp(27px,6vw,55px);cursor:pointer;position:relative}.light{background:#e2e7ef}.dark{background:#6d7890}.sel{box-shadow:inset 0 0 0 5px var(--a)}.coord{position:absolute;left:3px;bottom:2px;font-size:10px;opacity:.5}.moves{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.progress{height:8px;background:#263450;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--a),#a78bfa);width:0}
+.answer{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid var(--l);background:var(--p2);color:var(--t);border-radius:12px;cursor:pointer}.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px}.good{display:block;background:#0d2a1b;border:1px solid #2c6a46}.bad{display:block;background:#2d1118;border:1px solid #71313d}a{color:var(--a);text-decoration:none}footer{padding:0 22px 30px;color:var(--m);font-size:12px}
+@media(max-width:700px){h1{font-size:27px}.boardbox{min-width:0}}
+</style>
+</head>
+<body>
+<header><h1>♟ Chaos Chess Lab</h1><p class="muted">Original training for our aggressive repertoire: <b>Vienna</b> + <b>King's Gambit</b> as White, <b>Caro-Kann</b> + <b>French Winawer</b> as Black.</p></header>
+<nav>
+<button class="tab active" data-p="home">Home</button><button class="tab" data-p="rep">Repertoire</button><button class="tab" data-p="boardp">Study Board</button><button class="tab" data-p="quiz">Quiz</button><button class="tab" data-p="sources">Sources</button>
+</nav>
+<main>
+<section id="home" class="page active"><div class="grid">
+<div class="card"><span class="tag">WHITE #1</span><h2>Vienna</h2><div class="big">1.e4 e5 2.Nc3</div><p class="muted">Fast development and tactical pressure; add f4 when the position supports it.</p></div>
+<div class="card"><span class="tag">WHITE #2</span><h2>King's Gambit</h2><div class="big">1.e4 e5 2.f4</div><p class="muted">Maximum chaos: trade a pawn for time, lines and initiative.</p></div>
+<div class="card"><span class="tag">BLACK #1</span><h2>Caro-Kann</h2><div class="big">1.e4 c6 2.d4 d5</div><p class="muted">Solid structure, active bishop development and good king safety.</p></div>
+<div class="card"><span class="tag">BLACK #2</span><h2>French Winawer</h2><div class="big">1.e4 e6 2.d4 d5 3.Nc3 Bb4</div><p class="muted">Pin the knight, hit the center and create an unbalanced fight.</p></div>
+</div><div class="card" style="margin-top:14px"><h3>Study rule</h3><p>For every move ask: <b>What does it attack? What does it stop? What pawn break comes next?</b></p></div></section>
+
+<section id="rep" class="page"><div class="grid">
+<div class="card"><span class="tag">VIENNA</span><h2>Core idea</h2><p><b>1.e4 e5 2.Nc3</b>. Develop, pressure e5, then use f4 when it gains something concrete.</p></div>
+<div class="card"><span class="tag">KING'S GAMBIT</span><h2>Core idea</h2><p><b>1.e4 e5 2.f4</b>. Open lines and make your development tempo count.</p></div>
+<div class="card"><span class="tag">CARO-KANN</span><h2>Core idea</h2><p><b>1.e4 c6 2.d4 d5</b>. Challenge the center while keeping the light bishop free.</p></div>
+<div class="card"><span class="tag">WINAWER</span><h2>Core idea</h2><p><b>1.e4 e6 2.d4 d5 3.Nc3 Bb4</b>. Pin the knight and prepare central counterplay, especially ...c5.</p></div>
+</div></section>
+
+<section id="boardp" class="page"><div class="row"><div class="boardbox"><div id="board" class="board"></div><div class="moves" id="lineBtns"></div></div><div class="card" style="flex:1;min-width:290px"><h2 id="ltitle">French Winawer</h2><p id="ltext" class="muted"></p><div class="progress"><i id="bar"></i></div><p id="step" class="muted"></p><h3>Idea</h3><p id="idea"></p><h3>Watch for</h3><p id="watch" class="muted"></p></div></div></section>
+
+<section id="quiz" class="page"><div class="card"><span class="tag">OPENING QUIZ</span><h2 id="q"></h2><div id="ans"></div><div id="fb" class="feedback"></div><div class="moves"><button class="btn" id="next">Next question</button></div></div></section>
+
+<section id="sources" class="page"><div class="grid">
+<div class="card"><span class="tag">CHESSLY</span><h2>Your course</h2><a href="https://chessly.com/courses/76b3000f-dfd1-4c62-b706-238dbd5bb752" target="_blank">Open Chessly course ↗</a><p class="muted">Private course material is not copied into this app.</p></div>
+<div class="card"><span class="tag">VIDEO</span><h2>Provided link 1</h2><a href="https://www.youtube.com/watch?v=rmbU97iftC8" target="_blank">Open YouTube ↗</a></div>
+<div class="card"><span class="tag">VIDEO</span><h2>Provided link 2</h2><a href="https://www.youtube.com/watch?v=JVxENCPcCjU" target="_blank">Open YouTube ↗</a></div>
+<div class="card"><span class="tag">VIDEO</span><h2>Provided link 3</h2><a href="https://www.youtube.com/watch?v=MWFeqi9vGk8" target="_blank">Open YouTube ↗</a></div>
+</div></section>
+</main>
+<footer>Original training content built around the opening ideas we discussed. Linked material remains owned by its publishers.</footer>
+<script>
+const P={w:{k:'♔',q:'♕',r:'♖',b:'♗',n:'♘',p:'♙'},b:{k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'}};
+const S=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'].map(x=>x.split(''));
+const L={
+winawer:{t:'French Winawer',m:['e4','e6','d4','d5','Nc3','Bb4','e5','c5'],i:'Pin the knight and attack the center.',w:'Sharp positions still reward development and king safety.'},
+caro:{t:'Caro-Kann',m:['e4','c6','d4','d5','Nc3','dxe4','Nxe4','Bf5'],i:'Challenge the center while keeping the light bishop active.',w:'Solid does not mean passive.'},
+vienna:{t:'Vienna',m:['e4','e5','Nc3','Nf6','f4'],i:'Pressure e5 and develop quickly.',w:'Do not attack before your pieces are ready.'},
+gambit:{t:"King's Gambit",m:['e4','e5','f4','exf4','Nf3'],i:'Trade a pawn for initiative and open lines.',w:'Make the development tempo count.'}};
+let B=S.map(r=>r.slice()),sel=null,line=L.winawer,st=0;
+function render(){let e=document.getElementById('board');e.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){let d=document.createElement('div');d.className='sq '+((r+c)%2?'dark':'light');if(sel&&sel[0]==r&&sel[1]==c)d.classList.add('sel');let p=B[r][c];if(p!='.')d.textContent=P[p===p.toUpperCase()?'w':'b'][p.toLowerCase()];if(c===0){let x=document.createElement('span');x.className='coord';x.textContent=8-r;d.appendChild(x)}d.onclick=()=>pick(r,c);e.appendChild(d)}}
+function pick(r,c){if(!sel){if(B[r][c]!='.')sel=[r,c];render();return}let [fr,fc]=sel;if(B[r][c]=='.'||B[r][c]!==B[fr][fc]){B[r][c]=B[fr][fc];B[fr][fc]='.'}sel=null;render()}
+function load(name){line=L[name];st=0;B=S.map(r=>r.slice());document.getElementById('ltitle').textContent=line.t;document.getElementById('ltext').textContent=line.m.join(' ');document.getElementById('idea').textContent=line.i;document.getElementById('watch').textContent=line.w;let el=document.getElementById('lineBtns');el.innerHTML='';line.m.forEach((m,i)=>{let b=document.createElement('button');b.className='btn';b.textContent=(i+1)+'. '+m;b.onclick=()=>go(i+1);el.appendChild(b)});go(0)}
+function go(n){st=n;document.getElementById('step').textContent='Step '+st+' / '+line.m.length;document.getElementById('bar').style.width=(st/line.m.length*100)+'%';render()}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(b.dataset.p).classList.add('active')});
+document.querySelectorAll('.linepick').forEach(b=>b.onclick=()=>load(b.dataset.line));
+const Q=[{q:'What starts the Vienna?',a:['2.Nc3','2.Nf3','2.d4','2.f4'],c:0,e:'2.Nc3.'},{q:'What is the Caro-Kann setup?',a:['1.e4 c5','1.e4 c6 2.d4 d5','1.e4 e6 2.d4 d5','1.d4 Nf6'],c:1,e:'1.e4 c6 2.d4 d5.'},{q:'What move defines the Winawer?',a:['...Bb4 after 3.Nc3','...g6','...Qh4','...c5 on move 2'],c:0,e:'3...Bb4.'},{q:'What is the King's Gambit?',a:['1.e4 e5 2.f4','1.e4 e5 2.Nc3','1.d4 d5','1.c4'],c:0,e:'1.e4 e5 2.f4.'}];let qi=0;
+function quiz(){let q=Q[qi%Q.length];document.getElementById('q').textContent=q.q;let a=document.getElementById('ans');a.innerHTML='';document.getElementById('fb').style.display='none';q.a.forEach((x,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=x;b.onclick=()=>{let f=document.getElementById('fb');f.textContent=(i===q.c?'✓ Correct. ':'Not quite. ')+q.e;f.className='feedback '+(i===q.c?'good':'bad');f.style.display='block'};a.appendChild(b)})}
+document.getElementById('next').onclick=()=>{qi++;quiz()};load('winawer');quiz();
+</script>
+</body></html>
