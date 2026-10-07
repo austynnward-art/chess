@@ -16,7 +16,7 @@ a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer}
 main{max-width:1180px;margin:auto;padding:30px 20px 60px}.hero{padding:30px 0 22px}.eyebrow{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:800}.hero h1{font-size:46px;line-height:1.03;margin:10px 0;max-width:760px}.hero p{color:var(--muted);font-size:16px;line-height:1.6;max-width:760px}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 15px;border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text)}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08101a;border-color:transparent;font-weight:800}.btn.small{padding:8px 10px;font-size:12px}
 .section{margin-top:28px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:12px}.section-head h2{margin:3px 0 0;font-size:24px}.section-head span{color:var(--muted);font-size:12px}
-.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.course{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.course:hover{border-color:#3a5072}.course-top{display:flex;justify-content:space-between;align-items:start;gap:10px}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:#18263b;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em}.course h3{margin:10px 0 5px;font-size:21px}.moves{font-weight:750}.course p{color:var(--muted);line-height:1.5;font-size:13px}.lessons{margin-top:14px;display:grid;gap:7px}.lesson{padding:9px 11px;border-radius:9px;background:#0c1422;border:1px solid #1d293e;color:#c6d0df;font-size:12px}
+.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.course{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.course:hover{border-color:#3a5072}.course-top{display:flex;justify-content:space-between;align-items:start;gap:10px}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:#18263b;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em}.course h3{margin:10px 0 5px;font-size:21px}.moves{font-weight:750}.course p{color:var(--muted);line-height:1.5;font-size:13px}.lessons{margin-top:14px;display:grid;gap:7px}.lesson{width:100%;padding:9px 11px;border-radius:9px;background:#0c1422;border:1px solid #1d293e;color:#c6d0df;font-size:12px;text-align:left}
 .course-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.video{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}.video-body{padding:15px}.video-body h3{margin:7px 0}.video-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.video-body a{display:inline-block;margin-top:11px;color:var(--accent);font-size:12px}
 .info{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.info-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px}.info-card p{color:var(--muted);line-height:1.5;font-size:13px}.only{color:#b9c5d8;font-size:12px}
@@ -55,7 +55,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 <div class="course-top"><span class="pill">WHITE</span><span class="only">Vienna</span></div>
 <h3>Vienna Attack</h3><div class="moves">1.e4 e5 2.Nc3</div>
 <p>Use the public opening line to learn the basic Vienna setup, then step through it on the board.</p>
-<div class="lessons"><div class="lesson">Lesson 1 — The Vienna setup</div><div class="lesson">Lesson 2 — f4 and attacking ideas</div><div class="lesson">Lesson 3 — Main-line tactics</div></div>
+<div class="lessons"><button class="lesson" data-open="vienna" data-step="3">Lesson 1 — The Vienna setup</button><button class="lesson" data-open="vienna" data-step="5">Lesson 2 — f4 and attacking ideas</button><button class="lesson" data-open="vienna" data-step="9">Lesson 3 — Main-line tactics</button></div>
 <div class="course-actions"><button class="btn primary small" data-open="vienna">Open board ↗</button><a class="btn small" href="https://chessly.com/courses/d4f3504b-8bbd-4435-ae30-a0b8372c9286/chapters/e24d2846-d9c4-4be9-9e0e-d0d198f1ee2b/studies/5a5039a9-82de-4b38-a2dc-f50f3559bd56/path-video?tileId=aa6be2fc-da8b-4ae1-891b-bc146ee3d0c0" target="_blank" rel="noopener">Vienna video ↗</a></div>
 </article>
 
@@ -63,7 +63,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 <div class="course-top"><span class="pill">WHITE</span><span class="only">Aggressive</span></div>
 <h3>King's Gambit</h3><div class="moves">1.e4 e5 2.f4</div>
 <p>Give a pawn for initiative, develop quickly, and use the open lines to create pressure.</p>
-<div class="lessons"><div class="lesson">Lesson 1 — The gambit idea</div><div class="lesson">Lesson 2 — Development before greed</div><div class="lesson">Lesson 3 — Attacking setups</div></div>
+<div class="lessons"><button class="lesson" data-open="gambit" data-step="3">Lesson 1 — The gambit idea</button><button class="lesson" data-open="gambit" data-step="5">Lesson 2 — Development before greed</button><button class="lesson" data-open="gambit" data-step="5">Lesson 3 — Attacking setups</button></div>
 <div class="course-actions"><button class="btn primary small" data-open="gambit">Open board ↗</button></div>
 </article>
 
@@ -71,7 +71,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 <div class="course-top"><span class="pill">BLACK</span><span class="only">Reliable</span></div>
 <h3>Caro-Kann</h3><div class="moves">1.e4 c6 2.d4 d5</div>
 <p>The solid Black option. Learn the classical setup and keep the light-squared bishop active.</p>
-<div class="lessons"><div class="lesson">Lesson 1 — Core setup</div><div class="lesson">Lesson 2 — Classical variation</div><div class="lesson">Lesson 3 — Active counterplay</div></div>
+<div class="lessons"><button class="lesson" data-open="caro" data-step="2">Lesson 1 — Core setup</button><button class="lesson" data-open="caro" data-step="5">Lesson 2 — Classical variation</button><button class="lesson" data-open="caro" data-step="8">Lesson 3 — Active counterplay</button></div>
 <div class="course-actions"><button class="btn primary small" data-open="caro">Open board ↗</button><a class="btn small" href="https://chessly.com/courses/775a4eea-5a50-47da-b7dd-5790ef829fbe/chapters/5199b52a-f548-49e6-8b65-2200db856e70/studies/90d4c782-79d5-46c7-a0c1-5573eccff5ea/path-video?tileId=75f8a7c8-a8db-4ede-96e5-6c29034cea8f" target="_blank" rel="noopener">Caro-Kann video ↗</a></div>
 </article>
 
@@ -79,11 +79,11 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 <div class="course-top"><span class="pill">BLACK</span><span class="only">Chaos</span></div>
 <h3>Portuguese Gambit</h3><div class="moves">1.e4 e5 2.Bb5 Nf6 3.d4</div>
 <p>Use the public opening line as the board lesson, then jump to the Chessly video you supplied for deeper study.</p>
-<div class="lessons"><div class="lesson">Lesson 1 — Enter the gambit</div><div class="lesson">Lesson 2 — Development with tempo</div><div class="lesson">Lesson 3 — Attack before White settles</div></div>
+<div class="lessons"><button class="lesson" data-open="portuguese" data-step="2">Lesson 1 — Enter the gambit</button><button class="lesson" data-open="portuguese" data-step="3">Lesson 2 — Development with tempo</button><button class="lesson" data-open="portuguese" data-step="5">Lesson 3 — Attack before White settles</button></div>
 <div class="course-actions"><button class="btn primary small" data-open="portuguese">Open board ↗</button><a class="btn small" href="https://chessly.com/courses/780abea8-4d32-4633-a19c-b4e90c3cc6b0/chapters/11f25fee-90a7-478e-b32d-691c73d83645/studies/687bd4be-672a-416b-b96c-d764e3d6e08a/path-video?tileId=d873e452-3d3a-475e-90df-0884ad012a9c" target="_blank" rel="noopener">Portuguese video ↗</a></div>
 </article>
 </div>
-<p class="board-note">Public opening references: Chess.com lists the Vienna as 1.e4 e5 2.Nc3 and gives common main-line continuations; its Caro-Kann Classical line is 1.e4 c6 2.d4 d5 3.Nc3 dxe4 4.Nxe4 Bf5; its Portuguese Gambit page gives 1.e4 e5 2.Bb5 Nf6 3.d4. citeturn555538search2turn555538search14turn555538search1turn555538search9</p>
+<p class="board-note">Board lines are based on public opening references. They are practice lines, not copied private course material.</p>
 </section>
 
 <section id="videos" class="section">
@@ -143,8 +143,8 @@ const COURSES={
 
 let boardGame=new Chess(),activeCourse="vienna",moveIndex=0,selectedSquare=null,freePlay=false;
 
-function openBoard(key){
- activeCourse=key;moveIndex=0;freePlay=false;selectedSquare=null;loadPosition();
+function openBoard(key,startStep=0){
+ activeCourse=key;moveIndex=Math.max(0,Math.min(Number(startStep)||0,COURSES[key].line.length));freePlay=false;selectedSquare=null;loadPosition();
  const c=COURSES[key];
  document.getElementById("boardTitle").textContent=c.name;
  document.getElementById("boardLine").textContent=c.line.join(" ");
@@ -192,7 +192,7 @@ function renderLessonStep(){
  document.getElementById("stepTitle").textContent=(moveIndex===0?steps[0][0]:s[0]);
  document.getElementById("stepText").textContent=(moveIndex===0?"Start at the position and step through the line with Next.":s[1]);
 }
-document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open)));
+document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
 document.getElementById("closeModal").onclick=closeBoard;
 document.getElementById("boardModal").addEventListener("click",e=>{if(e.target.id==="boardModal")closeBoard});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeBoard});
