@@ -119,7 +119,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
   </div>
   <div class="clock" id="whiteClock">—</div>
 </div>
-<div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><button class="btn primary small" id="stockfishBtn">Play vs Stockfish</button></div></div>
+<div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><button class="btn primary small" id="stockfishBtn">Play vs Stockfish 19 Lite</button></div></div>
 <div class="sidebox"><span class="pill">LESSON STEPS</span><h3 id="stepTitle">Opening</h3><p id="stepText" class="board-note"></p><div id="lineButtons" class="line-list"></div><p class="board-note" id="engineStatus">Engine: ready when you choose Play vs Stockfish.</p><p class="board-note" id="sourceText"></p></div>
 </div>
 </div>
@@ -244,13 +244,13 @@ function renderLessonStep(){
 }
 
 // ---------- Stockfish ----------
-const STOCKFISH_WORKER_URL="https://cdn.jsdelivr.net/npm/stockfish.wasm@0.10.0/stockfish.worker.js";
+const STOCKFISH_WORKER_URL="https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js";
 function updateEngineStatus(msg){const el=document.getElementById("engineStatus");if(el)el.textContent="Engine: "+msg}
 function updateEngineUI(){
   const b=document.getElementById("stockfishBtn");
   if(!b)return;
   b.classList.toggle("engine-on",vsStockfish);
-  b.textContent=vsStockfish?"Stop Stockfish":"Play vs Stockfish";
+  b.textContent=vsStockfish?"Stop Stockfish 19 Lite":"Play vs Stockfish 19 Lite";
   const boardEl=document.getElementById("board");
   if(boardEl)boardEl.classList.toggle("engine-thinking",stockfishBusy);
 }
@@ -316,7 +316,7 @@ function stopStockfish(){
   stopClocks();
   vsStockfish=false;stockfishBusy=false;selectedSquare=null;
   if(stockfish){try{stockfish.postMessage("stop")}catch(e){}}
-  updateEngineUI();updateEngineStatus("ready when you choose Play vs Stockfish.");
+  updateEngineUI();updateEngineStatus("Stockfish 19 Lite — ready when you choose Play vs Stockfish.");
 }
 document.getElementById("stockfishBtn").onclick=()=>{vsStockfish?stopStockfish():startStockfishGame()};
 document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
