@@ -5,66 +5,256 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chaos Chess Lab</title>
 <style>
-:root{--bg:#0b1020;--p:#151d32;--p2:#202d4a;--t:#f4f7ff;--m:#aab6cf;--a:#7dd3fc;--g:#86efac;--b:#fda4af;--l:#2f3d5d}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:radial-gradient(circle at 20% 0,#26385f,#0b1020 55%);color:var(--t)}
-header,main,footer{max-width:1100px;margin:auto}header{padding:30px 22px 15px}h1{margin:0 0 8px;font-size:34px}p{line-height:1.5}.muted{color:var(--m)}
-nav{max-width:1100px;margin:auto;padding:0 22px 18px;display:flex;gap:8px;flex-wrap:wrap}button{font:inherit}nav button,.btn{border:1px solid var(--l);background:var(--p);color:var(--t);border-radius:12px;padding:10px 14px;cursor:pointer}nav button.active{border-color:var(--a);background:var(--p2)}
-main{padding:0 22px 40px}.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{background:#151d32ed;border:1px solid var(--l);border-radius:18px;padding:18px}.tag{display:inline-block;font-size:12px;color:var(--a);background:#20304f;padding:5px 9px;border-radius:999px}.big{font-size:18px;font-weight:700}
-.row{display:flex;gap:18px;flex-wrap:wrap}.boardbox{flex:1;min-width:300px}.board{width:min(76vw,560px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #3a4a6c;border-radius:12px;overflow:hidden}.sq{display:grid;place-items:center;font-size:clamp(27px,6vw,55px);cursor:pointer;position:relative}.light{background:#e2e7ef}.dark{background:#6d7890}.sel{box-shadow:inset 0 0 0 5px var(--a)}.coord{position:absolute;left:3px;bottom:2px;font-size:10px;opacity:.5}.moves{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.progress{height:8px;background:#263450;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--a),#a78bfa);width:0}
-.answer{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid var(--l);background:var(--p2);color:var(--t);border-radius:12px;cursor:pointer}.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px}.good{display:block;background:#0d2a1b;border:1px solid #2c6a46}.bad{display:block;background:#2d1118;border:1px solid #71313d}a{color:var(--a);text-decoration:none}footer{padding:0 22px 30px;color:var(--m);font-size:12px}
-@media(max-width:700px){h1{font-size:27px}.boardbox{min-width:0}}
+:root{
+  --bg:#0a1020;--panel:#141d33;--panel2:#1d2945;--text:#f4f7ff;--muted:#9eabc5;
+  --accent:#7dd3fc;--accent2:#a78bfa;--good:#86efac;--border:#2c3b5b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 0,#23365e 0,#0a1020 48%);min-height:100vh}
+header{max-width:1200px;margin:auto;padding:28px 22px 16px}
+h1{margin:0 0 6px;font-size:34px}.subtitle{color:var(--muted);line-height:1.5}
+nav{max-width:1200px;margin:auto;padding:0 22px 18px;display:flex;gap:8px;flex-wrap:wrap}
+nav button,.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;cursor:pointer}
+nav button.active,.btn.primary{border-color:var(--accent);background:var(--panel2)}
+main{max-width:1200px;margin:auto;padding:0 22px 45px}
+.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:rgba(20,29,51,.94);border:1px solid var(--border);border-radius:18px;padding:18px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.08em;color:var(--accent);background:#203150;padding:5px 8px;border-radius:999px}
+.muted{color:var(--muted)}.big{font-weight:750;font-size:18px}
+.row{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.board-wrap{flex:1;min-width:310px}.side{flex:1;min-width:280px}
+.board{width:min(78vw,560px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #3b4a6c;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px #0005}
+.square{display:grid;place-items:center;font-size:clamp(28px,6vw,56px);position:relative;cursor:pointer}
+.light{background:#e1e7ef}.dark{background:#6d7893}.selected{box-shadow:inset 0 0 0 5px var(--accent)}.hint{box-shadow:inset 0 0 0 5px var(--good)}
+.coord{position:absolute;font-size:10px;opacity:.45;left:4px;bottom:3px}
+.controls,.moves,.video-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.progress{height:8px;background:#263551;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px}
+.video-card{background:rgba(20,29,51,.94);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.video-card iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+.video-body{padding:15px}.video-body h3{margin:8px 0}.video-body p{color:var(--muted);margin:0 0 10px}.video-body a{color:var(--accent);text-decoration:none}
+.answer{display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--panel2);color:var(--text);padding:12px;border-radius:12px;margin:8px 0;cursor:pointer}
+.feedback{display:none;padding:12px;border-radius:12px;margin-top:10px}.feedback.good{display:block;background:#0f2a1d;border:1px solid #2a6844}.feedback.bad{display:block;background:#2d141b;border:1px solid #6b3441}
+footer{max-width:1200px;margin:auto;padding:0 22px 30px;color:var(--muted);font-size:12px}
+.small{font-size:13px}.line-name{font-weight:700}
+@media(max-width:700px){h1{font-size:28px}.board-wrap{min-width:0}}
 </style>
 </head>
 <body>
-<header><h1>♟ Chaos Chess Lab</h1><p class="muted">Original training for our aggressive repertoire: <b>Vienna</b> + <b>King's Gambit</b> as White, <b>Caro-Kann</b> + <b>French Winawer</b> as Black.</p></header>
+<header>
+  <h1>♟ Chaos Chess Lab</h1>
+  <div class="subtitle">Your aggressive repertoire: <b>Vienna</b> + <b>King's Gambit</b> as White, <b>Caro-Kann</b> + <b>French Winawer</b> as Black — plus the GothamChess videos you gave me.</div>
+</header>
+
 <nav>
-<button class="tab active" data-p="home">Home</button><button class="tab" data-p="rep">Repertoire</button><button class="tab" data-p="boardp">Study Board</button><button class="tab" data-p="quiz">Quiz</button><button class="tab" data-p="sources">Sources</button>
+  <button class="tab active" data-page="home">Home</button>
+  <button class="tab" data-page="repertoire">Repertoire</button>
+  <button class="tab" data-page="board">Study Board</button>
+  <button class="tab" data-page="quiz">Quiz</button>
+  <button class="tab" data-page="videos">GothamChess Videos</button>
+  <button class="tab" data-page="sources">Sources</button>
 </nav>
+
 <main>
-<section id="home" class="page active"><div class="grid">
-<div class="card"><span class="tag">WHITE #1</span><h2>Vienna</h2><div class="big">1.e4 e5 2.Nc3</div><p class="muted">Fast development and tactical pressure; add f4 when the position supports it.</p></div>
-<div class="card"><span class="tag">WHITE #2</span><h2>King's Gambit</h2><div class="big">1.e4 e5 2.f4</div><p class="muted">Maximum chaos: trade a pawn for time, lines and initiative.</p></div>
-<div class="card"><span class="tag">BLACK #1</span><h2>Caro-Kann</h2><div class="big">1.e4 c6 2.d4 d5</div><p class="muted">Solid structure, active bishop development and good king safety.</p></div>
-<div class="card"><span class="tag">BLACK #2</span><h2>French Winawer</h2><div class="big">1.e4 e6 2.d4 d5 3.Nc3 Bb4</div><p class="muted">Pin the knight, hit the center and create an unbalanced fight.</p></div>
-</div><div class="card" style="margin-top:14px"><h3>Study rule</h3><p>For every move ask: <b>What does it attack? What does it stop? What pawn break comes next?</b></p></div></section>
+<section id="home" class="page active">
+  <div class="grid">
+    <div class="card"><span class="tag">WHITE #1</span><h2>Vienna</h2><div class="big">1.e4 e5 2.Nc3</div><p class="muted">Fast development, pressure on e5, and tactical chances without being an all-in gamble every game.</p></div>
+    <div class="card"><span class="tag">WHITE #2</span><h2>King's Gambit</h2><div class="big">1.e4 e5 2.f4</div><p class="muted">Maximum chaos: trade a pawn for time, open lines and attacking chances.</p></div>
+    <div class="card"><span class="tag">BLACK #1</span><h2>Caro-Kann</h2><div class="big">1.e4 c6 2.d4 d5</div><p class="muted">Reliable structure and good king safety while still giving you counterplay.</p></div>
+    <div class="card"><span class="tag">BLACK #2</span><h2>French Winawer</h2><div class="big">1.e4 e6 2.d4 d5 3.Nc3 Bb4</div><p class="muted">The aggressive Black choice: pin the knight, attack the center and fight for ...c5 counterplay.</p></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>How to train</h3>
+    <p class="muted">Watch a video → practice the opening line → quiz yourself → replay the line until you can explain why each move belongs there.</p>
+    <div class="moves"><button class="btn primary" onclick="openPage('videos')">Watch GothamChess</button><button class="btn" onclick="openPage('board')">Practice on board</button></div>
+  </div>
+</section>
 
-<section id="rep" class="page"><div class="grid">
-<div class="card"><span class="tag">VIENNA</span><h2>Core idea</h2><p><b>1.e4 e5 2.Nc3</b>. Develop, pressure e5, then use f4 when it gains something concrete.</p></div>
-<div class="card"><span class="tag">KING'S GAMBIT</span><h2>Core idea</h2><p><b>1.e4 e5 2.f4</b>. Open lines and make your development tempo count.</p></div>
-<div class="card"><span class="tag">CARO-KANN</span><h2>Core idea</h2><p><b>1.e4 c6 2.d4 d5</b>. Challenge the center while keeping the light bishop free.</p></div>
-<div class="card"><span class="tag">WINAWER</span><h2>Core idea</h2><p><b>1.e4 e6 2.d4 d5 3.Nc3 Bb4</b>. Pin the knight and prepare central counterplay, especially ...c5.</p></div>
-</div></section>
+<section id="repertoire" class="page">
+  <div class="grid">
+    <div class="card"><span class="tag">VIENNA</span><h2>Core plan</h2><p><b>1.e4 e5 2.Nc3</b>. Develop quickly, pressure e5, and use f4 when it is justified by the position.</p></div>
+    <div class="card"><span class="tag">KING'S GAMBIT</span><h2>Core plan</h2><p><b>1.e4 e5 2.f4</b>. Your pawn sacrifice buys time and open lines. Spend that time on development and initiative.</p></div>
+    <div class="card"><span class="tag">CARO-KANN</span><h2>Core plan</h2><p><b>1.e4 c6 2.d4 d5</b>. Challenge the center and keep the c8 bishop from getting buried behind the pawn chain.</p></div>
+    <div class="card"><span class="tag">WINAWER</span><h2>Core plan</h2><p><b>1.e4 e6 2.d4 d5 3.Nc3 Bb4</b>. Pin the knight, pressure White's center, and look for the right moment for ...c5.</p></div>
+  </div>
+</section>
 
-<section id="boardp" class="page"><div class="row"><div class="boardbox"><div id="board" class="board"></div><div class="moves" id="lineBtns"></div></div><div class="card" style="flex:1;min-width:290px"><h2 id="ltitle">French Winawer</h2><p id="ltext" class="muted"></p><div class="progress"><i id="bar"></i></div><p id="step" class="muted"></p><h3>Idea</h3><p id="idea"></p><h3>Watch for</h3><p id="watch" class="muted"></p></div></div></section>
+<section id="board" class="page">
+  <div class="row">
+    <div class="board-wrap">
+      <div id="chessboard" class="board"></div>
+      <div class="controls">
+        <button class="btn" onclick="previousMove()">← Previous</button>
+        <button class="btn primary" onclick="nextMove()">Next →</button>
+        <button class="btn" onclick="resetLine()">Reset</button>
+      </div>
+      <div class="moves" id="lineButtons"></div>
+    </div>
+    <div class="side">
+      <div class="card">
+        <span class="tag">INTERACTIVE LESSON</span>
+        <h2 id="lessonTitle">French Winawer</h2>
+        <p id="lessonLine" class="muted"></p>
+        <div class="progress"><i id="lessonProgress"></i></div>
+        <p id="lessonStep" class="small muted"></p>
+        <h3>Idea</h3><p id="lessonIdea"></p>
+        <h3>Watch for</h3><p id="lessonWatch" class="muted"></p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <span class="tag">CHOOSE A LINE</span>
+        <div class="moves">
+          <button class="btn" onclick="setLine('vienna')">Vienna</button>
+          <button class="btn" onclick="setLine('gambit')">King's Gambit</button>
+          <button class="btn" onclick="setLine('caro')">Caro-Kann</button>
+          <button class="btn" onclick="setLine('winawer')">Winawer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<section id="quiz" class="page"><div class="card"><span class="tag">OPENING QUIZ</span><h2 id="q"></h2><div id="ans"></div><div id="fb" class="feedback"></div><div class="moves"><button class="btn" id="next">Next question</button></div></div></section>
+<section id="quiz" class="page">
+  <div class="card">
+    <span class="tag">OPENING QUIZ</span>
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <div id="feedback" class="feedback"></div>
+    <div class="moves"><button class="btn primary" onclick="nextQuestion()">Next question</button></div>
+  </div>
+</section>
 
-<section id="sources" class="page"><div class="grid">
-<div class="card"><span class="tag">CHESSLY</span><h2>Your course</h2><a href="https://chessly.com/courses/76b3000f-dfd1-4c62-b706-238dbd5bb752" target="_blank">Open Chessly course ↗</a><p class="muted">Private course material is not copied into this app.</p></div>
-<div class="card"><span class="tag">VIDEO</span><h2>Provided link 1</h2><a href="https://www.youtube.com/watch?v=rmbU97iftC8" target="_blank">Open YouTube ↗</a></div>
-<div class="card"><span class="tag">VIDEO</span><h2>Provided link 2</h2><a href="https://www.youtube.com/watch?v=JVxENCPcCjU" target="_blank">Open YouTube ↗</a></div>
-<div class="card"><span class="tag">VIDEO</span><h2>Provided link 3</h2><a href="https://www.youtube.com/watch?v=MWFeqi9vGk8" target="_blank">Open YouTube ↗</a></div>
-</div></section>
+<section id="videos" class="page">
+  <div class="card" style="margin-bottom:14px">
+    <span class="tag">GOTHAMCHESS</span>
+    <h2>Videos you gave me</h2>
+    <p class="muted">These are embedded from YouTube rather than copied into the app. A video can still be unavailable for embedding if its owner has disabled embeds; the YouTube link under each player remains available.</p>
+  </div>
+  <div class="video-grid">
+    <article class="video-card">
+      <iframe src="https://www.youtube.com/embed/rmbU97iftC8" title="GothamChess Caro-Kann video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="video-body"><span class="tag">CARO-KANN</span><h3>GothamChess — Caro-Kann</h3><p>Use this with the Caro-Kann section of your repertoire.</p><a href="https://www.youtube.com/watch?v=rmbU97iftC8" target="_blank" rel="noopener">Open original YouTube video ↗</a></div>
+    </article>
+    <article class="video-card">
+      <iframe src="https://www.youtube.com/embed/JVxENCPcCjU" title="GothamChess Vienna Gambit video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="video-body"><span class="tag">VIENNA</span><h3>GothamChess — Vienna Gambit</h3><p>Use this with the Vienna section of your repertoire.</p><a href="https://www.youtube.com/watch?v=JVxENCPcCjU" target="_blank" rel="noopener">Open original YouTube video ↗</a></div>
+    </article>
+    <article class="video-card">
+      <iframe src="https://www.youtube.com/embed/MWFeqi9vGk8" title="GothamChess video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="video-body"><span class="tag">GOTHAMCHESS</span><h3>Third video you gave me</h3><p>Kept as the exact video link you supplied rather than inventing a title.</p><a href="https://www.youtube.com/watch?v=MWFeqi9vGk8" target="_blank" rel="noopener">Open original YouTube video ↗</a></div>
+    </article>
+  </div>
+</section>
+
+<section id="sources" class="page">
+  <div class="grid">
+    <div class="card"><span class="tag">CHESSLY</span><h2>Course</h2><a href="https://chessly.com/courses/76b3000f-dfd1-4c62-b706-238dbd5bb752" target="_blank" rel="noopener">Open the Chessly course ↗</a><p class="muted">The app uses original explanations rather than copying protected course material.</p></div>
+    <div class="card"><span class="tag">YOUTUBE</span><h2>Video 1</h2><a href="https://www.youtube.com/watch?v=rmbU97iftC8" target="_blank" rel="noopener">rmbU97iftC8 ↗</a></div>
+    <div class="card"><span class="tag">YOUTUBE</span><h2>Video 2</h2><a href="https://www.youtube.com/watch?v=JVxENCPcCjU" target="_blank" rel="noopener">JVxENCPcCjU ↗</a></div>
+    <div class="card"><span class="tag">YOUTUBE</span><h2>Video 3</h2><a href="https://www.youtube.com/watch?v=MWFeqi9vGk8" target="_blank" rel="noopener">MWFeqi9vGk8 ↗</a></div>
+  </div>
+</section>
 </main>
-<footer>Original training content built around the opening ideas we discussed. Linked material remains owned by its publishers.</footer>
+<footer>Chaos Chess Lab — original training content. YouTube videos are embedded from YouTube; their ownership remains with their creators.</footer>
+
 <script>
-const P={w:{k:'♔',q:'♕',r:'♖',b:'♗',n:'♘',p:'♙'},b:{k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'}};
-const S=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'].map(x=>x.split(''));
-const L={
-winawer:{t:'French Winawer',m:['e4','e6','d4','d5','Nc3','Bb4','e5','c5'],i:'Pin the knight and attack the center.',w:'Sharp positions still reward development and king safety.'},
-caro:{t:'Caro-Kann',m:['e4','c6','d4','d5','Nc3','dxe4','Nxe4','Bf5'],i:'Challenge the center while keeping the light bishop active.',w:'Solid does not mean passive.'},
-vienna:{t:'Vienna',m:['e4','e5','Nc3','Nf6','f4'],i:'Pressure e5 and develop quickly.',w:'Do not attack before your pieces are ready.'},
-gambit:{t:"King's Gambit",m:['e4','e5','f4','exf4','Nf3'],i:'Trade a pawn for initiative and open lines.',w:'Make the development tempo count.'}};
-let B=S.map(r=>r.slice()),sel=null,line=L.winawer,st=0;
-function render(){let e=document.getElementById('board');e.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){let d=document.createElement('div');d.className='sq '+((r+c)%2?'dark':'light');if(sel&&sel[0]==r&&sel[1]==c)d.classList.add('sel');let p=B[r][c];if(p!='.')d.textContent=P[p===p.toUpperCase()?'w':'b'][p.toLowerCase()];if(c===0){let x=document.createElement('span');x.className='coord';x.textContent=8-r;d.appendChild(x)}d.onclick=()=>pick(r,c);e.appendChild(d)}}
-function pick(r,c){if(!sel){if(B[r][c]!='.')sel=[r,c];render();return}let [fr,fc]=sel;if(B[r][c]=='.'||B[r][c]!==B[fr][fc]){B[r][c]=B[fr][fc];B[fr][fc]='.'}sel=null;render()}
-function load(name){line=L[name];st=0;B=S.map(r=>r.slice());document.getElementById('ltitle').textContent=line.t;document.getElementById('ltext').textContent=line.m.join(' ');document.getElementById('idea').textContent=line.i;document.getElementById('watch').textContent=line.w;let el=document.getElementById('lineBtns');el.innerHTML='';line.m.forEach((m,i)=>{let b=document.createElement('button');b.className='btn';b.textContent=(i+1)+'. '+m;b.onclick=()=>go(i+1);el.appendChild(b)});go(0)}
-function go(n){st=n;document.getElementById('step').textContent='Step '+st+' / '+line.m.length;document.getElementById('bar').style.width=(st/line.m.length*100)+'%';render()}
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(b.dataset.p).classList.add('active')});
-document.querySelectorAll('.linepick').forEach(b=>b.onclick=()=>load(b.dataset.line));
-const Q=[{q:'What starts the Vienna?',a:['2.Nc3','2.Nf3','2.d4','2.f4'],c:0,e:'2.Nc3.'},{q:'What is the Caro-Kann setup?',a:['1.e4 c5','1.e4 c6 2.d4 d5','1.e4 e6 2.d4 d5','1.d4 Nf6'],c:1,e:'1.e4 c6 2.d4 d5.'},{q:'What move defines the Winawer?',a:['...Bb4 after 3.Nc3','...g6','...Qh4','...c5 on move 2'],c:0,e:'3...Bb4.'},{q:'What is the King's Gambit?',a:['1.e4 e5 2.f4','1.e4 e5 2.Nc3','1.d4 d5','1.c4'],c:0,e:'1.e4 e5 2.f4.'}];let qi=0;
-function quiz(){let q=Q[qi%Q.length];document.getElementById('q').textContent=q.q;let a=document.getElementById('ans');a.innerHTML='';document.getElementById('fb').style.display='none';q.a.forEach((x,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=x;b.onclick=()=>{let f=document.getElementById('fb');f.textContent=(i===q.c?'✓ Correct. ':'Not quite. ')+q.e;f.className='feedback '+(i===q.c?'good':'bad');f.style.display='block'};a.appendChild(b)})}
-document.getElementById('next').onclick=()=>{qi++;quiz()};load('winawer');quiz();
+const PIECES={w:{k:'♔',q:'♕',r:'♖',b:'♗',n:'♘',p:'♙'},b:{k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'}};
+const START=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'].map(r=>r.split(''));
+const LINES={
+  vienna:{title:'Vienna',moves:['e4','e5','Nc3','Nf6','f4','d5','fxe5','Nxe4','Nf3'],idea:'Build pressure with quick development and an f-pawn thrust when the center makes sense.',watch:'Do not launch the attack before your pieces are developed.',},
+  gambit:{title:"King's Gambit",moves:['e4','e5','f4','exf4','Nf3'],idea:'Give a pawn for time and open lines.',watch:'You need to turn the extra development tempo into initiative.',},
+  caro:{title:'Caro-Kann',moves:['e4','c6','d4','d5','Nc3','dxe4','Nxe4','Bf5','Ng3','Bg6'],idea:'Challenge the center while keeping the light bishop active.',watch:'Solid does not mean passive: look for active development and central breaks.',},
+  winawer:{title:'French Winawer',moves:['e4','e6','d4','d5','Nc3','Bb4','e5','c5','a3','Bxc3+','bxc3'],idea:'Pin the knight, attack the center, and create an unbalanced position.',watch:'Sharp positions still reward development and king safety.'}
+};
+let current='winawer',step=0,boardState=clone(START),selected=null;
+
+function clone(b){return b.map(r=>r.slice())}
+function sq(s){return [8-Number(s[1]),s.charCodeAt(0)-97]}
+function colorOf(p){return p===p.toUpperCase()?'w':'b'}
+function canReach(b,fr,fc,tr,tc,p){
+  const dr=tr-fr,dc=tc-fc,adr=Math.abs(dr),adc=Math.abs(dc),t=p.toLowerCase();
+  if(t==='n')return (adr===2&&adc===1)||(adr===1&&adc===2);
+  if(t==='k')return Math.max(adr,adc)===1;
+  if(t==='p'){const dir=p===p.toUpperCase()?-1:1;return (dc===0&&(dr===dir||dr===2*dir))||(adc===1&&dr===dir)}
+  if(t==='b'&&adr!==adc)return false;
+  if(t==='r'&&!(dr===0||dc===0))return false;
+  if(t==='q'&&!(adr===dc||dr===0||dc===0))return false;
+  const sr=dr===0?0:dr>0?1:-1,sc=dc===0?0:dc>0?1:-1;
+  for(let r=fr+sr,c=fc+sc;r!==tr||c!==tc;r+=sr,c+=sc) if(b[r][c]!=='.') return false;
+  return true;
+}
+function applySAN(b,san,white){
+  const clean=san.replace(/[+#?!]/g,'');
+  if(clean==='O-O'||clean==='O-O-O')return;
+  let piece='p',rest=clean;
+  if(/^[KQRBN]/.test(rest)){piece=rest[0].toLowerCase();rest=rest.slice(1)}
+  const target=rest.slice(-2);if(!/^[a-h][1-8]$/.test(target))return;
+  const [tr,tc]=sq(target);
+  const dis=rest.replace('x','').slice(0,-2);
+  let candidates=[];
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const p=b[r][c];if(p==='.'||colorOf(p)!==(white?'w':'b')||p.toLowerCase()!==piece)continue;
+    if(dis&&dis.length===1&&!([String.fromCharCode(97+c),String(r===8?0:8-r)].includes(dis)))continue;
+    if(canReach(b,r,c,tr,tc,p))candidates.push([r,c]);
+  }
+  if(!candidates.length)return;
+  const [fr,fc]=candidates[candidates.length-1];
+  b[tr][tc]=b[fr][fc];b[fr][fc]='.';
+}
+function rebuild(n){
+  boardState=clone(START);
+  const m=LINES[current].moves;
+  for(let i=0;i<n;i++)applySAN(boardState,m[i],i%2===0);
+  step=n;selected=null;renderBoard();
+}
+function renderBoard(){
+  const el=document.getElementById('chessboard');el.innerHTML='';
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const d=document.createElement('div');d.className='square '+((r+c)%2?'dark':'light');
+    if(selected&&selected[0]===r&&selected[1]===c)d.classList.add('selected');
+    const p=boardState[r][c];
+    if(p!=='.')d.textContent=PIECES[colorOf(p)][p.toLowerCase()];
+    if(c===0){const x=document.createElement('span');x.className='coord';x.textContent=8-r;d.appendChild(x)}
+    if(r===7){const x=document.createElement('span');x.className='coord';x.style.left='auto';x.style.right='4px';x.textContent=String.fromCharCode(97+c);d.appendChild(x)}
+    d.onclick=()=>selectSquare(r,c);el.appendChild(d);
+  }
+}
+function selectSquare(r,c){
+  if(!selected){if(boardState[r][c]!=='.')selected=[r,c];renderBoard();return}
+  const [fr,fc]=selected;const p=boardState[fr][fc];
+  if((boardState[r][c]==='.'||colorOf(boardState[r][c])!==colorOf(p))&&canReach(boardState,fr,fc,r,c)){boardState[r][c]=p;boardState[fr][fc]='.'}
+  selected=null;renderBoard();
+}
+function setLine(name){
+  current=name;step=0;const l=LINES[name];
+  document.getElementById('lessonTitle').textContent=l.title;
+  document.getElementById('lessonLine').textContent=l.moves.map((m,i)=>((i>>1)+1)+(i%2?'. '+m:'... '+m)).join('  ');
+  document.getElementById('lessonIdea').textContent=l.idea;document.getElementById('lessonWatch').textContent=l.watch;
+  const box=document.getElementById('lineButtons');box.innerHTML='';
+  l.moves.forEach((m,i)=>{const b=document.createElement('button');b.className='btn';b.textContent='Move '+(i+1)+': '+m;b.onclick=()=>rebuild(i+1);box.appendChild(b)});
+  rebuild(0);
+}
+function nextMove(){if(step<LINES[current].moves.length)rebuild(step+1)}
+function previousMove(){if(step>0)rebuild(step-1)}
+function resetLine(){rebuild(0)}
+function updateLessonUI(){document.getElementById('lessonStep').textContent='Move '+step+' / '+LINES[current].moves.length;document.getElementById('lessonProgress').style.width=(step/LINES[current].moves.length*100)+'%'}
+const oldRender=renderBoard;
+renderBoard=function(){oldRender();updateLessonUI()}
+
+function openPage(id){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.page===id));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.page)));
+
+const QUIZ=[
+ {q:'Which move starts the Vienna?',a:['2.Nc3','2.Nf3','2.d4','2.f4'],c:0,e:'The Vienna starts with 1.e4 e5 2.Nc3.'},
+ {q:'What is the Caro-Kann setup?',a:['1.e4 c5','1.e4 c6 2.d4 d5','1.e4 e6 2.d4 d5','1.d4 Nf6'],c:1,e:'The Caro-Kann is 1.e4 c6 2.d4 d5.'},
+ {q:'What move gives us the Winawer?',a:['3...Bb4','3...Nf6','3...c5 on move 2','3...g6'],c:0,e:'French Winawer: 1.e4 e6 2.d4 d5 3.Nc3 Bb4.'},
+ {q:'Why play the King’s Gambit?',a:['To trade queens immediately','To sacrifice a pawn for time and open lines','To force a draw','To keep everything closed'],c:1,e:'The gambit trades a pawn for initiative and attacking chances.'}
+];
+let qi=0;
+function renderQuiz(){const q=QUIZ[qi%QUIZ.length];document.getElementById('question').textContent=q.q;const box=document.getElementById('answers');box.innerHTML='';const f=document.getElementById('feedback');f.style.display='none';q.a.forEach((x,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=x;b.onclick=()=>{f.textContent=(i===q.c?'✓ Correct. ':'Not quite. ')+q.e;f.className='feedback '+(i===q.c?'good':'bad');f.style.display='block'};box.appendChild(b)})}
+function nextQuestion(){qi++;renderQuiz()}
+
+setLine('winawer');renderQuiz();
 </script>
-</body></html>
+</body>
+</html>
