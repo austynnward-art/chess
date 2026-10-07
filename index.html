@@ -164,14 +164,20 @@ function renderBoard(){
  const arr=boardGame.board(),files=["a","b","c","d","e","f","g","h"];
  let targets=[];
  if(selectedSquare)targets=boardGame.moves({square:selectedSquare,verbose:true}).map(m=>m.to);
- for(let r=7;r>=0;r--)for(let c=0;c<8;c++){
-   const el=document.createElement("div"),sq=files[c]+(r+1),p=arr[r][c];
+
+ // chess.js board() is indexed rank 8 -> rank 1.
+ // Render rank 8 at the top and rank 1 at the bottom.
+ for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+   const el=document.createElement("div");
+   const sq=files[c]+(8-r);
+   const p=arr[r][c];
    el.className="square "+(((r+c)%2===0)?"light":"dark");
    if(selectedSquare===sq)el.classList.add("selected");
    if(targets.includes(sq)){el.classList.add("target");if(p)el.classList.add("capture")}
    if(p)el.textContent={w:{p:"♙",n:"♘",b:"♗",r:"♖",q:"♕",k:"♔"},b:{p:"♟",n:"♞",b:"♝",r:"♜",q:"♛",k:"♚"}}[p.color][p.type];
-   if(c===0){const co=document.createElement("span");co.className="coord";co.textContent=r+1;el.appendChild(co)}
-   el.onclick=()=>clickSquare(sq);root.appendChild(el);
+   if(c===0){const co=document.createElement("span");co.className="coord";co.textContent=8-r;el.appendChild(co)}
+   el.onclick=()=>clickSquare(sq);
+   root.appendChild(el);
  }
 }
 function clickSquare(sq){
