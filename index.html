@@ -21,7 +21,7 @@ main{max-width:1180px;margin:auto;padding:30px 20px 60px}.hero{padding:30px 0 22
 .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.video{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}.video-body{padding:15px}.video-body h3{margin:7px 0}.video-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.video-body a{display:inline-block;margin-top:11px;color:var(--accent);font-size:12px}
 .info{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.info-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px}.info-card p{color:var(--muted);line-height:1.5;font-size:13px}.only{color:#b9c5d8;font-size:12px}
 footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24px 20px 35px;color:var(--muted);font-size:12px}
-.modal{display:none;position:fixed;inset:0;z-index:50;background:rgba(3,6,11,.84);backdrop-filter:blur(9px);padding:18px}.modal.open{display:grid;place-items:center}.modal-card{width:min(1020px,100%);max-height:94vh;overflow:auto;background:#0f1724;border:1px solid #33445e;border-radius:20px;padding:18px;box-shadow:0 30px 90px #0009}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.modal-head h2{margin:4px 0}.close{border:1px solid var(--line);background:transparent;color:#fff;border-radius:9px;padding:8px 10px}.board-layout{display:grid;grid-template-columns:minmax(300px,1fr) 300px;gap:18px;margin-top:14px}.board{width:min(100%,620px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #31415e;border-radius:13px;overflow:hidden}.square{position:relative;display:grid;place-items:center;font-size:clamp(24px,6vw,54px);user-select:none}.light{background:#e4e8ef;color:#101722}.dark{background:#6d7890;color:#101722}.square.selected{box-shadow:inset 0 0 0 5px var(--accent)}.square.target:after{content:"";width:22%;height:22%;border-radius:50%;background:rgba(102,230,168,.76)}.square.capture:after{content:"";position:absolute;inset:10%;border:4px solid rgba(255,120,145,.8);border-radius:12px}.coord{position:absolute;left:4px;top:3px;font-size:9px;opacity:.48}.sidebox{background:#111b2b;border:1px solid var(--line);border-radius:15px;padding:15px}.sidebox h3{margin:5px 0 9px}.line-list{display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow:auto}.line-btn{border:1px solid var(--line);background:#0d1523;color:#d9e2ef;border-radius:8px;padding:7px 8px;font-size:11px}.line-btn.active{border-color:var(--accent);background:#152b40}.board-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.board-note{color:var(--muted);font-size:12px;line-height:1.5;margin-top:12px}.source-link{color:var(--accent);font-size:12px}
+.modal{display:none;position:fixed;inset:0;z-index:50;background:rgba(3,6,11,.84);backdrop-filter:blur(9px);padding:18px}.modal.open{display:grid;place-items:center}.modal-card{width:min(1020px,100%);max-height:94vh;overflow:auto;background:#0f1724;border:1px solid #33445e;border-radius:20px;padding:18px;box-shadow:0 30px 90px #0009}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.modal-head h2{margin:4px 0}.close{border:1px solid var(--line);background:transparent;color:#fff;border-radius:9px;padding:8px 10px}.board-layout{display:grid;grid-template-columns:minmax(300px,1fr) 300px;gap:18px;margin-top:14px}.board{width:min(100%,620px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #31415e;border-radius:13px;overflow:hidden}.square{position:relative;display:grid;place-items:center;font-size:clamp(24px,6vw,54px);user-select:none}.light{background:#e4e8ef;color:#101722}.dark{background:#6d7890;color:#101722}.square.selected{box-shadow:inset 0 0 0 5px var(--accent)}.square.target:after{content:"";width:22%;height:22%;border-radius:50%;background:rgba(102,230,168,.76)}.square.capture:after{content:"";position:absolute;inset:10%;border:4px solid rgba(255,120,145,.8);border-radius:12px}.coord{position:absolute;left:4px;top:3px;font-size:9px;opacity:.48}.sidebox{background:#111b2b;border:1px solid var(--line);border-radius:15px;padding:15px}.sidebox h3{margin:5px 0 9px}.line-list{display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow:auto}.line-btn{border:1px solid var(--line);background:#0d1523;color:#d9e2ef;border-radius:8px;padding:7px 8px;font-size:11px}.line-btn.active{border-color:var(--accent);background:#152b40}.board-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.board-note{color:var(--muted);font-size:12px;line-height:1.5;margin-top:12px}.source-link{color:var(--accent);font-size:12px}.engine-on{border-color:var(--good)!important;color:var(--good)!important}.engine-thinking{opacity:.65;pointer-events:none}
 @media(max-width:900px){.course-grid{grid-template-columns:1fr}.video-grid{grid-template-columns:1fr 1fr}.info{grid-template-columns:1fr}.board-layout{grid-template-columns:1fr}}
 @media(max-width:650px){.links a:not(.play){display:none}.hero h1{font-size:35px}.video-grid{grid-template-columns:1fr}.modal{padding:8px}}
 </style>
@@ -105,8 +105,8 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 <div class="modal-card">
 <div class="modal-head"><div><div class="eyebrow">INTERACTIVE BOARD</div><h2 id="boardTitle">Vienna Attack</h2><div id="boardLine" class="only"></div></div><button class="close" id="closeModal">✕</button></div>
 <div class="board-layout">
-<div><div id="board" class="board"></div><div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button></div></div>
-<div class="sidebox"><span class="pill">LESSON STEPS</span><h3 id="stepTitle">Opening</h3><p id="stepText" class="board-note"></p><div id="lineButtons" class="line-list"></div><p class="board-note" id="sourceText"></p></div>
+<div><div id="board" class="board"></div><div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><button class="btn primary small" id="stockfishBtn">Play vs Stockfish</button></div></div>
+<div class="sidebox"><span class="pill">LESSON STEPS</span><h3 id="stepTitle">Opening</h3><p id="stepText" class="board-note"></p><div id="lineButtons" class="line-list"></div><p class="board-note" id="engineStatus">Engine: ready when you choose Play vs Stockfish.</p><p class="board-note" id="sourceText"></p></div>
 </div>
 </div>
 </div>
@@ -141,10 +141,10 @@ const COURSES={
  ],source:"Chess.com Portuguese Opening: Portuguese Gambit page."}
 };
 
-let boardGame=new Chess(),activeCourse="vienna",moveIndex=0,selectedSquare=null,freePlay=false;
+let boardGame=new Chess(),activeCourse="vienna",moveIndex=0,selectedSquare=null,freePlay=false,vsStockfish=false,stockfishBusy=false,stockfish=null;
 
 function openBoard(key,startStep=0){
- activeCourse=key;moveIndex=Math.max(0,Math.min(Number(startStep)||0,COURSES[key].line.length));freePlay=false;selectedSquare=null;loadPosition();
+ activeCourse=key;moveIndex=Math.max(0,Math.min(Number(startStep)||0,COURSES[key].line.length));freePlay=false;vsStockfish=false;stockfishBusy=false;selectedSquare=null;updateEngineUI();loadPosition();
  const c=COURSES[key];
  document.getElementById("boardTitle").textContent=c.name;
  document.getElementById("boardLine").textContent=c.line.join(" ");
@@ -175,12 +175,22 @@ function renderBoard(){
  }
 }
 function clickSquare(sq){
- if(!freePlay)return;
+ if(!freePlay && !vsStockfish)return;
+ if(vsStockfish && stockfishBusy)return;
  if(selectedSquare){
   const m=boardGame.move({from:selectedSquare,to:sq,promotion:"q"});
-  if(m){selectedSquare=null;renderBoard();return}
+  if(m){
+    selectedSquare=null;renderBoard();
+    if(vsStockfish){
+      if(boardGame.game_over()){updateEngineStatus("Game over.");return}
+      stockfishBusy=true;updateEngineUI();requestEngineMove();
+    }
+    return;
+  }
  }
- const p=boardGame.get(sq);selectedSquare=(p&&p.color===boardGame.turn())?sq:null;renderBoard();
+ const p=boardGame.get(sq);
+ if(p && p.color===boardGame.turn() && (!vsStockfish || p.color==="w")) selectedSquare=sq; else selectedSquare=null;
+ renderBoard();
 }
 function renderLineButtons(){
  const root=document.getElementById("lineButtons");root.innerHTML="";
@@ -192,14 +202,74 @@ function renderLessonStep(){
  document.getElementById("stepTitle").textContent=(moveIndex===0?steps[0][0]:s[0]);
  document.getElementById("stepText").textContent=(moveIndex===0?"Start at the position and step through the line with Next.":s[1]);
 }
+
+// ---------- Stockfish ----------
+const STOCKFISH_WORKER_URL="https://cdn.jsdelivr.net/npm/stockfish.wasm@0.10.0/stockfish.worker.js";
+function updateEngineStatus(msg){const el=document.getElementById("engineStatus");if(el)el.textContent="Engine: "+msg}
+function updateEngineUI(){
+  const b=document.getElementById("stockfishBtn");
+  if(!b)return;
+  b.classList.toggle("engine-on",vsStockfish);
+  b.textContent=vsStockfish?"Stop Stockfish":"Play vs Stockfish";
+  const boardEl=document.getElementById("board");
+  if(boardEl)boardEl.classList.toggle("engine-thinking",stockfishBusy);
+}
+function createStockfish(){
+  if(stockfish)return;
+  try{
+    stockfish=new Worker(STOCKFISH_WORKER_URL);
+    stockfish.onmessage=e=>{
+      const line=typeof e.data==="string"?e.data:"";
+      if(line==="uciok")updateEngineStatus("ready.");
+      if(line.startsWith("bestmove ")){
+        const best=line.split(/\s+/)[1];
+        stockfishBusy=false;
+        if(best && best!=="(none)" && best.length>=4){
+          const move={from:best.slice(0,2),to:best.slice(2,4)};
+          if(best.length>4)move.promotion=best[4];
+          boardGame.move(move);
+          renderBoard();
+          updateEngineStatus("your move.");
+        }else updateEngineStatus("no legal move.");
+        updateEngineUI();
+      }
+      if(line.startsWith("info depth"))updateEngineStatus("thinking…");
+    };
+    stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus("could not load. Try a normal browser refresh.");updateEngineUI()};
+    stockfish.postMessage("uci");
+    stockfish.postMessage("setoption name Threads value 1");
+    stockfish.postMessage("setoption name Hash value 16");
+  }catch(e){
+    stockfish=null;updateEngineStatus("could not start.");
+  }
+}
+function requestEngineMove(){
+  if(!stockfish)createStockfish();
+  if(!stockfish)return;
+  const fen=boardGame.fen();
+  stockfish.postMessage("stop");
+  stockfish.postMessage("position fen "+fen);
+  stockfish.postMessage("go movetime 700");
+}
+function startStockfishGame(){
+  freePlay=false;vsStockfish=true;stockfishBusy=false;selectedSquare=null;boardGame.reset();moveIndex=0;
+  updateEngineUI();updateEngineStatus("starting…");renderBoard();
+  createStockfish();
+}
+function stopStockfish(){
+  vsStockfish=false;stockfishBusy=false;selectedSquare=null;
+  if(stockfish){try{stockfish.postMessage("stop")}catch(e){}}
+  updateEngineUI();updateEngineStatus("ready when you choose Play vs Stockfish.");
+}
+document.getElementById("stockfishBtn").onclick=()=>{vsStockfish?stopStockfish():startStockfishGame()};
 document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
-document.getElementById("closeModal").onclick=closeBoard;
+document.getElementById("closeModal").onclick=()=>{stopStockfish();closeBoard()};
 document.getElementById("boardModal").addEventListener("click",e=>{if(e.target.id==="boardModal")closeBoard});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeBoard});
 document.getElementById("next").onclick=()=>{if(moveIndex<COURSES[activeCourse].line.length){moveIndex++;loadPosition();renderLineButtons();renderLessonStep()}};
 document.getElementById("prev").onclick=()=>{if(moveIndex>0){moveIndex--;loadPosition();renderLineButtons();renderLessonStep()}};
-document.getElementById("reset").onclick=()=>{freePlay=false;moveIndex=0;loadPosition();renderLineButtons();renderLessonStep()};
-document.getElementById("free").onclick=(e)=>{freePlay=!freePlay;e.currentTarget.textContent=freePlay?"Exit free play":"Free play";if(freePlay){boardGame.reset();moveIndex=0;selectedSquare=null;renderBoard()}else{loadPosition();renderLineButtons();renderLessonStep()}};
+document.getElementById("reset").onclick=()=>{stopStockfish();freePlay=false;moveIndex=0;loadPosition();renderLineButtons();renderLessonStep()};
+document.getElementById("free").onclick=(e)=>{if(vsStockfish)stopStockfish();freePlay=!freePlay;e.currentTarget.textContent=freePlay?"Exit free play":"Free play";if(freePlay){boardGame.reset();moveIndex=0;selectedSquare=null;renderBoard()}else{loadPosition();renderLineButtons();renderLessonStep()}};
 </script>
 </body>
 </html>
