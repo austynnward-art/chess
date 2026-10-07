@@ -15,7 +15,7 @@ a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer}
 main{max-width:1180px;margin:auto;padding:30px 20px 60px}.hero{padding:30px 0 22px}.eyebrow{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:800}.hero h1{font-size:46px;line-height:1.03;margin:10px 0;max-width:760px}.hero p{color:var(--muted);font-size:16px;line-height:1.6;max-width:720px}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 15px;border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text)}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08101a;border-color:transparent;font-weight:800}
 .section{margin-top:26px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:12px}.section-head h2{margin:3px 0 0;font-size:24px}.section-head span{color:var(--muted);font-size:12px}
-.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.course{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.course:hover{border-color:#3a5072}.course-top{display:flex;justify-content:space-between;align-items:start;gap:10px}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:#18263b;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em}.course h3{margin:10px 0 5px;font-size:21px}.moves{font-weight:750}.course p{color:var(--muted);line-height:1.5;font-size:13px}.lessons{margin-top:14px;display:grid;gap:7px}.lesson{padding:9px 11px;border-radius:9px;background:#0c1422;border:1px solid #1d293e;color:#c6d0df;font-size:12px}
+.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.course{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.course:hover{border-color:#3a5072}.course-top{display:flex;justify-content:space-between;align-items:start;gap:10px}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:#18263b;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em}.course h3{margin:10px 0 5px;font-size:21px}.moves{font-weight:750}.course p{color:var(--muted);line-height:1.5;font-size:13px}.lessons{margin-top:14px;display:grid;gap:7px}.lesson{width:100%;padding:10px 11px;border-radius:9px;background:#0c1422;border:1px solid #1d293e;color:#c6d0df;font-size:12px;text-align:left}.lesson:hover{border-color:#3b5275;background:#111c2e}.course-start{margin-top:12px;width:100%;justify-content:center}.course-player{display:none;position:fixed;inset:0;z-index:30;background:rgba(4,7,13,.82);backdrop-filter:blur(8px);padding:20px}.course-player.open{display:grid;place-items:center}.player-box{width:min(760px,100%);max-height:90vh;overflow:auto;background:#101722;border:1px solid #33445f;border-radius:20px;padding:22px;box-shadow:0 25px 80px rgba(0,0,0,.45)}.player-top{display:flex;justify-content:space-between;gap:15px;align-items:start}.player-close{border:1px solid #2d3d57;background:transparent;color:#fff;border-radius:9px;padding:7px 10px}.player-body{color:#c4cfdf;line-height:1.7}.player-body h3{color:#fff}.player-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px;border-top:1px solid #263449;padding-top:16px}.player-progress{height:7px;background:#263449;border-radius:99px;overflow:hidden;margin:12px 0}.player-progress i{display:block;height:100%;background:linear-gradient(90deg,#76d7ff,#9c84ff);width:0}
 .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.video{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}.video-body{padding:15px}.video-body h3{margin:7px 0}.video-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.video-body a{display:inline-block;margin-top:11px;color:var(--accent);font-size:12px}
 .info{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.info-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px}.info-card p{color:var(--muted);line-height:1.5;font-size:13px}.only{color:#b9c5d8;font-size:12px}
 footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24px 20px 35px;color:var(--muted);font-size:12px}
@@ -65,25 +65,49 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
         <div class="course-top"><span class="pill">WHITE</span><span class="only">Vienna</span></div>
         <h3>Vienna Attack</h3><div class="moves">1.e4 e5 2.Nc3</div>
         <p>Build pressure quickly and learn when f4 is worth playing. Focus on plans, development, and tactical ideas.</p>
-        <div class="lessons"><div class="lesson">Lesson 1 — The Vienna setup</div><div class="lesson">Lesson 2 — f4 and attacking ideas</div><div class="lesson">Lesson 3 — Common tactical patterns</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+        <div class="lessons">
+          <button class="lesson" data-course="vienna" data-lesson="0">Lesson 1 — The Vienna setup</button>
+          <button class="lesson" data-course="vienna" data-lesson="1">Lesson 2 — f4 and attacking ideas</button>
+          <button class="lesson" data-course="vienna" data-lesson="2">Lesson 3 — Common tactical patterns</button>
+          <button class="lesson" data-course="vienna" data-lesson="3">Lesson 4 — Practice positions</button>
+        </div>
+        <button class="btn primary course-start" data-course="vienna" data-lesson="0">Start course →</button>
       </article>
       <article class="course">
         <div class="course-top"><span class="pill">WHITE</span><span class="only">Aggressive</span></div>
         <h3>King's Gambit</h3><div class="moves">1.e4 e5 2.f4</div>
         <p>Trade a pawn for initiative. Learn how to use development, open lines, and attacking chances without losing control.</p>
-        <div class="lessons"><div class="lesson">Lesson 1 — Why the gambit works</div><div class="lesson">Lesson 2 — Development before greed</div><div class="lesson">Lesson 3 — Attacking setups</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+        <div class="lessons">
+          <button class="lesson" data-course="gambit" data-lesson="0">Lesson 1 — Why the gambit works</button>
+          <button class="lesson" data-course="gambit" data-lesson="1">Lesson 2 — Development before greed</button>
+          <button class="lesson" data-course="gambit" data-lesson="2">Lesson 3 — Attacking setups</button>
+          <button class="lesson" data-course="gambit" data-lesson="3">Lesson 4 — Practice positions</button>
+        </div>
+        <button class="btn primary course-start" data-course="gambit" data-lesson="0">Start course →</button>
       </article>
       <article class="course">
         <div class="course-top"><span class="pill">BLACK</span><span class="only">Reliable</span></div>
         <h3>Caro-Kann</h3><div class="moves">1.e4 c6 2.d4 d5</div>
         <p>A solid Black foundation with active bishop development, a healthy structure, and clear counterplay.</p>
-        <div class="lessons"><div class="lesson">Lesson 1 — The core setup</div><div class="lesson">Lesson 2 — Advance structures</div><div class="lesson">Lesson 3 — Development and counterplay</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+        <div class="lessons">
+          <button class="lesson" data-course="caro" data-lesson="0">Lesson 1 — The core setup</button>
+          <button class="lesson" data-course="caro" data-lesson="1">Lesson 2 — Advance structures</button>
+          <button class="lesson" data-course="caro" data-lesson="2">Lesson 3 — Development and counterplay</button>
+          <button class="lesson" data-course="caro" data-lesson="3">Lesson 4 — Practice positions</button>
+        </div>
+        <button class="btn primary course-start" data-course="caro" data-lesson="0">Start course →</button>
       </article>
       <article class="course">
         <div class="course-top"><span class="pill">BLACK</span><span class="only">Chaos</span></div>
-        <h3>French Winawer</h3><div class="moves">1.e4 e6 2.d4 d5 3.Nc3 Bb4</div>
-        <p>Learn the pin, the central battle, and the moments when ...c5 turns the position into the sharp fight you want.</p>
-        <div class="lessons"><div class="lesson">Lesson 1 — Entering the Winawer</div><div class="lesson">Lesson 2 — The pin and center</div><div class="lesson">Lesson 3 — ...c5 and counterplay</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+        <h3>Portuguese Gambit</h3><div class="moves">1.e4 d5 2.exd5 Nf6 3.d4 Bg4</div>
+        <p>Give White a pawn decision, develop with tempo, and build a fast attack around the exposed center.</p>
+        <div class="lessons">
+          <button class="lesson" data-course="portuguese" data-lesson="0">Lesson 1 — The gambit setup</button>
+          <button class="lesson" data-course="portuguese" data-lesson="1">Lesson 2 — Development with tempo</button>
+          <button class="lesson" data-course="portuguese" data-lesson="2">Lesson 3 — The attacking ideas</button>
+          <button class="lesson" data-course="portuguese" data-lesson="3">Lesson 4 — When the gambit goes wrong</button>
+        </div>
+        <button class="btn primary course-start" data-course="portuguese" data-lesson="0">Start course →</button>
       </article>
     </div>
   </section>
@@ -102,7 +126,78 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
     <div class="info-card"><div class="eyebrow">CONTENT</div><h3>Original course material</h3><p>The courses are original summaries and training structures based on the openings we discussed. They do not reproduce the protected text or videos from external creators.</p></div>
   </section>
 </main>
-
+<div id="coursePlayer" class="course-player" aria-hidden="true">
+  <div class="player-box">
+    <div class="player-top">
+      <div><div class="eyebrow">COURSE LESSON</div><h2 id="playerTitle" style="margin:5px 0">Lesson</h2><div id="playerCourse" class="only"></div></div>
+      <button id="playerClose" class="player-close">✕</button>
+    </div>
+    <div class="player-progress"><i id="playerBar"></i></div>
+    <div class="player-body" id="playerBody"></div>
+    <div class="player-nav">
+      <button class="btn" id="playerPrev">← Previous</button>
+      <button class="btn primary" id="playerNext">Next lesson →</button>
+    </div>
+  </div>
+</div>
 <footer>Chess Lab • Courses and Videos • Chess link: Chessly Play with Levi</footer>
-</body>
+<script>
+const COURSE_DATA={
+  vienna:{
+    name:"Vienna Attack",
+    lessons:[
+      ["The Vienna setup","Start with 1.e4 e5 2.Nc3. The point is to develop the knight without blocking the c-pawn and keep several aggressive plans available.","Core idea: pressure e5, develop naturally, and choose f4 when it creates useful tension."],
+      ["f4 and attacking ideas","The move f4 can challenge e5 and open attacking lines. Do not play it just because it looks aggressive; use it when your development can support the attack.","Think: if I play f4, which piece benefits from the new open lines?"],
+      ["Common tactical patterns","Vienna positions can feature pressure on e5, quick attacks on the kingside, and tactical jumps by the knights.","Before every sacrifice, count the defenders and look for your opponent's forcing replies."],
+      ["Practice positions","Your goal is not memorizing one exact line. Practice recognizing when development, f4, or a tactical shot is the right choice.","Checkpoint: explain why your move improves your position before you play it."]
+    ]
+  },
+  gambit:{
+    name:"King's Gambit",
+    lessons:[
+      ["Why the gambit works","After 1.e4 e5 2.f4, White offers material for rapid development and open lines.","The bargain is simple: you gave a pawn, so you need activity in return."],
+      ["Development before greed","Develop knights and bishops quickly. Avoid spending your gained time chasing a pawn that is not going anywhere.","Your initiative is the compensation. Keep your pieces moving."],
+      ["Attacking setups","Look for pressure on the f-file, rapid castling, and tactical ideas against a king that has fallen behind in development.","Do not attack with the queen alone. Bring pieces into the fight."],
+      ["Practice positions","Test whether you can identify the moment to keep attacking and the moment to stop forcing tactics.","Checkpoint: calculate one forcing line before committing to the attack."]
+    ]
+  },
+  caro:{
+    name:"Caro-Kann",
+    lessons:[
+      ["The core setup","The Caro-Kann begins 1.e4 c6 2.d4 d5. Black builds a strong central challenge while preserving the light-squared bishop.","Your structure is a foundation for active counterplay, not a reason to sit still."],
+      ["Advance structures","When White advances the e-pawn, Black has to challenge the center and find good piece squares.","Look for breaks and exchanges that make White's big center less imposing."],
+      ["Development and counterplay","Develop efficiently, castle, and prepare your central counterplay before grabbing unnecessary material.","A safe king lets you spend your attention on the position instead of emergencies."],
+      ["Practice positions","Compare your piece activity with White's space advantage. Ask which pawn break changes the structure most favorably.","Checkpoint: name your next useful improving move before calculating tactics."]
+    ]
+  },
+  portuguese:{
+    name:"Portuguese Gambit",
+    lessons:[
+      ["The gambit setup","The Portuguese Gambit starts 1.e4 d5 2.exd5 Nf6 3.d4 Bg4. Black chooses activity over immediate material recovery.","The point is fast development and pressure before White can calmly consolidate the extra pawn."],
+      ["Development with tempo","Bring pieces out with threats when possible. The bishop on g4 can pin or create tactical pressure while the knight can support the attack.","Use every tempo: a developing move that attacks something is especially valuable."],
+      ["The attacking ideas","Look for pressure against the center, fast piece development, and tactical opportunities around the king.","The gambit is strongest when White has to answer threats instead of simply finishing development."],
+      ["When the gambit goes wrong","If the attack disappears, the extra pawn can become a problem. Do not keep sacrificing material just to maintain the feeling of attack.","Checkpoint: if no forcing move exists, prioritize development and material recovery."]
+    ]
+  }
+};
+let activeCourse="vienna",activeLesson=0;
+function openCourse(course,lesson){
+  activeCourse=course;activeLesson=Number(lesson)||0;
+  const data=COURSE_DATA[course], item=data.lessons[activeLesson];
+  document.getElementById("playerCourse").textContent=data.name+" • Lesson "+(activeLesson+1)+" of "+data.lessons.length;
+  document.getElementById("playerTitle").textContent=item[0];
+  document.getElementById("playerBody").innerHTML="<p>"+item[1]+"</p><div class='note'><b>Remember:</b> "+item[2]+"</div>";
+  document.getElementById("playerBar").style.width=((activeLesson+1)/data.lessons.length*100)+"%";
+  document.getElementById("playerPrev").disabled=activeLesson===0;
+  document.getElementById("playerNext").textContent=activeLesson===data.lessons.length-1?"Finish course ✓":"Next lesson →";
+  const modal=document.getElementById("coursePlayer");modal.classList.add("open");modal.setAttribute("aria-hidden","false");
+}
+function closeCourse(){const modal=document.getElementById("coursePlayer");modal.classList.remove("open");modal.setAttribute("aria-hidden","true")}
+document.querySelectorAll("[data-course][data-lesson]").forEach(el=>el.addEventListener("click",()=>openCourse(el.dataset.course,el.dataset.lesson)));
+document.getElementById("playerClose").onclick=closeCourse;
+document.getElementById("coursePlayer").addEventListener("click",e=>{if(e.target.id==="coursePlayer")closeCourse()});
+document.getElementById("playerPrev").onclick=()=>{if(activeLesson>0)openCourse(activeCourse,activeLesson-1)};
+document.getElementById("playerNext").onclick=()=>{if(activeLesson<COURSE_DATA[activeCourse].lessons.length-1)openCourse(activeCourse,activeLesson+1);else closeCourse()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCourse()});
+</script></body>
 </html>
