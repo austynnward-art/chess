@@ -21,7 +21,7 @@ main{max-width:1180px;margin:auto;padding:30px 20px 60px}.hero{padding:30px 0 22
 .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.video{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}.video-body{padding:15px}.video-body h3{margin:7px 0}.video-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.video-body a{display:inline-block;margin-top:11px;color:var(--accent);font-size:12px}
 .info{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.info-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px}.info-card p{color:var(--muted);line-height:1.5;font-size:13px}.only{color:#b9c5d8;font-size:12px}
 footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24px 20px 35px;color:var(--muted);font-size:12px}
-.modal{display:none;position:fixed;inset:0;z-index:50;background:rgba(3,6,11,.84);backdrop-filter:blur(9px);padding:18px}.modal.open{display:grid;place-items:center}.modal-card{width:min(1180px,100%);max-height:96vh;overflow:auto;background:#12130f;border:1px solid #34372f;border-radius:10px;padding:14px;box-shadow:0 30px 90px #0009}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.modal-head h2{margin:4px 0}.close{border:1px solid var(--line);background:transparent;color:#fff;border-radius:9px;padding:8px 10px}.board-layout{display:grid;grid-template-columns:minmax(360px,720px) minmax(260px,1fr);gap:16px;margin-top:14px;align-items:start}.board{width:min(100%,720px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:0;border-radius:0;overflow:hidden;box-shadow:0 18px 55px rgba(0,0,0,.34)}.square{position:relative;display:grid;place-items:center;font-size:clamp(24px,6vw,54px);user-select:none;overflow:hidden;cursor:pointer}.light{background:#ebecd0;color:#111}.dark{background:#739552;color:#111}.square.selected{box-shadow:inset 0 0 0 5px rgba(235,235,80,.95)}.square.target:after{content:"";width:22%;height:22%;border-radius:50%;background:rgba(60,60,60,.34)}.square.capture:after{content:"";position:absolute;inset:7%;border:4px solid rgba(235,235,80,.85);border-radius:50%}.coord{position:absolute;left:4px;top:3px;font-size:12px;font-weight:800;line-height:1;z-index:3}.filecoord{position:absolute;right:3px;bottom:3px;font-size:12px;font-weight:800;line-height:1;z-index:3}.coord.lightcoord,.filecoord.lightcoord{color:#739552}.coord.darkcoord,.filecoord.darkcoord{color:#ebecd0}.pieceimg{width:100%;height:100%;background-image:var(--piece-sprite);background-repeat:no-repeat;background-size:600% 200%;pointer-events:none;position:relative;z-index:2;transform:scale(.96)} .piece-glyph{font-family:"Noto Sans Symbols 2","DejaVu Sans","Segoe UI Symbol",serif;font-size:clamp(38px,7vw,68px);line-height:1;position:relative;z-index:2;user-select:none} .white-piece{color:#fff;text-shadow:0 2px 0 #777,0 0 2px #222}.black-piece{color:#333;text-shadow:0 1px 0 #ddd,0 0 2px #000}.sidebox{background:#1a1c19;border:1px solid #34372f;border-radius:10px;padding:15px}.sidebox h3{margin:5px 0 9px}.line-list{display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow:auto}.line-btn{border:1px solid var(--line);background:#0d1523;color:#d9e2ef;border-radius:8px;padding:7px 8px;font-size:11px}.line-btn.active{border-color:var(--accent);background:#152b40}.player-strip{display:flex;align-items:center;justify-content:space-between;background:#1a1c19;border:1px solid #30332c;padding:9px 12px}.player{display:flex;align-items:center;gap:9px}.player b{display:block;font-size:13px}.player small{display:block;color:#8f9489;font-size:10px}.player-dot{width:12px;height:12px;border-radius:50%;display:inline-block}.player-dot.black{background:#23251f;box-shadow:inset 0 0 0 2px #55584f}.player-dot.white{background:#f0eadc;box-shadow:inset 0 0 0 1px #bbb}.clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px;background:#0e100d;padding:6px 9px;border-radius:5px}.board-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.board-note{color:var(--muted);font-size:12px;line-height:1.5;margin-top:12px}.source-link{color:var(--accent);font-size:12px}.engine-on{border-color:var(--good)!important;color:var(--good)!important}.engine-thinking{opacity:.65;pointer-events:none}
+.modal{display:none;position:fixed;inset:0;z-index:50;background:rgba(3,6,11,.84);backdrop-filter:blur(9px);padding:18px}.modal.open{display:grid;place-items:center}.modal-card{width:min(1180px,100%);max-height:96vh;overflow:auto;background:#12130f;border:1px solid #34372f;border-radius:10px;padding:14px;box-shadow:0 30px 90px #0009}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.modal-head h2{margin:4px 0}.close{border:1px solid var(--line);background:transparent;color:#fff;border-radius:9px;padding:8px 10px}.board-layout{display:grid;grid-template-columns:minmax(360px,720px) minmax(260px,1fr);gap:16px;margin-top:14px;align-items:start}.board{width:min(100%,720px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:0;border-radius:0;overflow:hidden;box-shadow:0 18px 55px rgba(0,0,0,.34)}.square{position:relative;display:grid;place-items:center;font-size:clamp(24px,6vw,54px);user-select:none;overflow:hidden;cursor:pointer}.light{background:#ebecd0;color:#111}.dark{background:#739552;color:#111}.square.selected{box-shadow:inset 0 0 0 5px rgba(235,235,80,.95)}.square.target:after{content:"";width:22%;height:22%;border-radius:50%;background:rgba(60,60,60,.34)}.square.capture:after{content:"";position:absolute;inset:7%;border:4px solid rgba(235,235,80,.85);border-radius:50%}.coord{position:absolute;left:4px;top:3px;font-size:12px;font-weight:800;line-height:1;z-index:3}.filecoord{position:absolute;right:3px;bottom:3px;font-size:12px;font-weight:800;line-height:1;z-index:3}.coord.lightcoord,.filecoord.lightcoord{color:#739552}.coord.darkcoord,.filecoord.darkcoord{color:#ebecd0}.pieceimg{display:grid;place-items:center;width:100%;height:100%;font-family:"Noto Sans Symbols 2","DejaVu Sans","Segoe UI Symbol",serif;font-size:clamp(40px,7.2vw,70px);font-weight:400;line-height:1;pointer-events:none;position:relative;z-index:2;user-select:none}.white-piece{color:#f7f7f7;text-shadow:0 2px 0 #6d6d6d,0 0 2px #222}.black-piece{color:#3f403d;text-shadow:0 1px 0 #d7d7d0,0 0 2px #111} .piece-glyph{font-family:"Noto Sans Symbols 2","DejaVu Sans","Segoe UI Symbol",serif;font-size:clamp(38px,7vw,68px);line-height:1;position:relative;z-index:2;user-select:none} .white-piece{color:#fff;text-shadow:0 2px 0 #777,0 0 2px #222}.black-piece{color:#333;text-shadow:0 1px 0 #ddd,0 0 2px #000}.sidebox{background:#1a1c19;border:1px solid #34372f;border-radius:10px;padding:15px}.sidebox h3{margin:5px 0 9px}.line-list{display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow:auto}.line-btn{border:1px solid var(--line);background:#0d1523;color:#d9e2ef;border-radius:8px;padding:7px 8px;font-size:11px}.line-btn.active{border-color:var(--accent);background:#152b40}.player-strip{display:flex;align-items:center;justify-content:space-between;background:#1a1c19;border:1px solid #30332c;padding:9px 12px}.player{display:flex;align-items:center;gap:9px}.player b{display:block;font-size:13px}.player small{display:block;color:#8f9489;font-size:10px}.player-dot{width:12px;height:12px;border-radius:50%;display:inline-block}.player-dot.black{background:#23251f;box-shadow:inset 0 0 0 2px #55584f}.player-dot.white{background:#f0eadc;box-shadow:inset 0 0 0 1px #bbb}.clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px;background:#0e100d;padding:6px 9px;border-radius:5px}.board-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.board-note{color:var(--muted);font-size:12px;line-height:1.5;margin-top:12px}.source-link{color:var(--accent);font-size:12px}.engine-on{border-color:var(--good)!important;color:var(--good)!important}.engine-thinking{opacity:.65;pointer-events:none}
 @media(max-width:900px){.course-grid{grid-template-columns:1fr}.video-grid{grid-template-columns:1fr 1fr}.info{grid-template-columns:1fr}.board-layout{grid-template-columns:1fr}}
 @media(max-width:650px){.links a:not(.play){display:none}.hero h1{font-size:35px}.video-grid{grid-template-columns:1fr}.modal{padding:8px}}
 </style>
@@ -108,7 +108,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 <div>
 <div class="player-strip">
   <div class="player">
-    <span class="player-dot black"></span><div><b>Black</b><small id="enginePlayer">Stockfish</small></div>
+    <span class="player-dot black"></span><div><b>Black</b><small id="enginePlayer">Stockfish 19 Lite • Class D</small></div>
   </div>
   <div class="clock" id="blackClock">—</div>
 </div>
@@ -119,8 +119,8 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
   </div>
   <div class="clock" id="whiteClock">—</div>
 </div>
-<div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><select class="btn small" id="engineSelect" aria-label="Choose chess engine"><option value="19">Stockfish 19 Lite</option><option value="10">Stockfish 10</option></select><button class="btn primary small" id="stockfishBtn">Play vs Stockfish</button></div></div>
-<div class="sidebox"><span class="pill">LESSON STEPS</span><h3 id="stepTitle">Opening</h3><p id="stepText" class="board-note"></p><div id="lineButtons" class="line-list"></div><p class="board-note" id="engineStatus">Engine: ready when you choose Play vs Stockfish.</p><p class="board-note" id="sourceText"></p></div>
+<div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><select class="btn small" id="engineSelect" aria-label="Choose chess engine"><option value="19">Stockfish 19 Lite</option><option value="10">Stockfish 10</option></select><select class="btn small" id="engineLevel" aria-label="Choose engine level"><option value="800">800 • Class F</option><option value="1000">1000 • Class E</option><option value="1200" selected>1200 • Class D</option><option value="1400">1400 • Class C</option><option value="1600">1600 • Class B</option><option value="1800">1800 • Class A</option><option value="2000">2000 • Expert</option><option value="2200">2200 • Master</option><option value="2400">2400+ • Senior Master</option></select><button class="btn primary small" id="stockfishBtn">Play vs Stockfish</button></div></div>
+<div class="sidebox"><span class="pill">LESSON STEPS</span><h3 id="stepTitle">Opening</h3><p id="stepText" class="board-note"></p><div id="lineButtons" class="line-list"></div><p class="board-note" id="engineStatus">Engine: ready when you choose Play vs Stockfish.</p><p class="board-note" id="levelStatus">USCF reference: Class D • 1200–1399. This is a difficulty target, not an official USCF rating.</p><p class="board-note" id="sourceText"></p></div>
 </div>
 </div>
 </div>
@@ -155,7 +155,7 @@ const COURSES={
  ],source:"Chess.com Portuguese Opening: Portuguese Gambit page."}
 };
 
-const PIECE_SPRITE="data:image/webp;base64,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";
+const PIECE_SPRITE=null;
 let boardGame=new Chess(),activeCourse="vienna",moveIndex=0,selectedSquare=null,freePlay=false,vsStockfish=false,stockfishBusy=false,stockfish=null;
 
 function openBoard(key,startStep=0){
@@ -179,7 +179,10 @@ function renderBoard(){
  const arr=boardGame.board(),files=["a","b","c","d","e","f","g","h"];
  let targets=[];
  if(selectedSquare)targets=boardGame.moves({square:selectedSquare,verbose:true}).map(m=>m.to);
- const typeIndex={r:0,n:1,b:2,q:3,k:4,p:5};
+ const glyph={
+   wp:"♙",wn:"♘",wb:"♗",wr:"♖",wq:"♕",wk:"♔",
+   bp:"♟",bn:"♞",bb:"♝",br:"♜",bq:"♛",bk:"♚"
+ };
  for(let r=0;r<8;r++)for(let col=0;col<8;col++){
    const el=document.createElement("div"),sq=files[col]+(8-r),p=arr[r][col];
    const light=((r+col)%2===0);
@@ -188,12 +191,18 @@ function renderBoard(){
    if(targets.includes(sq)){el.classList.add("target");if(p)el.classList.add("capture")}
    if(p){
      const piece=document.createElement("div");
-     piece.className="pieceimg";
-     piece.style.backgroundPosition=(typeIndex[p.type]*20)+"% "+(p.color==="b"?"0%":"100%");
+     piece.className="pieceimg "+(p.color==="w"?"white-piece":"black-piece");
+     piece.textContent=glyph[p.color+p.type];
      el.appendChild(piece);
    }
-   const rank=document.createElement("span");rank.className="coord "+(light?"lightcoord":"darkcoord");rank.textContent=String(8-r);el.appendChild(rank);
-   if(r===7){const file=document.createElement("span");file.className="filecoord "+(light?"lightcoord":"darkcoord");file.textContent=files[col];el.appendChild(file)}
+   const rank=document.createElement("span");
+   rank.className="coord "+(light?"lightcoord":"darkcoord");
+   rank.textContent=String(8-r);el.appendChild(rank);
+   if(r===7){
+     const file=document.createElement("span");
+     file.className="filecoord "+(light?"lightcoord":"darkcoord");
+     file.textContent=files[col];el.appendChild(file);
+   }
    el.onclick=()=>clickSquare(sq);
    root.appendChild(el);
  }
@@ -248,18 +257,53 @@ const ENGINE_URLS={
   "19":"https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js",
   "10":"https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.js"
 };
-let selectedEngine="19";
-let engineBlobUrl=null;
+const USCF_LEVELS={
+  "800": {label:"Class F", range:"800–999", skill:4},
+  "1000":{label:"Class E", range:"1000–1199", skill:6},
+  "1200":{label:"Class D", range:"1200–1399", skill:8},
+  "1400":{label:"Class C", range:"1400–1599", elo:1400},
+  "1600":{label:"Class B", range:"1600–1799", elo:1600},
+  "1800":{label:"Class A", range:"1800–1999", elo:1800},
+  "2000":{label:"Expert", range:"2000–2199", elo:2000},
+  "2200":{label:"Master", range:"2200–2399", elo:2200},
+  "2400":{label:"Senior Master", range:"2400+", elo:2400}
+};
+let selectedEngine="19",selectedLevel="1200",engineBlobUrl=null;
+
 function engineName(){return selectedEngine==="10"?"Stockfish 10":"Stockfish 19 Lite"}
+function levelInfo(){return USCF_LEVELS[selectedLevel]||USCF_LEVELS["1200"]}
+function updateLevelUI(){
+  const sel=document.getElementById("engineLevel");
+  const info=levelInfo();
+  if(sel)sel.disabled=vsStockfish;
+  const el=document.getElementById("levelStatus");
+  if(el)el.textContent="USCF reference: "+info.label+" • "+info.range+". This is a difficulty target, not an official USCF rating.";
+}
 function updateEngineStatus(msg){const el=document.getElementById("engineStatus");if(el)el.textContent="Engine: "+msg}
 function updateEngineUI(){
   const b=document.getElementById("stockfishBtn"),sel=document.getElementById("engineSelect");
   if(sel){sel.value=selectedEngine;sel.disabled=vsStockfish}
+  updateLevelUI();
   if(b){b.classList.toggle("engine-on",vsStockfish);b.textContent=vsStockfish?"Stop "+engineName():"Play vs "+engineName()}
   const boardEl=document.getElementById("board");
   if(boardEl)boardEl.classList.toggle("engine-thinking",stockfishBusy);
   const ep=document.getElementById("enginePlayer");
-  if(ep)ep.textContent=engineName();
+  if(ep)ep.textContent=engineName()+" • "+levelInfo().label;
+}
+function configureEngine(){
+  if(!stockfish)return;
+  const info=levelInfo();
+  try{
+    stockfish.postMessage("setoption name Threads value 1");
+    stockfish.postMessage("setoption name Hash value 16");
+    if(info.elo){
+      stockfish.postMessage("setoption name UCI_LimitStrength value true");
+      stockfish.postMessage("setoption name UCI_Elo value "+info.elo);
+    }else{
+      stockfish.postMessage("setoption name UCI_LimitStrength value false");
+      stockfish.postMessage("setoption name Skill Level value "+info.skill);
+    }
+  }catch(e){}
 }
 async function getEngineWorker(){
   if(stockfish)return stockfish;
@@ -274,7 +318,7 @@ async function getEngineWorker(){
     stockfish=new Worker(engineBlobUrl);
     stockfish.onmessage=e=>{
       const line=typeof e.data==="string"?e.data:"";
-      if(line==="uciok")updateEngineStatus(engineName()+" ready.");
+      if(line==="uciok"){configureEngine();updateEngineStatus(engineName()+" ready at "+levelInfo().label+".")}
       if(line.startsWith("bestmove ")){
         const best=line.split(/\s+/)[1];
         stockfishBusy=false;
@@ -282,8 +326,7 @@ async function getEngineWorker(){
           const move={from:best.slice(0,2),to:best.slice(2,4)};
           if(best.length>4)move.promotion=best[4];
           try{boardGame.move(move)}catch(_){}
-          renderBoard();
-          updateEngineStatus("your move.");
+          renderBoard();updateEngineStatus("your move.");
         }else updateEngineStatus("no legal move.");
         updateEngineUI();
       }
@@ -291,14 +334,9 @@ async function getEngineWorker(){
     };
     stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus(engineName()+" failed to run.");updateEngineUI()};
     stockfish.postMessage("uci");
-    stockfish.postMessage("setoption name Threads value 1");
-    stockfish.postMessage("setoption name Hash value 16");
     return stockfish;
   }catch(err){
-    destroyStockfish();
-    updateEngineStatus(engineName()+" could not load.");
-    updateEngineUI();
-    return null;
+    destroyStockfish();updateEngineStatus(engineName()+" could not load.");updateEngineUI();return null;
   }
 }
 async function createStockfish(){return await getEngineWorker()}
@@ -334,7 +372,7 @@ function startClocks(){
 function stopClocks(){clearInterval(clockTimer);clockTimer=null;renderClocks()}
 async function startStockfishGame(){
   freePlay=false;vsStockfish=true;stockfishBusy=false;selectedSquare=null;boardGame.reset();moveIndex=0;
-  updateEngineUI();updateEngineStatus("starting "+engineName()+"…");renderBoard();startClocks();
+  updateEngineUI();updateEngineStatus("starting "+engineName()+" at "+levelInfo().label+"…");renderBoard();startClocks();
   await createStockfish();
 }
 function stopStockfish(){
@@ -343,6 +381,10 @@ function stopStockfish(){
 document.getElementById("engineSelect").onchange=e=>{
   if(vsStockfish){e.target.value=selectedEngine;return}
   selectedEngine=e.target.value;destroyStockfish();updateEngineUI();updateEngineStatus(engineName()+" selected.");
+};
+document.getElementById("engineLevel").onchange=e=>{
+  if(vsStockfish){e.target.value=selectedLevel;return}
+  selectedLevel=e.target.value;destroyStockfish();updateEngineUI();updateEngineStatus(levelInfo().label+" selected.");
 };
 document.getElementById("stockfishBtn").onclick=()=>{vsStockfish?stopStockfish():startStockfishGame()};
 document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
