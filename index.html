@@ -25,7 +25,7 @@ a{text-decoration:none;color:inherit}
 .app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
 .sidebar{border-right:1px solid var(--line);background:rgba(7,11,20,.72);backdrop-filter:blur(18px);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px}
 .brand{display:flex;align-items:center;gap:11px;padding:2px 8px 10px}.brandmark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08101d;font-weight:900}.brand b{display:block}.brand small{display:block;color:var(--muted);margin-top:2px}
-.nav{display:flex;flex-direction:column;gap:5px}.nav button{border:0;background:transparent;color:var(--muted);padding:11px 12px;border-radius:11px;text-align:left}.nav button:hover,.nav button.active{background:var(--panel2);color:var(--text)}
+.nav{display:flex;flex-direction:column;gap:5px}.nav button,.nav-link{border:0;background:transparent;color:var(--muted);padding:11px 12px;border-radius:11px;text-align:left}.nav button:hover,.nav button.active,.nav-link:hover{background:var(--panel2);color:var(--text)}
 .sidebar-card{margin-top:auto;background:linear-gradient(180deg,#121b2d,#0d1525);border:1px solid var(--line);border-radius:15px;padding:14px}.sidebar-card b{display:block;margin-bottom:4px}.sidebar-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
 .main{min-width:0}.top{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(7,11,20,.44);backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}.crumb{color:var(--muted);font-size:13px}.top-actions{display:flex;gap:10px;align-items:center}
 .btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 14px;border-radius:11px;transition:.15s transform,.15s border-color,.15s background}.btn:hover{transform:translateY(-1px);border-color:#3c4f73}.btn.primary{background:linear-gradient(135deg,#68d5ff,#9280ff);color:#08101d;border-color:transparent;font-weight:800}.btn.ghost{background:transparent}.btn.small{padding:8px 11px;font-size:13px}
@@ -57,7 +57,8 @@ a{text-decoration:none;color:inherit}
     <div class="brand"><div class="brandmark">♞</div><div><b>Chaos Chess Lab</b><small>Train the sharp stuff</small></div></div>
     <div class="nav">
       <button class="active" data-page="home">⌂ Home</button>
-      <button data-page="study">♟ Study Board</button>
+      <a class="nav-link" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">♟ Chess ↗</a>
+      <button data-page="study">♞ Study Board</button>
       <button data-page="quiz">★ Opening Quiz</button>
       <button data-page="videos">▶ GothamChess</button>
       <button data-page="repertoire">▦ Repertoire</button>
@@ -78,6 +79,7 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="mobile-nav">
       <button class="btn active" data-page="home">Home</button>
+      <a class="btn primary" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Chess ↗</a>
       <button class="btn" data-page="study">Board</button>
       <button class="btn" data-page="quiz">Quiz</button>
       <button class="btn" data-page="videos">Videos</button>
@@ -92,9 +94,9 @@ a{text-decoration:none;color:inherit}
             <h1>Attack with a plan.<br>Play for chaos.</h1>
             <p>Vienna and King's Gambit as White. Caro-Kann and French Winawer as Black. Learn the ideas, replay the lines, and test yourself instead of just memorizing moves.</p>
             <div class="hero-actions">
-              <button class="btn primary" data-go="study">Start studying →</button>
+              <a class="btn primary" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Play Chess with Levi ↗</a>
+              <button class="btn" data-go="study">Start studying →</button>
               <button class="btn" data-go="videos">Watch GothamChess</button>
-              <a class="btn" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Play with Levi ↗</a>
             </div>
           </div>
           <div class="hero-side">
@@ -102,6 +104,13 @@ a{text-decoration:none;color:inherit}
             <div class="stat"><div class="eyebrow">STYLE</div><div class="number">🔥 Chaos</div><small>Active • tactical • unbalanced</small></div>
             <div class="stat"><div class="eyebrow">PROGRESS</div><div class="number" id="homeProgress">0%</div><small>Lessons completed</small></div>
           </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;background:linear-gradient(135deg,#13233a,#111a2b)">
+          <div class="eyebrow">CHESS</div>
+          <h2 style="margin:8px 0 6px">Play here — with Levi</h2>
+          <p style="margin:0 0 14px;color:var(--muted)">This button goes directly to the Chessly play page you gave me.</p>
+          <a class="btn primary" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Open Chessly Play ↗</a>
         </div>
 
         <div class="section-head"><div><div class="eyebrow">YOUR REPERTOIRE</div><h2>Pick your weapon</h2></div><span>Designed around what you asked for</span></div>
