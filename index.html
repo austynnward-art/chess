@@ -246,26 +246,32 @@ function renderLessonStep(){
 // ---------- Stockfish ----------
 const ENGINE_URLS={
   "19":"https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js",
-  "10":"https://unpkg.com/stockfish.js@10.0.2/stockfish.wasm.js"
+  "10":"https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.js"
 };
 let selectedEngine="19";
+let engineBlobUrl=null;
 function engineName(){return selectedEngine==="10"?"Stockfish 10":"Stockfish 19 Lite"}
 function updateEngineStatus(msg){const el=document.getElementById("engineStatus");if(el)el.textContent="Engine: "+msg}
 function updateEngineUI(){
   const b=document.getElementById("stockfishBtn"),sel=document.getElementById("engineSelect");
   if(sel){sel.value=selectedEngine;sel.disabled=vsStockfish}
-  if(!b)return;
-  b.classList.toggle("engine-on",vsStockfish);
-  b.textContent=vsStockfish?"Stop "+engineName():"Play vs "+engineName();
+  if(b){b.classList.toggle("engine-on",vsStockfish);b.textContent=vsStockfish?"Stop "+engineName():"Play vs "+engineName()}
   const boardEl=document.getElementById("board");
   if(boardEl)boardEl.classList.toggle("engine-thinking",stockfishBusy);
   const ep=document.getElementById("enginePlayer");
   if(ep)ep.textContent=engineName();
 }
-function createStockfish(){
-  if(stockfish)return;
+async function getEngineWorker(){
+  if(stockfish)return stockfish;
+  const url=ENGINE_URLS[selectedEngine];
   try{
-    stockfish=new Worker(ENGINE_URLS[selectedEngine]);
+    updateEngineStatus("loading "+engineName()+"…");
+    const res=await fetch(url,{mode:"cors",cache:"no-store"});
+    if(!res.ok)throw new Error("Engine download failed: "+res.status);
+    const source=await res.text();
+    const blob=new Blob([source],{type:"application/javascript"});
+    engineBlobUrl=URL.createObjectURL(blob);
+    stockfish=new Worker(engineBlobUrl);
     stockfish.onmessage=e=>{
       const line=typeof e.data==="string"?e.data:"";
       if(line==="uciok")updateEngineStatus(engineName()+" ready.");
@@ -275,7 +281,7 @@ function createStockfish(){
         if(best && best!=="(none)" && best.length>=4){
           const move={from:best.slice(0,2),to:best.slice(2,4)};
           if(best.length>4)move.promotion=best[4];
-          boardGame.move(move);
+          try{boardGame.move(move)}catch(_){}
           renderBoard();
           updateEngineStatus("your move.");
         }else updateEngineStatus("no legal move.");
@@ -283,20 +289,27 @@ function createStockfish(){
       }
       if(line.startsWith("info depth"))updateEngineStatus("thinking…");
     };
-    stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus(engineName()+" could not load.");updateEngineUI()};
+    stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus(engineName()+" failed to run.");updateEngineUI()};
     stockfish.postMessage("uci");
     stockfish.postMessage("setoption name Threads value 1");
     stockfish.postMessage("setoption name Hash value 16");
-  }catch(e){
-    stockfish=null;updateEngineStatus(engineName()+" could not start.");
+    return stockfish;
+  }catch(err){
+    destroyStockfish();
+    updateEngineStatus(engineName()+" could not load.");
+    updateEngineUI();
+    return null;
   }
 }
+async function createStockfish(){return await getEngineWorker()}
 function destroyStockfish(){
   if(stockfish){try{stockfish.postMessage("stop")}catch(e){}try{stockfish.terminate()}catch(e){}}
   stockfish=null;
+  if(engineBlobUrl){try{URL.revokeObjectURL(engineBlobUrl)}catch(e){}}
+  engineBlobUrl=null;
 }
-function requestEngineMove(){
-  if(!stockfish)createStockfish();
+async function requestEngineMove(){
+  if(!stockfish)await createStockfish();
   if(!stockfish)return;
   const fen=boardGame.fen();
   try{stockfish.postMessage("stop")}catch(e){}
@@ -319,23 +332,17 @@ function startClocks(){
  },1000);
 }
 function stopClocks(){clearInterval(clockTimer);clockTimer=null;renderClocks()}
-function startStockfishGame(){
+async function startStockfishGame(){
   freePlay=false;vsStockfish=true;stockfishBusy=false;selectedSquare=null;boardGame.reset();moveIndex=0;
-  updateEngineUI();updateEngineStatus(engineName()+" starting…");renderBoard();startClocks();
-  createStockfish();
+  updateEngineUI();updateEngineStatus("starting "+engineName()+"…");renderBoard();startClocks();
+  await createStockfish();
 }
 function stopStockfish(){
-  stopClocks();
-  vsStockfish=false;stockfishBusy=false;selectedSquare=null;
-  destroyStockfish();
-  updateEngineUI();updateEngineStatus(engineName()+" — ready.");
+  stopClocks();vsStockfish=false;stockfishBusy=false;selectedSquare=null;destroyStockfish();updateEngineUI();updateEngineStatus(engineName()+" — ready.");
 }
 document.getElementById("engineSelect").onchange=e=>{
   if(vsStockfish){e.target.value=selectedEngine;return}
-  selectedEngine=e.target.value;
-  destroyStockfish();
-  updateEngineUI();
-  updateEngineStatus(engineName()+" selected.");
+  selectedEngine=e.target.value;destroyStockfish();updateEngineUI();updateEngineStatus(engineName()+" selected.");
 };
 document.getElementById("stockfishBtn").onclick=()=>{vsStockfish?stopStockfish():startStockfishGame()};
 document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
