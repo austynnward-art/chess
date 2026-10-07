@@ -22,7 +22,18 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 @media(max-width:900px){.course-grid{grid-template-columns:1fr}.video-grid{grid-template-columns:1fr 1fr}.info{grid-template-columns:1fr}}
 @media(max-width:650px){.links a:not(.play){display:none}.hero h1{font-size:35px}.video-grid{grid-template-columns:1fr}}
 </style>
-</head>
+<script>
+(async()=>{try{
+  if("serviceWorker" in navigator){
+    const regs=await navigator.serviceWorker.getRegistrations();
+    for(const r of regs) await r.unregister();
+  }
+  if("caches" in window){
+    const keys=await caches.keys();
+    await Promise.all(keys.map(k=>caches.delete(k)));
+  }
+}catch(e){}})();
+</script></head>
 <body>
 <header class="top">
   <nav class="nav">
