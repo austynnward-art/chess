@@ -119,7 +119,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
   </div>
   <div class="clock" id="whiteClock">—</div>
 </div>
-<div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><button class="btn primary small" id="stockfishBtn">Play vs Stockfish 19 Lite</button></div></div>
+<div class="board-controls"><button class="btn small" id="prev">← Previous</button><button class="btn primary small" id="next">Next →</button><button class="btn small" id="reset">Reset</button><button class="btn small" id="free">Free play</button><select class="btn small" id="engineSelect" aria-label="Choose chess engine"><option value="19">Stockfish 19 Lite</option><option value="10">Stockfish 10</option></select><button class="btn primary small" id="stockfishBtn">Play vs Stockfish</button></div></div>
 <div class="sidebox"><span class="pill">LESSON STEPS</span><h3 id="stepTitle">Opening</h3><p id="stepText" class="board-note"></p><div id="lineButtons" class="line-list"></div><p class="board-note" id="engineStatus">Engine: ready when you choose Play vs Stockfish.</p><p class="board-note" id="sourceText"></p></div>
 </div>
 </div>
@@ -244,23 +244,31 @@ function renderLessonStep(){
 }
 
 // ---------- Stockfish ----------
-const STOCKFISH_WORKER_URL="https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js";
+const ENGINE_URLS={
+  "19":"https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js",
+  "10":"https://unpkg.com/stockfish.js@10.0.2/stockfish.wasm.js"
+};
+let selectedEngine="19";
+function engineName(){return selectedEngine==="10"?"Stockfish 10":"Stockfish 19 Lite"}
 function updateEngineStatus(msg){const el=document.getElementById("engineStatus");if(el)el.textContent="Engine: "+msg}
 function updateEngineUI(){
-  const b=document.getElementById("stockfishBtn");
+  const b=document.getElementById("stockfishBtn"),sel=document.getElementById("engineSelect");
+  if(sel){sel.value=selectedEngine;sel.disabled=vsStockfish}
   if(!b)return;
   b.classList.toggle("engine-on",vsStockfish);
-  b.textContent=vsStockfish?"Stop Stockfish 19 Lite":"Play vs Stockfish 19 Lite";
+  b.textContent=vsStockfish?"Stop "+engineName():"Play vs "+engineName();
   const boardEl=document.getElementById("board");
   if(boardEl)boardEl.classList.toggle("engine-thinking",stockfishBusy);
+  const ep=document.getElementById("enginePlayer");
+  if(ep)ep.textContent=engineName();
 }
 function createStockfish(){
   if(stockfish)return;
   try{
-    stockfish=new Worker(STOCKFISH_WORKER_URL);
+    stockfish=new Worker(ENGINE_URLS[selectedEngine]);
     stockfish.onmessage=e=>{
       const line=typeof e.data==="string"?e.data:"";
-      if(line==="uciok")updateEngineStatus("ready.");
+      if(line==="uciok")updateEngineStatus(engineName()+" ready.");
       if(line.startsWith("bestmove ")){
         const best=line.split(/\s+/)[1];
         stockfishBusy=false;
@@ -275,19 +283,23 @@ function createStockfish(){
       }
       if(line.startsWith("info depth"))updateEngineStatus("thinking…");
     };
-    stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus("could not load. Try a normal browser refresh.");updateEngineUI()};
+    stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus(engineName()+" could not load.");updateEngineUI()};
     stockfish.postMessage("uci");
     stockfish.postMessage("setoption name Threads value 1");
     stockfish.postMessage("setoption name Hash value 16");
   }catch(e){
-    stockfish=null;updateEngineStatus("could not start.");
+    stockfish=null;updateEngineStatus(engineName()+" could not start.");
   }
+}
+function destroyStockfish(){
+  if(stockfish){try{stockfish.postMessage("stop")}catch(e){}try{stockfish.terminate()}catch(e){}}
+  stockfish=null;
 }
 function requestEngineMove(){
   if(!stockfish)createStockfish();
   if(!stockfish)return;
   const fen=boardGame.fen();
-  stockfish.postMessage("stop");
+  try{stockfish.postMessage("stop")}catch(e){}
   stockfish.postMessage("position fen "+fen);
   stockfish.postMessage("go movetime 700");
 }
@@ -306,18 +318,25 @@ function startClocks(){
    renderClocks();
  },1000);
 }
-function stopClocks(){clearInterval(clockTimer);clockTimer=null;renderClocks();}
+function stopClocks(){clearInterval(clockTimer);clockTimer=null;renderClocks()}
 function startStockfishGame(){
   freePlay=false;vsStockfish=true;stockfishBusy=false;selectedSquare=null;boardGame.reset();moveIndex=0;
-  updateEngineUI();updateEngineStatus("starting…");renderBoard();
+  updateEngineUI();updateEngineStatus(engineName()+" starting…");renderBoard();startClocks();
   createStockfish();
 }
 function stopStockfish(){
   stopClocks();
   vsStockfish=false;stockfishBusy=false;selectedSquare=null;
-  if(stockfish){try{stockfish.postMessage("stop")}catch(e){}}
-  updateEngineUI();updateEngineStatus("Stockfish 19 Lite — ready when you choose Play vs Stockfish.");
+  destroyStockfish();
+  updateEngineUI();updateEngineStatus(engineName()+" — ready.");
 }
+document.getElementById("engineSelect").onchange=e=>{
+  if(vsStockfish){e.target.value=selectedEngine;return}
+  selectedEngine=e.target.value;
+  destroyStockfish();
+  updateEngineUI();
+  updateEngineStatus(engineName()+" selected.");
+};
 document.getElementById("stockfishBtn").onclick=()=>{vsStockfish?stopStockfish():startStockfishGame()};
 document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
 document.getElementById("closeModal").onclick=()=>{stopStockfish();closeBoard()};
