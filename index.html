@@ -14,8 +14,8 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;col
 header{max-width:1200px;margin:auto;padding:28px 22px 16px}
 h1{margin:0 0 6px;font-size:34px}.subtitle{color:var(--muted);line-height:1.5}
 nav{max-width:1200px;margin:auto;padding:0 22px 18px;display:flex;gap:8px;flex-wrap:wrap}
-nav button,.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;cursor:pointer}
-nav button.active,.btn.primary{border-color:var(--accent);background:var(--panel2)}
+nav button,.tab-link,.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;cursor:pointer}
+nav button.active,.tab-link,.btn.primary{border-color:var(--accent);background:var(--panel2)}
 main{max-width:1200px;margin:auto;padding:0 22px 45px}
 .page{display:none}.page.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
@@ -53,7 +53,7 @@ footer{max-width:1200px;margin:auto;padding:0 22px 30px;color:var(--muted);font-
   <button class="tab" data-page="board">Study Board</button>
   <button class="tab" data-page="quiz">Quiz</button>
   <button class="tab" data-page="videos">GothamChess Videos</button>
-  <button class="tab" data-page="sources">Sources</button>
+  <a class="tab-link" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Play Chess with Levi ↗</a><button class="tab" data-page="sources">Sources</button>
 </nav>
 
 <main>
