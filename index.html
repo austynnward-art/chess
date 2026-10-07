@@ -178,7 +178,7 @@ function canReach(b,fr,fc,tr,tc,p){
   if(t==='p'){const dir=p===p.toUpperCase()?-1:1;return (dc===0&&(dr===dir||dr===2*dir))||(adc===1&&dr===dir)}
   if(t==='b'&&adr!==adc)return false;
   if(t==='r'&&!(dr===0||dc===0))return false;
-  if(t==='q'&&!(adr===dc||dr===0||dc===0))return false;
+  if(t==='q'&&!(adr===adc||dr===0||dc===0))return false;
   const sr=dr===0?0:dr>0?1:-1,sc=dc===0?0:dc>0?1:-1;
   for(let r=fr+sr,c=fc+sc;r!==tr||c!==tc;r+=sr,c+=sc) if(b[r][c]!=='.') return false;
   return true;
