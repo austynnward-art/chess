@@ -3,11 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="refresh" content="0;url=https://chessly.com/play-levi">
-<title>Play Chess</title>
-<script>window.location.replace("https://chessly.com/play-levi");</script>
+<title>Chess Lab — Courses & Videos</title>
+<style>
+:root{--bg:#070b13;--panel:#101722;--panel2:#151f2f;--line:#263449;--text:#f4f7fb;--muted:#98a6bb;--accent:#76d7ff;--accent2:#9c84ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#070b13,#0b1220);color:var(--text)}
+a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer}
+.top{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:rgba(7,11,19,.86);backdrop-filter:blur(16px)}
+.nav{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08101a;font-weight:900}.brand b{font-size:16px}.brand span{display:block;color:var(--muted);font-size:11px}
+.links{display:flex;gap:8px;align-items:center}.links a,.links button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:9px 12px;border-radius:10px}.links a:hover,.links button:hover{color:var(--text);border-color:#3a4d6b}.links .active{color:var(--text);background:var(--panel2)}.play{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;color:#08101a!important;border-color:transparent!important;font-weight:800}
+main{max-width:1180px;margin:auto;padding:30px 20px 60px}.hero{padding:30px 0 22px}.eyebrow{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:800}.hero h1{font-size:46px;line-height:1.03;margin:10px 0;max-width:760px}.hero p{color:var(--muted);font-size:16px;line-height:1.6;max-width:720px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 15px;border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text)}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08101a;border-color:transparent;font-weight:800}
+.section{margin-top:26px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:12px}.section-head h2{margin:3px 0 0;font-size:24px}.section-head span{color:var(--muted);font-size:12px}
+.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.course{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.course:hover{border-color:#3a5072}.course-top{display:flex;justify-content:space-between;align-items:start;gap:10px}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:#18263b;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em}.course h3{margin:10px 0 5px;font-size:21px}.moves{font-weight:750}.course p{color:var(--muted);line-height:1.5;font-size:13px}.lessons{margin-top:14px;display:grid;gap:7px}.lesson{padding:9px 11px;border-radius:9px;background:#0c1422;border:1px solid #1d293e;color:#c6d0df;font-size:12px}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.video{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}.video-body{padding:15px}.video-body h3{margin:7px 0}.video-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.video-body a{display:inline-block;margin-top:11px;color:var(--accent);font-size:12px}
+.info{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.info-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px}.info-card p{color:var(--muted);line-height:1.5;font-size:13px}.only{color:#b9c5d8;font-size:12px}
+footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24px 20px 35px;color:var(--muted);font-size:12px}
+@media(max-width:900px){.course-grid{grid-template-columns:1fr}.video-grid{grid-template-columns:1fr 1fr}.info{grid-template-columns:1fr}}
+@media(max-width:650px){.links a:not(.play){display:none}.hero h1{font-size:35px}.video-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-<p>Opening <a href="https://chessly.com/play-levi">Chessly Play</a>…</p>
+<header class="top">
+  <nav class="nav">
+    <a class="brand" href="#top"><div class="logo">♞</div><div><b>Chess Lab</b><span>Courses & Videos</span></div></a>
+    <div class="links">
+      <a class="active" href="#courses">Courses</a>
+      <a href="#videos">Videos</a>
+      <a class="play" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Chess — Play with Levi ↗</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="eyebrow">YOUR CHESS TRAINING HOME</div>
+    <h1>Learn the openings.<br>Then watch them in action.</h1>
+    <p>Original courses built around the repertoire we discussed, plus the GothamChess videos you gave me. The Chess button goes only to the Chessly Play with Levi page.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#courses">Browse Courses ↓</a>
+      <a class="btn" href="#videos">Watch Videos ↓</a>
+      <a class="btn" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Play with Levi ↗</a>
+    </div>
+  </section>
+
+  <section id="courses" class="section">
+    <div class="section-head"><div><div class="eyebrow">COURSES</div><h2>Opening courses</h2></div><span>Original explanations and study paths</span></div>
+    <div class="course-grid">
+      <article class="course">
+        <div class="course-top"><span class="pill">WHITE</span><span class="only">Vienna</span></div>
+        <h3>Vienna Attack</h3><div class="moves">1.e4 e5 2.Nc3</div>
+        <p>Build pressure quickly and learn when f4 is worth playing. Focus on plans, development, and tactical ideas.</p>
+        <div class="lessons"><div class="lesson">Lesson 1 — The Vienna setup</div><div class="lesson">Lesson 2 — f4 and attacking ideas</div><div class="lesson">Lesson 3 — Common tactical patterns</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+      </article>
+      <article class="course">
+        <div class="course-top"><span class="pill">WHITE</span><span class="only">Aggressive</span></div>
+        <h3>King's Gambit</h3><div class="moves">1.e4 e5 2.f4</div>
+        <p>Trade a pawn for initiative. Learn how to use development, open lines, and attacking chances without losing control.</p>
+        <div class="lessons"><div class="lesson">Lesson 1 — Why the gambit works</div><div class="lesson">Lesson 2 — Development before greed</div><div class="lesson">Lesson 3 — Attacking setups</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+      </article>
+      <article class="course">
+        <div class="course-top"><span class="pill">BLACK</span><span class="only">Reliable</span></div>
+        <h3>Caro-Kann</h3><div class="moves">1.e4 c6 2.d4 d5</div>
+        <p>A solid Black foundation with active bishop development, a healthy structure, and clear counterplay.</p>
+        <div class="lessons"><div class="lesson">Lesson 1 — The core setup</div><div class="lesson">Lesson 2 — Advance structures</div><div class="lesson">Lesson 3 — Development and counterplay</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+      </article>
+      <article class="course">
+        <div class="course-top"><span class="pill">BLACK</span><span class="only">Chaos</span></div>
+        <h3>French Winawer</h3><div class="moves">1.e4 e6 2.d4 d5 3.Nc3 Bb4</div>
+        <p>Learn the pin, the central battle, and the moments when ...c5 turns the position into the sharp fight you want.</p>
+        <div class="lessons"><div class="lesson">Lesson 1 — Entering the Winawer</div><div class="lesson">Lesson 2 — The pin and center</div><div class="lesson">Lesson 3 — ...c5 and counterplay</div><div class="lesson">Lesson 4 — Practice positions</div></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="videos" class="section">
+    <div class="section-head"><div><div class="eyebrow">VIDEOS</div><h2>GothamChess videos</h2></div><span>Embedded from YouTube</span></div>
+    <div class="video-grid">
+      <article class="video"><iframe src="https://www.youtube.com/embed/rmbU97iftC8" title="GothamChess video 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div class="video-body"><span class="pill">VIDEO 1</span><h3>Provided GothamChess video</h3><p>Use this with your opening studies.</p><a href="https://www.youtube.com/watch?v=rmbU97iftC8" target="_blank" rel="noopener">Open on YouTube ↗</a></div></article>
+      <article class="video"><iframe src="https://www.youtube.com/embed/JVxENCPcCjU" title="GothamChess video 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div class="video-body"><span class="pill">VIDEO 2</span><h3>Provided GothamChess video</h3><p>Use this alongside the Vienna material.</p><a href="https://www.youtube.com/watch?v=JVxENCPcCjU" target="_blank" rel="noopener">Open on YouTube ↗</a></div></article>
+      <article class="video"><iframe src="https://www.youtube.com/embed/MWFeqi9vGk8" title="GothamChess video 3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><div class="video-body"><span class="pill">VIDEO 3</span><h3>Provided GothamChess video</h3><p>The exact third link you supplied.</p><a href="https://www.youtube.com/watch?v=MWFeqi9vGk8" target="_blank" rel="noopener">Open on YouTube ↗</a></div></article>
+    </div>
+  </section>
+
+  <section class="info">
+    <div class="info-card"><div class="eyebrow">CHESS</div><h3>Only one Chess link</h3><p>The site does not recreate or replace the Chessly play experience. Clicking <b>Chess</b> takes you directly to the Chessly page you specified.</p><a class="btn primary" href="https://chessly.com/play-levi" target="_blank" rel="noopener noreferrer">Play with Levi ↗</a></div>
+    <div class="info-card"><div class="eyebrow">CONTENT</div><h3>Original course material</h3><p>The courses are original summaries and training structures based on the openings we discussed. They do not reproduce the protected text or videos from external creators.</p></div>
+  </section>
+</main>
+
+<footer>Chess Lab • Courses and Videos • Chess link: Chessly Play with Levi</footer>
 </body>
 </html>
