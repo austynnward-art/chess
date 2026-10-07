@@ -254,7 +254,7 @@ function renderLessonStep(){
 // ---------- Stockfish ----------
 const ENGINE_URLS={
   "19":"https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js",
-  "10":"https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.js"
+  "10":"https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js"
 };
 const USCF_LEVELS={
   "800": {label:"Class F", range:"800–999", skill:4},
@@ -293,7 +293,6 @@ function configureEngine(){
   if(!stockfish)return;
   const info=levelInfo();
   try{
-    stockfish.postMessage("setoption name Threads value 1");
     stockfish.postMessage("setoption name Hash value 16");
     if(info.elo){
       stockfish.postMessage("setoption name UCI_LimitStrength value true");
@@ -309,15 +308,15 @@ async function getEngineWorker(){
   const url=ENGINE_URLS[selectedEngine];
   try{
     updateEngineStatus("loading "+engineName()+"…");
-    const res=await fetch(url,{mode:"cors",cache:"no-store"});
-    if(!res.ok)throw new Error("Engine download failed: "+res.status);
-    const source=await res.text();
-    const blob=new Blob([source],{type:"application/javascript"});
-    engineBlobUrl=URL.createObjectURL(blob);
-    stockfish=new Worker(engineBlobUrl);
+    // Use the engine script directly as a Worker. This is important because
+    // Stockfish 10 uses a companion WASM file and Blob workers break relative paths.
+    stockfish=new Worker(url);
     stockfish.onmessage=e=>{
       const line=typeof e.data==="string"?e.data:"";
-      if(line==="uciok"){configureEngine();updateEngineStatus(engineName()+" ready at "+levelInfo().label+".")}
+      if(line==="uciok"){
+        configureEngine();
+        updateEngineStatus(engineName()+" ready at "+levelInfo().label+".");
+      }
       if(line.startsWith("bestmove ")){
         const best=line.split(/\s+/)[1];
         stockfishBusy=false;
@@ -325,17 +324,27 @@ async function getEngineWorker(){
           const move={from:best.slice(0,2),to:best.slice(2,4)};
           if(best.length>4)move.promotion=best[4];
           try{boardGame.move(move)}catch(_){}
-          renderBoard();updateEngineStatus("your move.");
-        }else updateEngineStatus("no legal move.");
+          renderBoard();
+          updateEngineStatus(boardGame.game_over()?"game over.":"your move.");
+        }else{
+          updateEngineStatus("no legal move.");
+        }
         updateEngineUI();
       }
       if(line.startsWith("info depth"))updateEngineStatus("thinking…");
     };
-    stockfish.onerror=()=>{stockfishBusy=false;updateEngineStatus(engineName()+" failed to run.");updateEngineUI()};
+    stockfish.onerror=()=>{
+      stockfishBusy=false;
+      updateEngineStatus(engineName()+" failed to run.");
+      updateEngineUI();
+    };
     stockfish.postMessage("uci");
     return stockfish;
   }catch(err){
-    destroyStockfish();updateEngineStatus(engineName()+" could not load.");updateEngineUI();return null;
+    destroyStockfish();
+    updateEngineStatus(engineName()+" could not load.");
+    updateEngineUI();
+    return null;
   }
 }
 async function createStockfish(){return await getEngineWorker()}
@@ -366,6 +375,11 @@ function startClocks(){
    if(!vsStockfish||boardGame.game_over())return;
    if(boardGame.turn()==="w")whiteSeconds=Math.max(0,whiteSeconds-1);else blackSeconds=Math.max(0,blackSeconds-1);
    renderClocks();
+   if((boardGame.turn()==="w" && whiteSeconds===0)||(boardGame.turn()==="b" && blackSeconds===0)){
+     stockfishBusy=false;
+     updateEngineStatus("time expired.");
+     stopStockfish();
+   }
  },1000);
 }
 function stopClocks(){clearInterval(clockTimer);clockTimer=null;renderClocks()}
@@ -388,7 +402,7 @@ document.getElementById("engineLevel").onchange=e=>{
 document.getElementById("stockfishBtn").onclick=()=>{vsStockfish?stopStockfish():startStockfishGame()};
 document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openBoard(b.dataset.open,b.dataset.step||0)));
 document.getElementById("closeModal").onclick=()=>{stopStockfish();closeBoard()};
-document.getElementById("boardModal").addEventListener("click",e=>{if(e.target.id==="boardModal")closeBoard});
+document.getElementById("boardModal").addEventListener("click",e=>{if(e.target.id==="boardModal"){stopStockfish();closeBoard()}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeBoard});
 document.getElementById("next").onclick=()=>{if(moveIndex<COURSES[activeCourse].line.length){moveIndex++;loadPosition();renderLineButtons();renderLessonStep()}};
 document.getElementById("prev").onclick=()=>{if(moveIndex>0){moveIndex--;loadPosition();renderLineButtons();renderLessonStep()}};
