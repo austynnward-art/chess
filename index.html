@@ -3,167 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chess Trainer — Learn, Practice & Analyze</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="manifest" href="manifest.webmanifest">
+<title>Chaos Chess Lab</title>
+<style>
+:root{--bg:#0b1020;--p:#151d32;--p2:#202d4a;--t:#f4f7ff;--m:#aab6cf;--a:#7dd3fc;--g:#86efac;--b:#fda4af;--l:#2f3d5d}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:radial-gradient(circle at 20% 0,#26385f,#0b1020 55%);color:var(--t)}
+header,main,footer{max-width:1100px;margin:auto}header{padding:30px 22px 15px}h1{margin:0 0 8px;font-size:34px}p{line-height:1.5}.muted{color:var(--m)}
+nav{max-width:1100px;margin:auto;padding:0 22px 18px;display:flex;gap:8px;flex-wrap:wrap}button{font:inherit}nav button,.btn{border:1px solid var(--l);background:var(--p);color:var(--t);border-radius:12px;padding:10px 14px;cursor:pointer}nav button.active{border-color:var(--a);background:var(--p2)}
+main{padding:0 22px 40px}.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{background:#151d32ed;border:1px solid var(--l);border-radius:18px;padding:18px}.tag{display:inline-block;font-size:12px;color:var(--a);background:#20304f;padding:5px 9px;border-radius:999px}.big{font-size:18px;font-weight:700}
+.row{display:flex;gap:18px;flex-wrap:wrap}.boardbox{flex:1;min-width:300px}.board{width:min(76vw,560px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);border:3px solid #3a4a6c;border-radius:12px;overflow:hidden}.sq{display:grid;place-items:center;font-size:clamp(27px,6vw,55px);cursor:pointer;position:relative}.light{background:#e2e7ef}.dark{background:#6d7890}.sel{box-shadow:inset 0 0 0 5px var(--a)}.coord{position:absolute;left:3px;bottom:2px;font-size:10px;opacity:.5}.moves{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.progress{height:8px;background:#263450;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--a),#a78bfa);width:0}
+.answer{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid var(--l);background:var(--p2);color:var(--t);border-radius:12px;cursor:pointer}.feedback{display:none;margin-top:10px;padding:12px;border-radius:12px}.good{display:block;background:#0d2a1b;border:1px solid #2c6a46}.bad{display:block;background:#2d1118;border:1px solid #71313d}a{color:var(--a);text-decoration:none}footer{padding:0 22px 30px;color:var(--m);font-size:12px}
+@media(max-width:700px){h1{font-size:27px}.boardbox{min-width:0}}
+</style>
 </head>
 <body>
-<div class="shell">
-  <aside class="sidebar">
-    <div class="brand"><span class="logo">♞</span><div><b>Chess Trainer</b><small>Learn • Practice • Improve</small></div></div>
-    <div class="side-section">
-      <div class="side-label">Workspace</div>
-      <button class="nav active" data-mode="play"><span>♟</span> Play</button>
-      <button class="nav" data-mode="analysis"><span>⌁</span> Analysis</button>
-      <button class="nav" data-mode="trainer"><span>★</span> Trainer</button>
-      <button class="nav" data-mode="training"><span>▶</span> Training</button>
-      <button class="nav" data-mode="videos"><span>▻</span> Videos</button>
-      <button class="nav" data-mode="courses"><span>▣</span> Courses</button>
-    </div>
-    <div class="side-section course-list">
-      <div class="side-label">Learning</div>
-      <a class="course" href="https://old.chessly.com/courses/812a7981-0439-4de4-a86b-35b9833eea25" target="_blank" rel="noopener"><span class="course-dot">E4</span><span><b>E4 Part One</b><small>Opening fundamentals • Chessly</small></span></a>
-      <button class="course"><span class="course-dot">T</span><span><b>Tactics</b><small>Find the winning move</small></span></button>
-      <button class="course"><span class="course-dot">E</span><span><b>Endgames</b><small>Build technique</small></span></button>
-    </div>
-    <div class="sidebar-bottom">
-      <div class="progress-card"><div class="progress-top"><b>Daily progress</b><span>0%</span></div><div class="progress-track"><i></i></div><small>Start a lesson to earn XP</small></div>
-      <button id="installBtn" class="install" hidden>Install app</button>
-    </div>
-  </aside>
+<header><h1>♟ Chaos Chess Lab</h1><p class="muted">Original training for our aggressive repertoire: <b>Vienna</b> + <b>King's Gambit</b> as White, <b>Caro-Kann</b> + <b>French Winawer</b> as Black.</p></header>
+<nav>
+<button class="tab active" data-p="home">Home</button><button class="tab" data-p="rep">Repertoire</button><button class="tab" data-p="boardp">Study Board</button><button class="tab" data-p="quiz">Quiz</button><button class="tab" data-p="sources">Sources</button>
+</nav>
+<main>
+<section id="home" class="page active"><div class="grid">
+<div class="card"><span class="tag">WHITE #1</span><h2>Vienna</h2><div class="big">1.e4 e5 2.Nc3</div><p class="muted">Fast development and tactical pressure; add f4 when the position supports it.</p></div>
+<div class="card"><span class="tag">WHITE #2</span><h2>King's Gambit</h2><div class="big">1.e4 e5 2.f4</div><p class="muted">Maximum chaos: trade a pawn for time, lines and initiative.</p></div>
+<div class="card"><span class="tag">BLACK #1</span><h2>Caro-Kann</h2><div class="big">1.e4 c6 2.d4 d5</div><p class="muted">Solid structure, active bishop development and good king safety.</p></div>
+<div class="card"><span class="tag">BLACK #2</span><h2>French Winawer</h2><div class="big">1.e4 e6 2.d4 d5 3.Nc3 Bb4</div><p class="muted">Pin the knight, hit the center and create an unbalanced fight.</p></div>
+</div><div class="card" style="margin-top:14px"><h3>Study rule</h3><p>For every move ask: <b>What does it attack? What does it stop? What pawn break comes next?</b></p></div></section>
 
-  <main class="workspace">
-    <header class="topbar">
-      <div class="mobile-brand"><span class="logo">♞</span><b>Chess Trainer</b></div>
-      <div class="page-title"><b id="pageTitle">Play</b><span>Improve your chess one move at a time</span></div>
-      <div class="top-actions"><button id="resetBtn" class="top-btn primary-outline">New game</button><button class="avatar">A</button></div>
-    </header>
+<section id="rep" class="page"><div class="grid">
+<div class="card"><span class="tag">VIENNA</span><h2>Core idea</h2><p><b>1.e4 e5 2.Nc3</b>. Develop, pressure e5, then use f4 when it gains something concrete.</p></div>
+<div class="card"><span class="tag">KING'S GAMBIT</span><h2>Core idea</h2><p><b>1.e4 e5 2.f4</b>. Open lines and make your development tempo count.</p></div>
+<div class="card"><span class="tag">CARO-KANN</span><h2>Core idea</h2><p><b>1.e4 c6 2.d4 d5</b>. Challenge the center while keeping the light bishop free.</p></div>
+<div class="card"><span class="tag">WINAWER</span><h2>Core idea</h2><p><b>1.e4 e6 2.d4 d5 3.Nc3 Bb4</b>. Pin the knight and prepare central counterplay, especially ...c5.</p></div>
+</div></section>
 
-    <div class="content">
-      <section class="board-area">
-        <div class="board-shell">
-          <div class="board-head"><div><span id="turnLabel">White to move</span><span class="live-dot"></span></div><span id="statusLabel">Ready</span></div>
-          <div class="board-frame"><div id="board" class="board" aria-label="Chess board"></div></div>
-          <div class="board-footer">
-            <div class="controls"><button id="undoBtn">↶ <span>Undo</span></button><button id="flipBtn">⇄ <span>Flip board</span></button><button id="fenBtn">FEN</button><button id="claim3Btn" disabled>3× Draw</button><button id="claim50Btn" disabled>50 Draw</button></div>
-            <div class="hint">Click a piece, then a highlighted square • <a id="rulesLink" target="_blank" rel="noopener">FIDE rules</a></div>
-          </div>
-        </div>
-      </section>
+<section id="boardp" class="page"><div class="row"><div class="boardbox"><div id="board" class="board"></div><div class="moves" id="lineBtns"></div></div><div class="card" style="flex:1;min-width:290px"><h2 id="ltitle">French Winawer</h2><p id="ltext" class="muted"></p><div class="progress"><i id="bar"></i></div><p id="step" class="muted"></p><h3>Idea</h3><p id="idea"></p><h3>Watch for</h3><p id="watch" class="muted"></p></div></div></section>
 
-      <aside class="panel">
-        <div class="panel-tabs"><button class="tab active" data-panel="engine">Analysis</button><button class="tab" data-panel="trainer">Trainer</button></div>
-        <section id="enginePanel">
-          <div class="engine-head"><div><div class="eyebrow">STOCKFISH</div><h2>Game analysis</h2></div><span class="engine-pill">● Live</span></div>
-          <div class="evaluation">
-            <div class="eval-bar"><div id="evalFill"></div></div>
-            <div class="eval-copy"><strong id="evalText">0.00</strong><span>Evaluation</span></div>
-          </div>
-          <div class="engine-controls"><label>Depth<input id="depth" type="number" min="8" max="30" value="16"></label><label>Play vs Bot<select id="botSide"><option value="b" selected>Bot: Black</option><option value="w">Bot: White</option></select></label><button id="analyzeBtn" class="primary">Analyze position</button></div>
-          <div class="best-card"><div class="muted">BEST MOVE</div><strong id="bestMove">—</strong><span>Recommended by Stockfish</span></div>
-          <div class="status-card"><div class="status-icon">♞</div><div><b>Stockfish 19 Lite</b><span id="engineStatus">Starting…</span></div></div>
-          <div class="moves-head"><b>Move history</b><span>Game</span></div>
-          <div id="moves" class="moves"></div>
-        </section>
-        <section id="trainerPanel" hidden>
-          <div class="trainer-hero"><span class="trainer-icon">★</span><div><div class="eyebrow">TRAINER MODE</div><h2>Find the best move</h2></div></div>
-          <p class="muted trainer-copy">Think first, then make your move. Stockfish checks the position and gives you feedback.</p>
-          <button id="trainerStart" class="primary full">Start trainer</button>
-          <div id="trainerResult" class="trainer-result">Make a move to begin.</div><div class="resource-links"><a href="https://chessly.com/" target="_blank" rel="noopener">Chessly courses</a><a href="https://www.chess.com/learn-how-to-play-chess" target="_blank" rel="noopener">Rules & basics</a><a href="https://www.youtube.com/watch?v=V6Ya1B2aOYk" target="_blank" rel="noopener">Opening video</a></div>
-          <div class="lesson-card"><b>E4 Part One</b><span>Opening fundamentals</span><div class="mini-progress"><i></i></div></div>
-        </section>
-      </aside>
-    </div>
-  </main>
-</div>
+<section id="quiz" class="page"><div class="card"><span class="tag">OPENING QUIZ</span><h2 id="q"></h2><div id="ans"></div><div id="fb" class="feedback"></div><div class="moves"><button class="btn" id="next">Next question</button></div></div></section>
 
-<section id="trainingView" class="course-view" hidden>
-  <div class="course-header">
-    <div><div class="eyebrow">TRAINING</div><h1>Training room</h1><p>Play lessons inside the app, then use the board to practice what you watched.</p></div>
-    <button id="trainingBoardBtn" class="primary">Open training board</button>
-  </div>
-  <div class="training-layout">
-    <section class="training-main">
-      <div class="section-heading"><div><div class="eyebrow">VIDEO LESSONS</div><h2>Watch inside the app</h2></div><span>YouTube playback</span></div>
-      <div class="training-video" id="trainingVideo">
-        <div class="video-wrap"><iframe id="trainingFrame" src="https://www.youtube-nocookie.com/embed/GTJmUt8oyH8" title="1.e4 Rating Climb" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-        <div class="training-video-info"><b id="trainingVideoTitle">1.e4 Rating Climb</b><small id="trainingVideoDesc">Watch the lesson, then open the board and practice the ideas.</small></div>
-      </div>
-      <div class="training-video-list">
-        <button class="training-video-item active" data-video="GTJmUt8oyH8" data-title="1.e4 Rating Climb" data-desc="Broad 1.e4 ideas and practical opening plans."><b>1.e4 Rating Climb</b><small>Opening fundamentals</small></button>
-        <button class="training-video-item" data-video="qM4e7g2RukI" data-title="Sicilian Defense" data-desc="Learn the basic plans and structures of the Sicilian."><b>Sicilian Defense</b><small>Opening lesson</small></button>
-        <button class="training-video-item" data-video="5pec-u6PSvA" data-title="French Defense" data-desc="Study the French structure and common plans."><b>French Defense</b><small>Opening lesson</small></button>
-        <button class="training-video-item" data-video="ebfzL_GwiIE" data-title="Caro-Kann Defense" data-desc="Practice the Caro-Kann ideas with the board."><b>Caro-Kann Defense</b><small>Opening lesson</small></button>
-        <button class="training-video-item" data-video="49H728S_VjM" data-title="London System" data-desc="Review the core London setup and plans."><b>London System</b><small>Opening lesson</small></button>
-      </div>
-    </section>
-    <aside class="training-side">
-      <div class="lesson-card"><div class="eyebrow">PRACTICE LOOP</div><b>1. Watch</b><span>Play the lesson here.</span><b>2. Practice</b><span>Open the chess board.</span><b>3. Analyze</b><span>Use Stockfish 19 Lite to review your moves.</span></div>
-      <div class="lesson-card"><div class="eyebrow">OFFLINE</div><b>App shell is cached</b><span>The trainer, board, styles and engine loader are stored for offline app use when available.</span><span class="offline-note">Video files from YouTube are streamed by YouTube and are not copied into this app.</span></div>
-    </aside>
-  </div>
-</section>
-
-<section id="videoView" class="course-view video-page" hidden>
-  <div class="course-header"><div><div class="eyebrow">VIDEO LIBRARY</div><h1>Chess Videos</h1><p>Play the lessons directly on this page. The original video links stay underneath each player.</p></div><button id="videoPlayBoardBtn" class="primary">Open chess board</button></div>
-  <div class="video-page-grid">
-    <article class="video-card featured-video"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/GTJmUt8oyH8" title="1.e4 Rating Climb" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-card-body"><span class="tag">1.e4</span><b>1.e4 Rating Climb</b><small>Play the lesson here, then practice the opening on the chess board.</small><a href="https://www.youtube.com/watch?v=GTJmUt8oyH8" target="_blank" rel="noopener">Original video link ↗</a></div></article>
-    <article class="video-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/qM4e7g2RukI" title="Sicilian Defense" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-card-body"><span class="tag">SICILIAN</span><b>Sicilian Defense</b><small>Opening lesson with plans and example positions.</small><a href="https://www.youtube.com/watch?v=qM4e7g2RukI" target="_blank" rel="noopener">Original video link ↗</a></div></article>
-    <article class="video-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/5pec-u6PSvA" title="French Defense" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-card-body"><span class="tag">FRENCH</span><b>French Defense</b><small>Study the French structure and common plans.</small><a href="https://www.youtube.com/watch?v=5pec-u6PSvA" target="_blank" rel="noopener">Original video link ↗</a></div></article>
-    <article class="video-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/ebfzL_GwiIE" title="Caro-Kann Defense" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-card-body"><span class="tag">CARO-KANN</span><b>Caro-Kann Defense</b><small>Learn the main ideas, plans and example games.</small><a href="https://www.youtube.com/watch?v=ebfzL_GwiIE" target="_blank" rel="noopener">Original video link ↗</a></div></article>
-    <article class="video-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/49H728S_VjM" title="London System" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-card-body"><span class="tag">LONDON</span><b>London System</b><small>Review the core London setup and plans.</small><a href="https://www.youtube.com/watch?v=49H728S_VjM" target="_blank" rel="noopener">Original video link ↗</a></div></article>
-  </div>
-</section>
-
-<section id="courseView" class="course-view" hidden>
-  <div class="course-header">
-    <div><div class="eyebrow">COURSE MODE</div><h1>Learn chess step by step</h1><p>Levels, openings, drills, quizzes, and video lessons in one place.</p></div>
-    <a class="old-link" href="https://old.chessly.com/courses" target="_blank" rel="noopener">Browse old Chessly courses ↗</a>
-  </div>
-  <div class="level-grid">
-    <button class="level-card active" data-level="beginner"><span>LEVEL 1</span><b>Beginner</b><small>0–800 • Fundamentals</small><i>Start →</i></button>
-    <button class="level-card" data-level="intermediate"><span>LEVEL 2</span><b>Intermediate</b><small>800–1600 • Planning</small><i>Unlock →</i></button>
-    <button class="level-card" data-level="advanced"><span>LEVEL 3</span><b>Advanced</b><small>1600–2200 • Calculation</small><i>Unlock →</i></button>
-  </div>
-  <div class="course-grid">
-    <article class="course-box">
-      <div class="course-cover e4-cover"><span>E4</span></div>
-      <div class="course-body"><span class="tag">WHITE • OPENING</span><h2>E4 Part One</h2><p>Vienna, Sicilian, French, Caro-Kann and practical e4 ideas.</p>
-        <div class="lesson-list"><button data-lesson="e4">Lesson 1 · e4 fundamentals</button><button data-lesson="vienna">Lesson 2 · Vienna ideas</button><button data-lesson="caro">Lesson 3 · Play against the Caro-Kann</button></div>
-        <div class="course-actions"><a href="https://old.chessly.com/courses/812a7981-0439-4de4-a86b-35b9833eea25" target="_blank" rel="noopener">Open old Chessly course</a></div>
-      </div>
-    </article>
-    <article class="course-box">
-      <div class="course-cover caro-cover"><span>C6</span></div>
-      <div class="course-body"><span class="tag">BLACK • OPENING</span><h2>Caro-Kann</h2><p>A structured path from 1...c6 through the Advance, Exchange, Classical and Fantasy setups.</p>
-        <div class="lesson-list"><button data-lesson="ck1">Lesson 1 · 1...c6 and 2...d5</button><button data-lesson="ck2">Lesson 2 · Advance</button><button data-lesson="ck3">Lesson 3 · Classical</button></div>
-        <div class="course-actions"><a href="https://old.chessly.com/courses/a7d23f32-20fb-4cf9-9b56-7e63329f55e7" target="_blank" rel="noopener">Open old Chessly C6 course</a></div>
-      </div>
-    </article>
-  </div>
-  <section class="opening-library">
-  <div class="section-heading"><div><div class="eyebrow">OPENING LIBRARY</div><h2>Videos by opening</h2></div><span>Embedded from YouTube</span></div>
-  <div class="opening-tabs">
-    <button class="opening-tab active" data-opening="all">All</button><button class="opening-tab" data-opening="e4">1.e4</button><button class="opening-tab" data-opening="sicilian">Sicilian</button><button class="opening-tab" data-opening="french">French</button><button class="opening-tab" data-opening="caro">Caro-Kann</button><button class="opening-tab" data-opening="london">London</button>
-  </div>
-  <div class="opening-video-grid">
-    <article class="video-card opening-video" data-opening="e4"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/GTJmUt8oyH8"  title="GothamChess 1 e4 rating climb" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>1.e4 Rating Climb</b><small>Broad e4 repertoire: Sicilian, Caro-Kann, Vienna and more.</small><a href="https://www.youtube.com/watch?v=GTJmUt8oyH8" target="_blank" rel="noopener">Video URL ↗</a></article>
-    <article class="video-card opening-video" data-opening="sicilian"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/qM4e7g2RukI"  title="The Sicilian Defense by GothamChess" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>Sicilian Defense</b><small>GothamChess • 10-Minute Chess Openings.</small><a href="https://www.youtube.com/watch?v=qM4e7g2RukI" target="_blank" rel="noopener">Video URL ↗</a></article>
-    <article class="video-card opening-video" data-opening="french"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/5pec-u6PSvA"  title="Learn the French Defense by GothamChess" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>French Defense</b><small>GothamChess • 10-Minute Chess Openings.</small><a href="https://www.youtube.com/watch?v=5pec-u6PSvA" target="_blank" rel="noopener">Video URL ↗</a></article>
-    <article class="video-card opening-video" data-opening="caro"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/ebfzL_GwiIE"  title="How to CRUSH with the Caro-Kann by GothamChess" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>Caro-Kann Defense</b><small>GothamChess • theory, plans and example games.</small><a href="https://www.youtube.com/watch?v=ebfzL_GwiIE" target="_blank" rel="noopener">Video URL ↗</a></article>
-    <article class="video-card opening-video" data-opening="london"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/49H728S_VjM"  title="Learn the London System by GothamChess" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>London System</b><small>GothamChess • 10-Minute Chess Openings.</small><a href="https://www.youtube.com/watch?v=49H728S_VjM" target="_blank" rel="noopener">Video URL ↗</a></article>
-  </div>
-</section><section class="video-section">
-    <div class="section-heading"><div><div class="eyebrow">VIDEO LIBRARY</div><h2>GothamChess lessons</h2></div><span>Play on this website</span></div>
-    <div class="video-grid">
-      <article class="video-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/GTJmUt8oyH8"  title="GothamChess 1 e4 ONLY Rating Climb Part 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>1. e4 Rating Climb</b><small>GothamChess • e4, Sicilian, Scandinavian, Caro-Kann and Vienna</small><a href="https://www.youtube.com/watch?v=GTJmUt8oyH8" target="_blank" rel="noopener">Open video URL ↗</a></article>
-      <article class="video-card"><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/ebfzL_GwiIE"  title="GothamChess How to CRUSH with the Caro-Kann" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><b>How to CRUSH with the Caro-Kann</b><small>GothamChess • Caro-Kann theory and example games</small><a href="https://www.youtube.com/watch?v=ebfzL_GwiIE" target="_blank" rel="noopener">Open video URL ↗</a></article>
-    </div>
-  </section>
-  <section class="lesson-player" id="lessonPlayer" hidden><div><div class="eyebrow">COURSE LESSON</div><h2 id="lessonTitle">Lesson</h2><p id="lessonText"></p></div><button id="lessonBoardBtn" class="primary">Open on board</button></section>
-</section>
-
-<script src="app.js"></script>
-<script>if("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");</script>
-<div id="promotion" class="promotion" hidden><div class="promotion-box"><b>Choose promotion</b><div><button data-piece="q">♕</button><button data-piece="r">♖</button><button data-piece="b">♗</button><button data-piece="n">♘</button></div></div></div></body>
-</html>
+<section id="sources" class="page"><div class="grid">
+<div class="card"><span class="tag">CHESSLY</span><h2>Your course</h2><a href="https://chessly.com/courses/76b3000f-dfd1-4c62-b706-238dbd5bb752" target="_blank">Open Chessly course ↗</a><p class="muted">Private course material is not copied into this app.</p></div>
+<div class="card"><span class="tag">VIDEO</span><h2>Provided link 1</h2><a href="https://www.youtube.com/watch?v=rmbU97iftC8" target="_blank">Open YouTube ↗</a></div>
+<div class="card"><span class="tag">VIDEO</span><h2>Provided link 2</h2><a href="https://www.youtube.com/watch?v=JVxENCPcCjU" target="_blank">Open YouTube ↗</a></div>
+<div class="card"><span class="tag">VIDEO</span><h2>Provided link 3</h2><a href="https://www.youtube.com/watch?v=MWFeqi9vGk8" target="_blank">Open YouTube ↗</a></div>
+</div></section>
+</main>
+<footer>Original training content built around the opening ideas we discussed. Linked material remains owned by its publishers.</footer>
+<script>
+const P={w:{k:'♔',q:'♕',r:'♖',b:'♗',n:'♘',p:'♙'},b:{k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'}};
+const S=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'].map(x=>x.split(''));
+const L={
+winawer:{t:'French Winawer',m:['e4','e6','d4','d5','Nc3','Bb4','e5','c5'],i:'Pin the knight and attack the center.',w:'Sharp positions still reward development and king safety.'},
+caro:{t:'Caro-Kann',m:['e4','c6','d4','d5','Nc3','dxe4','Nxe4','Bf5'],i:'Challenge the center while keeping the light bishop active.',w:'Solid does not mean passive.'},
+vienna:{t:'Vienna',m:['e4','e5','Nc3','Nf6','f4'],i:'Pressure e5 and develop quickly.',w:'Do not attack before your pieces are ready.'},
+gambit:{t:"King's Gambit",m:['e4','e5','f4','exf4','Nf3'],i:'Trade a pawn for initiative and open lines.',w:'Make the development tempo count.'}};
+let B=S.map(r=>r.slice()),sel=null,line=L.winawer,st=0;
+function render(){let e=document.getElementById('board');e.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){let d=document.createElement('div');d.className='sq '+((r+c)%2?'dark':'light');if(sel&&sel[0]==r&&sel[1]==c)d.classList.add('sel');let p=B[r][c];if(p!='.')d.textContent=P[p===p.toUpperCase()?'w':'b'][p.toLowerCase()];if(c===0){let x=document.createElement('span');x.className='coord';x.textContent=8-r;d.appendChild(x)}d.onclick=()=>pick(r,c);e.appendChild(d)}}
+function pick(r,c){if(!sel){if(B[r][c]!='.')sel=[r,c];render();return}let [fr,fc]=sel;if(B[r][c]=='.'||B[r][c]!==B[fr][fc]){B[r][c]=B[fr][fc];B[fr][fc]='.'}sel=null;render()}
+function load(name){line=L[name];st=0;B=S.map(r=>r.slice());document.getElementById('ltitle').textContent=line.t;document.getElementById('ltext').textContent=line.m.join(' ');document.getElementById('idea').textContent=line.i;document.getElementById('watch').textContent=line.w;let el=document.getElementById('lineBtns');el.innerHTML='';line.m.forEach((m,i)=>{let b=document.createElement('button');b.className='btn';b.textContent=(i+1)+'. '+m;b.onclick=()=>go(i+1);el.appendChild(b)});go(0)}
+function go(n){st=n;document.getElementById('step').textContent='Step '+st+' / '+line.m.length;document.getElementById('bar').style.width=(st/line.m.length*100)+'%';render()}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(b.dataset.p).classList.add('active')});
+document.querySelectorAll('.linepick').forEach(b=>b.onclick=()=>load(b.dataset.line));
+const Q=[{q:'What starts the Vienna?',a:['2.Nc3','2.Nf3','2.d4','2.f4'],c:0,e:'2.Nc3.'},{q:'What is the Caro-Kann setup?',a:['1.e4 c5','1.e4 c6 2.d4 d5','1.e4 e6 2.d4 d5','1.d4 Nf6'],c:1,e:'1.e4 c6 2.d4 d5.'},{q:'What move defines the Winawer?',a:['...Bb4 after 3.Nc3','...g6','...Qh4','...c5 on move 2'],c:0,e:'3...Bb4.'},{q:'What is the King's Gambit?',a:['1.e4 e5 2.f4','1.e4 e5 2.Nc3','1.d4 d5','1.c4'],c:0,e:'1.e4 e5 2.f4.'}];let qi=0;
+function quiz(){let q=Q[qi%Q.length];document.getElementById('q').textContent=q.q;let a=document.getElementById('ans');a.innerHTML='';document.getElementById('fb').style.display='none';q.a.forEach((x,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=x;b.onclick=()=>{let f=document.getElementById('fb');f.textContent=(i===q.c?'✓ Correct. ':'Not quite. ')+q.e;f.className='feedback '+(i===q.c?'good':'bad');f.style.display='block'};a.appendChild(b)})}
+document.getElementById('next').onclick=()=>{qi++;quiz()};load('winawer');quiz();
+</script>
+</body></html>
