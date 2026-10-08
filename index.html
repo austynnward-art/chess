@@ -173,7 +173,7 @@ function renderBoard(){
  let targets=[];
  if(selectedSquare)targets=boardGame.moves({square:selectedSquare,verbose:true}).map(m=>m.to);
  const glyph={
-   wp:"♟",wn:"♞",wb:"♝",wr:"♜",wq:"♛",wk:"♚",
+   wp:"♙",wn:"♘",wb:"♗",wr:"♖",wq:"♕",wk:"♔",
    bp:"♟",bn:"♞",bb:"♝",br:"♜",bq:"♛",bk:"♚"
  };
  for(let r=0;r<8;r++)for(let col=0;col<8;col++){
@@ -249,8 +249,8 @@ function renderLessonStep(){
 
 // ---------- Stockfish ----------
 const ENGINE_URLS={
-  "19":"https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js",
-  "10":"https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.wasm.js"
+  "19":"stockfish-worker.js?engine=19",
+  "10":"stockfish-worker.js?engine=10"
 };
 const USCF_LEVELS={
   "800": {label:"Class F", range:"800–999", skill:4},
@@ -314,7 +314,7 @@ async function getEngineWorker(){
   const url=ENGINE_URLS[selectedEngine];
   try{
     updateEngineStatus("loading "+engineName()+"…");
-    stockfish=new Worker(url);
+    stockfish=new Worker(url,{type:"classic"});
     engineReadyPromise=new Promise((resolve,reject)=>{
       let settled=false;
       const finish=(ok)=>{
@@ -324,6 +324,7 @@ async function getEngineWorker(){
       };
       stockfish.onmessage=e=>{
         const line=typeof e.data==="string"?e.data:"";
+        if(line.startsWith("error ")){updateEngineStatus(line.slice(6));finish(false);return;}
         if(line==="uciok"){
           configureEngine();
           try{stockfish.postMessage("isready")}catch(_){}
