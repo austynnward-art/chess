@@ -68,7 +68,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 </article>
 
 <article class="course">
-<div class="course-top"><span class="pill">BLACK</span><span class="only">Reliable</span></div>
+<div class="course-top"><span class="pill">BLACK • YOU</span><span class="only">Reliable</span></div>
 <h3>Caro-Kann</h3><div class="moves">1.e4 c6 2.d4 d5</div>
 <p>The solid Black option. Learn the classical setup and keep the light-squared bishop active.</p>
 <div class="lessons"><button class="lesson" data-open="caro" data-step="2">Lesson 1 — Core setup</button><button class="lesson" data-open="caro" data-step="5">Lesson 2 — Classical variation</button><button class="lesson" data-open="caro" data-step="8">Lesson 3 — Active counterplay</button></div>
@@ -76,7 +76,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:24p
 </article>
 
 <article class="course">
-<div class="course-top"><span class="pill">BLACK</span><span class="only">Chaos</span></div>
+<div class="course-top"><span class="pill">BLACK • YOU</span><span class="only">Chaos</span></div>
 <h3>Portuguese Gambit</h3><div class="moves">1.e4 e5 2.Bb5 Nf6 3.d4</div>
 <p>Use the public opening line as the board lesson, then jump to the Chessly video you supplied for deeper study.</p>
 <div class="lessons"><button class="lesson" data-open="portuguese" data-step="2">Lesson 1 — Enter the gambit</button><button class="lesson" data-open="portuguese" data-step="3">Lesson 2 — Development with tempo</button><button class="lesson" data-open="portuguese" data-step="5">Lesson 3 — Attack before White settles</button></div>
@@ -155,7 +155,7 @@ function openBoard(key,startStep=0){
  activeCourse=key;moveIndex=Math.max(0,Math.min(Number(startStep)||0,COURSES[key].line.length));freePlay=false;vsStockfish=false;stockfishBusy=false;selectedSquare=null;updateEngineUI();loadPosition();
  const c=COURSES[key];
  document.getElementById("boardTitle").textContent=c.name;
- document.getElementById("boardLine").textContent=c.line.join(" ");
+ document.getElementById("boardLine").textContent=c.line.join(" ")+((key==="caro"||key==="portuguese")?" • You play Black":" • You play White");
  document.getElementById("sourceText").textContent="Source: "+c.source;
  renderLineButtons();renderLessonStep();
  document.getElementById("boardModal").classList.add("open");
@@ -250,7 +250,7 @@ function renderLessonStep(){
 // ---------- Stockfish ----------
 const ENGINE_URLS={
   "19":"https://cdn.jsdelivr.net/npm/stockfish@19.0.0/bin/stockfish-19-lite-single.js",
-  "10":"https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js"
+  "10":"https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.wasm.js"
 };
 const USCF_LEVELS={
   "800": {label:"Class F", range:"800–999", skill:4},
@@ -263,7 +263,7 @@ const USCF_LEVELS={
   "2200":{label:"Master", range:"2200–2399", elo:2200},
   "2400":{label:"Senior Master", range:"2400+", elo:2400}
 };
-let selectedEngine="19",selectedLevel="1200",engineBlobUrl=null;
+let selectedEngine="19",selectedLevel="1200",engineBlobUrl=null,engineReadyPromise=null;
 
 function engineName(){return selectedEngine==="10"?"Stockfish 10":"Stockfish 19 Lite"}
 function userColor(){return (activeCourse==="caro"||activeCourse==="portuguese")?"b":"w"}
@@ -310,41 +310,53 @@ function configureEngine(){
   }catch(e){}
 }
 async function getEngineWorker(){
-  if(stockfish)return stockfish;
+  if(stockfish && engineReadyPromise)return stockfish;
   const url=ENGINE_URLS[selectedEngine];
   try{
     updateEngineStatus("loading "+engineName()+"…");
-    // Use the engine script directly as a Worker. This is important because
-    // Stockfish 10 uses a companion WASM file and Blob workers break relative paths.
     stockfish=new Worker(url);
-    stockfish.onmessage=e=>{
-      const line=typeof e.data==="string"?e.data:"";
-      if(line==="uciok"){
-        configureEngine();
-        updateEngineStatus(engineName()+" ready at "+levelInfo().label+".");
-      }
-      if(line.startsWith("bestmove ")){
-        const best=line.split(/\s+/)[1];
-        stockfishBusy=false;
-        if(best && best!=="(none)" && best.length>=4){
-          const move={from:best.slice(0,2),to:best.slice(2,4)};
-          if(best.length>4)move.promotion=best[4];
-          try{boardGame.move(move)}catch(_){}
-          renderBoard();
-          updateEngineStatus(boardGame.game_over()?"game over.":"your move.");
-        }else{
-          updateEngineStatus("no legal move.");
+    engineReadyPromise=new Promise((resolve,reject)=>{
+      let settled=false;
+      const finish=(ok)=>{
+        if(settled)return;
+        settled=true;
+        ok?resolve():reject(new Error("engine failed"));
+      };
+      stockfish.onmessage=e=>{
+        const line=typeof e.data==="string"?e.data:"";
+        if(line==="uciok"){
+          configureEngine();
+          try{stockfish.postMessage("isready")}catch(_){}
         }
+        if(line==="readyok"){
+          updateEngineStatus(engineName()+" ready at "+levelInfo().label+".");
+          finish(true);
+        }
+        if(line.startsWith("bestmove ")){
+          const best=line.split(/\s+/)[1];
+          stockfishBusy=false;
+          if(best && best!=="(none)" && best.length>=4){
+            const move={from:best.slice(0,2),to:best.slice(2,4)};
+            if(best.length>4)move.promotion=best[4];
+            try{boardGame.move(move)}catch(_){}
+            renderBoard();
+            updateEngineStatus(boardGame.game_over()?"game over.":"your move.");
+          }else{
+            updateEngineStatus("no legal move.");
+          }
+          updateEngineUI();
+        }
+        if(line.startsWith("info depth"))updateEngineStatus("thinking…");
+      };
+      stockfish.onerror=()=>{
+        stockfishBusy=false;
+        updateEngineStatus(engineName()+" failed to run.");
         updateEngineUI();
-      }
-      if(line.startsWith("info depth"))updateEngineStatus("thinking…");
-    };
-    stockfish.onerror=()=>{
-      stockfishBusy=false;
-      updateEngineStatus(engineName()+" failed to run.");
-      updateEngineUI();
-    };
-    stockfish.postMessage("uci");
+        finish(false);
+      };
+      try{stockfish.postMessage("uci")}catch(_){finish(false)}
+    });
+    await engineReadyPromise;
     return stockfish;
   }catch(err){
     destroyStockfish();
@@ -357,12 +369,14 @@ async function createStockfish(){return await getEngineWorker()}
 function destroyStockfish(){
   if(stockfish){try{stockfish.postMessage("stop")}catch(e){}try{stockfish.terminate()}catch(e){}}
   stockfish=null;
+  engineReadyPromise=null;
   if(engineBlobUrl){try{URL.revokeObjectURL(engineBlobUrl)}catch(e){}}
   engineBlobUrl=null;
 }
 async function requestEngineMove(){
-  if(!stockfish)await createStockfish();
-  if(!stockfish)return;
+  await createStockfish();
+  if(!stockfish || !engineReadyPromise)return;
+  try{await engineReadyPromise}catch(_){return}
   const fen=boardGame.fen();
   try{stockfish.postMessage("stop")}catch(e){}
   stockfish.postMessage("position fen "+fen);
