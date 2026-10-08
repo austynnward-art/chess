@@ -207,7 +207,7 @@ function clickSquare(sq){
  // In Stockfish mode, only White is controlled by the user.
  if(selectedSquare){
    const movingPiece=boardGame.get(selectedSquare);
-   if(vsStockfish && (!movingPiece || movingPiece.color!=="w")) {
+   if(vsStockfish && (!movingPiece || movingPiece.color!==userColor())) {
      selectedSquare=null;renderBoard();return;
    }
    const m=boardGame.move({from:selectedSquare,to:sq,promotion:"q"});
@@ -227,7 +227,7 @@ function clickSquare(sq){
    }
  }
  const p=boardGame.get(sq);
- if(p && p.color===boardGame.turn() && (!vsStockfish || p.color==="w")) {
+ if(p && p.color===boardGame.turn() && (!vsStockfish || p.color===userColor())) {
    selectedSquare=sq;
  } else {
    selectedSquare=null;
@@ -264,6 +264,9 @@ const USCF_LEVELS={
 let selectedEngine="19",selectedLevel="1200",engineBlobUrl=null;
 
 function engineName(){return selectedEngine==="10"?"Stockfish 10":"Stockfish 19 Lite"}
+function userColor(){return (activeCourse==="caro"||activeCourse==="portuguese")?"b":"w"}
+function userColorName(){return userColor()==="w"?"White":"Black"}
+function engineColorName(){return userColor()==="w"?"Black":"White"}
 function levelInfo(){return USCF_LEVELS[selectedLevel]||USCF_LEVELS["1200"]}
 function updateLevelUI(){
   const sel=document.getElementById("engineLevel");
@@ -275,6 +278,13 @@ function updateLevelUI(){
 function updateEngineStatus(msg){const el=document.getElementById("engineStatus");if(el)el.textContent="Engine: "+msg}
 function updateEngineUI(){
   const b=document.getElementById("stockfishBtn"),sel=document.getElementById("engineSelect");
+  const playerLabels=document.querySelectorAll(".player");
+  if(playerLabels.length>=2){
+    playerLabels[0].querySelector("b").textContent=engineColorName();
+    playerLabels[0].querySelector("small").textContent=engineName()+" • "+levelInfo().label;
+    playerLabels[1].querySelector("b").textContent=userColorName();
+    playerLabels[1].querySelector("small").textContent="You";
+  }
   if(sel){sel.value=selectedEngine;sel.disabled=vsStockfish}
   updateLevelUI();
   if(b){b.classList.toggle("engine-on",vsStockfish);b.textContent=vsStockfish?"Stop "+engineName():"Play vs "+engineName()}
@@ -381,6 +391,10 @@ async function startStockfishGame(){
   freePlay=false;vsStockfish=true;stockfishBusy=false;selectedSquare=null;boardGame.reset();moveIndex=0;
   updateEngineUI();updateEngineStatus("starting "+engineName()+" at "+levelInfo().label+"…");renderBoard();startClocks();
   await createStockfish();
+  // Black openings: the engine has White, so it makes the first move.
+  if(vsStockfish && userColor()==="b" && !boardGame.game_over()){
+    stockfishBusy=true;updateEngineUI();requestEngineMove();
+  }
 }
 function stopStockfish(){
   stopClocks();vsStockfish=false;stockfishBusy=false;selectedSquare=null;destroyStockfish();updateEngineUI();updateEngineStatus(engineName()+" — ready.");
